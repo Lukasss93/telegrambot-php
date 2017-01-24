@@ -108,16 +108,13 @@ class Message
     public $pinned_message;
 
 
-    public function getCommand($username=null)
+    public function getCommand()
     {
         if($this->text!==null)
         {
             $commandArray=explode(' ', $this->text);
             $command=array_shift($commandArray);
-            if($username!==null)
-            {
-                $command=str_replace('@' . $username, '',$command);
-            }
+            $command=preg_replace('/@.*/','',$command);
             return $command;
         }
         return null;
