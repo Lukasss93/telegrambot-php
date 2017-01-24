@@ -1,0 +1,25 @@
+{
+    "name": "lukasss93/telegrambot-php",
+    "description": "Framework for Telegram Bot API",
+    "license": "MIT",
+    "type": "project",
+    "version": "1.0.0",
+    "authors": [
+        {
+            "name": "Luca Patera",
+            "email": "lucapatera@outlook.it",
+            "homepage": "http://www.lucapatera.it/"
+        }
+    ],
+    "require": {
+        "php": ">=5.3",
+        "netresearch/jsonmapper": "v1.1.0",
+        "lukasss93/aurax-php": "1.3.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "TelegramBot\\": "src/",
+            "TelegramBot\\Types\\": "src/Types/"
+        }
+    }
+}
