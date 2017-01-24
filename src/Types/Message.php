@@ -108,6 +108,13 @@ class Message
     public $pinned_message;
 
 
+    /**
+     * Returns only the command string without @BotUsername
+     * Example:
+     * IN: /hello@MyDearBot
+     * OUT: /hello
+     * @return string
+     */
     public function getCommand()
     {
         if($this->text!==null)
@@ -120,6 +127,11 @@ class Message
         return null;
     }
 
+    /**
+     * Returns the args as array or as string
+     * @param bool $asString
+     * @return array|string
+     */
     public function getArgs($asString=false)
     {
         if($this->text!==null)
