@@ -1,4 +1,4 @@
-# TelegramBotPHP
+# TelegramBot-PHP
 > A very simple PHP [Telegram Bot API](https://core.telegram.org/bots/api) for sending messages.    
 > Compliant with the December 4, 2016 Telegram Bot API update.
 
@@ -19,13 +19,15 @@ For the GetUpdates:
 Installation
 ---------
 
-* ####Manual 
+* ###Manual 
     Copy **src** folder in your project, rename it and include all classes in your new bot script.
+    
     ```php
     //add a script to include the entire folder first!
     $telegram = new TelegramBot($token);
     ```
-* ####Composer
+    
+* ###Composer
 
     `composer require lukasss93/telegrambot`
 
