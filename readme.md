@@ -81,7 +81,7 @@ $telegram->sendPhoto([
 To download a file on the Telegram's servers
 ```php
 $file = $telegram->getFile($file_id);
-$telegram->downloadFile($file["file_path"], "./my_downloaded_file_on_local_server.png");
+$telegram->downloadFile($file->file_path, "./my_downloaded_file_on_local_server.png");
 ```
 
 Build keyboard parameters
