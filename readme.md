@@ -24,6 +24,7 @@ Installation
     
     ```php
     //add a script to include the entire folder first!
+    use TelegramBot\TelegramBot;
     $telegram = new TelegramBot($token);
     ```
     
@@ -33,7 +34,7 @@ Installation
     [![Total Downloads](https://poser.pugx.org/lukasss93/telegrambot-php/downloads)](https://packagist.org/packages/lukasss93/telegrambot-php)
     [![License](https://poser.pugx.org/lukasss93/telegrambot-php/license)](https://packagist.org/packages/lukasss93/telegrambot-php)
 
-    `composer require lukasss93/telegrambot`
+    `composer require lukasss93/telegrambot-php`
 
 Configuration (WebHook)
 ---------
@@ -63,6 +64,8 @@ $this->telegram->sendMessage([
 
 If you want to get some specific parameter from the Telegram webhook, simply call parameter name in the object:
 ```php
+use TelegramBot\TelegramBot;
+
 $telegram = new TelegramBot($token);
 $input=$telegram->getWebhookUpdate();
 $text=$input->message->text
