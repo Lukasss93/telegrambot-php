@@ -1,6 +1,14 @@
 # TelegramBot-PHP
-> A very simple PHP [Telegram Bot API](https://core.telegram.org/bots/api) for sending messages.    
-> Compliant with the December 4, 2016 Telegram Bot API update.
+
+[![API](https://img.shields.io/badge/Telegram%20Bot%20API-December%204%2C%202016-36ade1.svg)](https://core.telegram.org/bots/api)
+![PHP](https://img.shields.io/badge/php-%3E%3D5.3-8892bf.svg)
+![CURL](https://img.shields.io/badge/cURL-required-green.svg)
+
+[![Latest Stable Version](https://poser.pugx.org/lukasss93/telegrambot-php/v/stable)](https://packagist.org/packages/lukasss93/telegrambot-php)
+[![Total Downloads](https://poser.pugx.org/lukasss93/telegrambot-php/downloads)](https://packagist.org/packages/lukasss93/telegrambot-php)
+[![License](https://poser.pugx.org/lukasss93/telegrambot-php/license)](https://packagist.org/packages/lukasss93/telegrambot-php)
+
+> A very simple PHP [Telegram Bot API](https://core.telegram.org/bots/api) for sending messages. 
 
 Requirements
 ---------
@@ -29,10 +37,6 @@ Installation
     ```
     
 * ###Composer
-
-    [![Latest Stable Version](https://poser.pugx.org/lukasss93/telegrambot-php/v/stable)](https://packagist.org/packages/lukasss93/telegrambot-php)
-    [![Total Downloads](https://poser.pugx.org/lukasss93/telegrambot-php/downloads)](https://packagist.org/packages/lukasss93/telegrambot-php)
-    [![License](https://poser.pugx.org/lukasss93/telegrambot-php/license)](https://packagist.org/packages/lukasss93/telegrambot-php)
 
     `composer require lukasss93/telegrambot-php`
 
