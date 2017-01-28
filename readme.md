@@ -107,7 +107,7 @@ Message Objects provide 2 methods:
     //$input->message->text => '/test@ExampleBot my args'
     $args_array=$input->message->getArgs();
     //$args_array[0] => 'my'
-    //$args_array[0] => 'args'
+    //$args_array[1] => 'args'
     $args_string=$input->message->getArgs(true);
     //$args_string => 'my args'
     ```
