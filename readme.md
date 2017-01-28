@@ -137,4 +137,4 @@ http://apps.timwhitlock.info/emoji/tables/unicode
 
 Contact me
 ------------
-You can contact me [via Telegram](https://telegram.me/Lukasss93) but if you have an issue please [open](https://github.com/Eleirbag89/TelegramBotPHP/issues) one.
+You can contact me [via Telegram](https://telegram.me/Lukasss93) but if you have an issue please [open](https://github.com/Lukasss93/telegrambot-php/issues) one.
