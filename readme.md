@@ -95,12 +95,14 @@ Message Object Methods
 ------------
 Message Objects provide 2 methods:
 * getCommand()
+
     ```php
     //$input->message->text => '/test@ExampleBot my args'
     $command=$input->message->getCommand();
     //$command => '/text'
     ```
 * getArgs(bool $asString=false)
+
     ```php
     //$input->message->text => '/test@ExampleBot my args'
     $args_array=$input->message->getArgs();
