@@ -91,6 +91,26 @@ $file = $telegram->getFile($file_id);
 $telegram->downloadFile($file->file_path, "./my_downloaded_file_on_local_server.png");
 ```
 
+Message Object Methods
+------------
+Message Objects provide 2 methods:
+* getCommand()
+    ```php
+    //$input->message->text => '/test@ExampleBot my args'
+    $command=$input->message->getCommand();
+    //$command => '/text'
+    ```
+* getArgs(bool $asString=false)
+    ```php
+    //$input->message->text => '/test@ExampleBot my args'
+    $args_array=$input->message->getArgs();
+    //$args_array[0] => 'my'
+    //$args_array[0] => 'args'
+    $args_string=$input->message->getArgs(true);
+    //$args_string => 'my args'
+    ```
+
+
 Build keyboard parameters
 ------------
 ```php
@@ -137,4 +157,5 @@ http://apps.timwhitlock.info/emoji/tables/unicode
 
 Contact me
 ------------
-You can contact me [via Telegram](https://telegram.me/Lukasss93) but if you have an issue please [open](https://github.com/Lukasss93/telegrambot-php/issues) one.
+You can contact me [via Telegram](https://telegram.me/Lukasss93) but if you have an issue 
+please [open](https://github.com/Lukasss93/telegrambot-php/issues) one.
