@@ -785,7 +785,7 @@ class TelegramBot
      * @param string $switch_inline_query
      * @return array
      */
-    public function buildInlineKeyboardButton($text, $url = '', $callback_data = '', $switch_inline_query = '')
+    public function buildInlineKeyboardButton($text, $url = '', $callback_data = '', $switch_inline_query = '', $switch_inline_query_current_chat = "", $callback_game = "")
     {
         $replyMarkup = array(
             'text' => $text
@@ -802,6 +802,14 @@ class TelegramBot
         else if($switch_inline_query != '')
         {
             $replyMarkup['switch_inline_query'] = $switch_inline_query;
+        }
+        else if($switch_inline_query_current_chat != "")
+        {
+        	$replyMarkup['switch_inline_query_current_chat'] = $switch_inline_query_current_chat;
+        }
+        else if($callback_game != "")
+        {
+        	$replyMarkup['callback_game'] = $callback_game;
         }
 
         return $replyMarkup;
@@ -833,7 +841,7 @@ class TelegramBot
     public function buildKeyBoardHide($selective = true)
     {
         $replyMarkup = array(
-            'hide_keyboard' => true,
+            'remove_keyboard' => true,
             'selective' => $selective
         );
         $encodedMarkup = json_encode($replyMarkup, true);
@@ -854,6 +862,16 @@ class TelegramBot
         $encodedMarkup = json_encode($replyMarkup, true);
         return $encodedMarkup;
     }
+	
+	/**
+	 * A method for responding http to Telegram.
+	 * @return string return the HTTP 200 to Telegram
+	 */
+	public function respondSuccess()
+	{
+		http_response_code(200);
+		return json_encode(array("status" => "success"));
+	}
 
     //</editor-fold>
 
@@ -867,7 +885,7 @@ class TelegramBot
      * @return Response
      * @throws Exception
      */
-    public function endpoint($api, array $content, $post = true)
+    private function endpoint($api, array $content, $post = true)
     {
         $url = 'https://api.telegram.org/bot' . $this->token . '/' . $api;
 
@@ -910,13 +928,6 @@ class TelegramBot
      */
     private function sendRequest($url, array $content, $post = true)
     {
-        /*
-        if (isset($content['chat_id']))
-        {
-            $url = $url . "?chat_id=" . $content['chat_id'];
-            unset($content['chat_id']);
-        }*/
-
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url.Tools::parametersToString($content));
         curl_setopt($ch, CURLOPT_HEADER, false);
@@ -949,4 +960,15 @@ class TelegramBot
     }
 
     //</editor-fold>
+}
+
+/** Helper for Uploading file using CURL */
+if (!function_exists('curl_file_create'))
+{
+	function curl_file_create($filename, $mimetype = '', $postname = '')
+	{
+		return "@$filename;filename="
+			. ($postname ? : basename($filename))
+			. ($mimetype ? ";type=$mimetype" : '');
+	}
 }
