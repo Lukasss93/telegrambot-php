@@ -23,6 +23,9 @@ class InlineQueryResultMpeg4Gif
 
     /** @var int Optional. Video height */
     public $mpeg4_height;
+    
+    /** @var int Optional. Video duration */
+    public $mpeg4_duration;
 
     /** @var string URL of the static thumbnail (jpeg or gif) for the result */
     public $thumb_url;

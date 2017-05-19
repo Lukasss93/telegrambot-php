@@ -36,4 +36,10 @@ class Update
 
     /** @var CallbackQuery Optional. New incoming callback query */
     public $callback_query;
+    
+    /** @var ShippingQuery Optional. New incoming shipping query. Only for invoices with flexible price */
+    public $shipping_query;
+    
+    /** @var PreCheckoutQuery Optional. New incoming pre-checkout query. Contains full information about checkout */
+    public $pre_checkout_query;
 }

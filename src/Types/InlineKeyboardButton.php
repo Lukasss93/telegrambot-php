@@ -39,4 +39,10 @@ class InlineKeyboardButton
      * NOTE: This type of button must always be the first button in the first row.
      */
     public $callback_game;
+    
+    /**
+     * @var bool Optional. Specify True, to send a Pay button.
+     * NOTE: This type of button must always be the first button in the first row.
+     */
+    public $pay;
 }

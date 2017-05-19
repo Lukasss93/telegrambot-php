@@ -1,6 +1,6 @@
 # TelegramBot-PHP
 
-[![API](https://img.shields.io/badge/Telegram%20Bot%20API-December%204%2C%202016-36ade1.svg)](https://core.telegram.org/bots/api)
+[![API](https://img.shields.io/badge/Telegram%20Bot%20API-May%2018%2C%202017-blue.svg)](https://core.telegram.org/bots/api)
 ![PHP](https://img.shields.io/badge/php-%3E%3D5.3-8892bf.svg)
 ![CURL](https://img.shields.io/badge/cURL-required-green.svg)
 
@@ -27,7 +27,7 @@ For the GetUpdates:
 Installation
 ---------
 
-* ###Manual 
+* #### Manual 
     Copy **src** folder in your project, rename it and include all classes in your new bot script.
     
     ```php
@@ -36,7 +36,7 @@ Installation
     $telegram = new TelegramBot($token);
     ```
     
-* ###Composer
+* #### Composer
 
     `composer require lukasss93/telegrambot-php`
 

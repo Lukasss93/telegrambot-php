@@ -16,4 +16,7 @@ class User
 
     /** @var string Optional. User‘s or bot’s username */
     public $username;
+    
+    /** @var string Optional. IETF language tag of the user's language */
+    public $language_code;
 }

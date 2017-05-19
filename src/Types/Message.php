@@ -61,6 +61,12 @@ class Message
 
     /** @var Voice Optional. Message is a voice message, information about the file */
     public $voice;
+    
+    /** @var VideoNote Optional. Message is a video note, information about the video message */
+    public $video_note;
+	
+	/** @var User[] Optional. New members that were added to the group or supergroup and information about them (the bot itself may be one of these members) */
+	public $new_chat_members;
 
     /** @var string Optional. Caption for the document, photo or video, 0-200 characters */
     public $caption;
@@ -73,9 +79,9 @@ class Message
 
     /** @var Venue Optional. Message is a venue, information about the venue */
     public $venue;
-
-    /** @var User Optional. A new member was added to the group, information about them (this member may be the bot itself) */
-    public $new_chat_member;
+	
+	/** @var User Optional. A new member was added to the group, information about them (this member may be the bot itself) */
+	public $new_chat_member;
 
     /** @var User Optional. A member was removed from the group, information about them (this member may be the bot itself) */
     public $left_chat_member;
@@ -106,6 +112,12 @@ class Message
 
     /** @var Message Optional. Specified message was pinned. Note that the Message object in this field will not contain further reply_to_message fields even if it is itself a reply */
     public $pinned_message;
+    
+    /** @var Invoice Optional. Message is an invoice for a payment, information about the invoice. */
+    public $invoice;
+    
+    /** @var SuccessfulPayment Optional. Message is a service message about a successful payment, information about the payment. */
+    public $successful_payment;
 
 
     /**

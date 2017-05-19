@@ -24,6 +24,9 @@ class InlineQueryResultGif
 
     /** @var int Optional. Height of the GIF */
     public $gif_height;
+    
+    /** @var int Optional. Duration of the GIF */
+    public $gif_duration;
 
     /** @var string URL of the static thumbnail for the result (jpeg or gif) */
     public $thumb_url;

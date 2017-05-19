@@ -304,6 +304,21 @@ class TelegramBot
         $object=$response->result===null?null:$this->mapper->map($response->result,new Message());
         return $object;
     }
+	
+	/**
+	 * As of v.4.0, Telegram clients support rounded square mp4 videos of up to 1 minute long.
+	 * Use this method to send video messages. On success, the sent Message is returned.
+	 * @param array $parameters
+	 * @return Message
+	 */
+	public function sendVideoNote($parameters)
+	{
+		$response=$this->endpoint("sendVideoNote", $parameters);
+		
+		/** @var Message $object */
+		$object=$response->result===null?null:$this->mapper->map($response->result,new Message());
+		return $object;
+	}
 
     /**
      * Use this method to send point on the map. On success, the sent Message is returned.
@@ -439,6 +454,27 @@ class TelegramBot
         $object=$response->result;
         return $object;
     }
+	
+	/**
+	 * Use this method to unban a previously kicked user in a supergroup.
+	 * The user will not return to the group automatically, but will be able to join via link, etc.
+	 * The bot must be an administrator in the group for this to work.
+	 * Returns True on success.
+	 * @param int|string $chat_id
+	 * @param int $user_id
+	 * @return bool
+	 */
+	public function unbanChatMember($chat_id, $user_id)
+	{
+		$response=$this->endpoint("unbanChatMember", array(
+			'chat_id'=>$chat_id,
+			'user_id'=>$user_id
+		));
+		
+		/** @var bool $object */
+		$object=$response->result;
+		return $object;
+	}
 
     /**
      * Use this method for your bot to leave a group, supergroup or channel. Returns True on success.
@@ -448,27 +484,6 @@ class TelegramBot
     public function leaveChat($chat_id)
     {
         $response=$this->endpoint("leaveChat", array('chat_id'=>$chat_id));
-
-        /** @var bool $object */
-        $object=$response->result;
-        return $object;
-    }
-
-    /**
-     * Use this method to unban a previously kicked user in a supergroup.
-     * The user will not return to the group automatically, but will be able to join via link, etc.
-     * The bot must be an administrator in the group for this to work.
-     * Returns True on success.
-     * @param int|string $chat_id
-     * @param int $user_id
-     * @return bool
-     */
-    public function unbanChatMember($chat_id, $user_id)
-    {
-        $response=$this->endpoint("unbanChatMember", array(
-            'chat_id'=>$chat_id,
-            'user_id'=>$user_id
-        ));
 
         /** @var bool $object */
         $object=$response->result;
@@ -637,6 +652,30 @@ class TelegramBot
             return $object;
         }
     }
+	
+	/**
+	 * Use this method to delete a message. A message can only be deleted if it was sent less than 48 hours ago.
+	 * Any such recently sent outgoing message may be deleted. Additionally, if the bot is an administrator in a
+	 * group chat, it can delete any message.
+	 * If the bot is an administrator in a supergroup, it can delete messages from any other user
+	 * and service messages about people joining or leaving the group (other types of service messages may
+	 * only be removed by the group creator).
+	 * In channels, bots can only remove their own messages. Returns True on success.
+	 * @param $chat_id int|string Unique identifier for the target chat or username of the target channel (in the format @channelusername)
+	 * @param $message_id int Identifier of the message to delete
+	 * @return bool
+	 */
+	public function deleteMessage($chat_id,$message_id)
+	{
+		$response=$this->endpoint("deleteMessage", [
+			'chat_id'=>$chat_id,
+			'message_id'=>$message_id
+		]);
+		
+		/** @var bool $object */
+		$object=$response->result;
+		return $object;
+	}
 
     //</editor-fold>
 
@@ -658,7 +697,71 @@ class TelegramBot
     }
 
     //</editor-fold>
+	
+	//<editor-fold desc="PAYMENTS">
+	/**
+	 * Your bot can accept payments from Telegram users.
+	 * Please see the introduction to payments for more details
+	 * on the process and how to set up payments for your bot.
+	 * Please note that users will need Telegram v.4.0 or
+	 * higher to use payments (released on May 18, 2017).
+	 */
+	
+	/**
+	 * Use this method to send invoices.
+	 * On success, the sent Message is returned.
+	 * @param array $parameters
+	 * @return Message
+	 */
+	public function sendInvoice($parameters)
+	{
+		$data=$this->endpoint('sendInvoice',$parameters);
+		
+		/** @var Message $object */
+		$object=$this->mapper->map($data->result,new Message());
+		return $object;
+	}
+	
+	/**
+	 * If you sent an invoice requesting a shipping address and the parameter
+	 * is_flexible was specified, the Bot API will send an Update with a
+	 * shipping_query field to the bot.
+	 * Use this method to reply to shipping queries.
+	 * On success, True is returned.
+	 * @param object[] $parameters
+	 * @return bool
+	 */
+	public function answerShippingQuery($parameters)
+	{
+		$response=$this->endpoint("answerShippingQuery", $parameters);
+		
+		/** @var bool $object */
+		$object=$response->result;
+		return $object;
+	}
+	
+	/**
+	 * Once the user has confirmed their payment and shipping details,
+	 * the Bot API sends the final confirmation in the form of an Update
+	 * with the field pre_checkout_query.
+	 * Use this method to respond to such pre-checkout queries.
+	 * On success, True is returned.
+	 * Note: The Bot API must receive an answer within 10 seconds
+	 * after the pre-checkout query was sent.
+	 * @param object[] $parameters
+	 * @return bool
+	 */
+	public function answerPreCheckoutQuery($parameters)
+	{
+		$response=$this->endpoint("answerPreCheckoutQuery", $parameters);
+		
+		/** @var bool $object */
+		$object=$response->result;
+		return $object;
+	}
 
+	//</editor-fold>
+	
     //<editor-fold desc="GAMES">
 
     /**
