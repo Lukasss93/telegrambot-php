@@ -57,15 +57,19 @@ class TelegramBot
     /**
      * Use this method to receive incoming updates using long polling (wiki). An Array of Update objects is returned.
      * Note: This method will not work if an outgoing webhook is set up.
-     * @param array $parameters
+     * @param int $offset Identifier of the first update to be returned. Must be greater by one than the highest among the identifiers of previously received updates. By default, updates starting with the earliest unconfirmed update are returned. An update is considered confirmed as soon as getUpdates is called with an offset higher than its update_id.
+     * @param int $limit Limits the number of updates to be retrieved. Values between 1—100 are accepted. Defaults to 100
+     * @param int $timeout Timeout in seconds for long polling. Defaults to 0, i.e. usual short polling
+     * @param bool $update If true updates the pending message list to the last update received. Default to true.
      * @return Update[]
      */
-    public function getUpdates($parameters)
+    public function getUpdates($offset = 0, $limit = 100, $timeout = 0, $update = true)
     {
+        $parameters = array('offset' => $offset, 'limit' => $limit, 'timeout' => $timeout);
         $response = $this->endpoint("getUpdates", $parameters);
 
         /** @var array $response->result */
-        $this->updatesData=$response===null?null:$this->mapper->mapArray($response->result,array(),'TelegramBot\Types\Update');
+        $this->updatesData=$this->mapper->mapArray($response->result,array(),'TelegramBot\Types\Update');
 
         if(count($this->updatesData) >= 1)
         {
@@ -133,8 +137,8 @@ class TelegramBot
      */
     public function getWebhookInfo()
     {
-        $data=$this->endpoint('getWebhookInfo',array());
-        $object=$data->result===null?null:$this->mapper->map($data->result,new WebhookInfo());
+        $data=$this->endpoint('getWebhookInfo',array(),false);
+        $object=$this->mapper->map($data->result,new WebhookInfo());
 
         /** @var WebhookInfo $object */
         return $object;
@@ -176,7 +180,7 @@ class TelegramBot
      */
     public function getMe()
     {
-        $data=$this->endpoint('getMe',array());
+        $data=$this->endpoint('getMe',array(),false);
         $object=$this->mapper->map($data->result,new User());
 
         /** @var User $object */
@@ -207,7 +211,7 @@ class TelegramBot
         $response=$this->endpoint("forwardMessage", $parameters);
 
         /** @var Message $object */
-        $object=$response->result===null?null:$this->mapper->map($response->result,new Message());
+        $object=$this->mapper->map($response->result,new Message());
         return $object;
     }
 
@@ -221,7 +225,7 @@ class TelegramBot
         $response=$this->endpoint("sendPhoto", $parameters);
 
         /** @var Message $object */
-        $object=$response->result===null?null:$this->mapper->map($response->result,new Message());
+        $object=$this->mapper->map($response->result,new Message());
         return $object;
     }
 
@@ -238,7 +242,7 @@ class TelegramBot
         $response=$this->endpoint("sendAudio", $parameters);
 
         /** @var Message $object */
-        $object=$response->result===null?null:$this->mapper->map($response->result,new Message());
+        $object=$this->mapper->map($response->result,new Message());
         return $object;
     }
 
@@ -254,7 +258,7 @@ class TelegramBot
         $response=$this->endpoint("sendDocument", $parameters);
 
         /** @var Message $object */
-        $object=$response->result===null?null:$this->mapper->map($response->result,new Message());
+        $object=$this->mapper->map($response->result,new Message());
         return $object;
     }
 
@@ -268,7 +272,7 @@ class TelegramBot
         $response=$this->endpoint("sendSticker", $parameters);
 
         /** @var Message $object */
-        $object=$response->result===null?null:$this->mapper->map($response->result,new Message());
+        $object=$this->mapper->map($response->result,new Message());
         return $object;
     }
 
@@ -284,7 +288,7 @@ class TelegramBot
         $response=$this->endpoint("sendVideo", $parameters);
 
         /** @var Message $object */
-        $object=$response->result===null?null:$this->mapper->map($response->result,new Message());
+        $object=$this->mapper->map($response->result,new Message());
         return $object;
     }
 
@@ -301,24 +305,24 @@ class TelegramBot
         $response=$this->endpoint("sendVoice", $parameters);
 
         /** @var Message $object */
-        $object=$response->result===null?null:$this->mapper->map($response->result,new Message());
+        $object=$this->mapper->map($response->result,new Message());
         return $object;
     }
-	
-	/**
-	 * As of v.4.0, Telegram clients support rounded square mp4 videos of up to 1 minute long.
-	 * Use this method to send video messages. On success, the sent Message is returned.
-	 * @param array $parameters
-	 * @return Message
-	 */
-	public function sendVideoNote($parameters)
-	{
-		$response=$this->endpoint("sendVideoNote", $parameters);
-		
-		/** @var Message $object */
-		$object=$response->result===null?null:$this->mapper->map($response->result,new Message());
-		return $object;
-	}
+
+    /**
+     * As of v.4.0, Telegram clients support rounded square mp4 videos of up to 1 minute long.
+     * Use this method to send video messages. On success, the sent Message is returned.
+     * @param array $parameters
+     * @return Message
+     */
+    public function sendVideoNote($parameters)
+    {
+        $response=$this->endpoint("sendVideoNote", $parameters);
+
+        /** @var Message $object */
+        $object=$this->mapper->map($response->result,new Message());
+        return $object;
+    }
 
     /**
      * Use this method to send point on the map. On success, the sent Message is returned.
@@ -330,7 +334,7 @@ class TelegramBot
         $response=$this->endpoint("sendLocation", $parameters);
 
         /** @var Message $object */
-        $object=$response->result===null?null:$this->mapper->map($response->result,new Message());
+        $object=$this->mapper->map($response->result,new Message());
         return $object;
     }
 
@@ -344,7 +348,7 @@ class TelegramBot
         $response=$this->endpoint("sendVenue", $parameters);
 
         /** @var Message $object */
-        $object=$response->result===null?null:$this->mapper->map($response->result,new Message());
+        $object=$this->mapper->map($response->result,new Message());
         return $object;
     }
 
@@ -358,7 +362,7 @@ class TelegramBot
         $response=$this->endpoint("sendContact", $parameters);
 
         /** @var Message $object */
-        $object=$response->result===null?null:$this->mapper->map($response->result,new Message());
+        $object=$this->mapper->map($response->result,new Message());
         return $object;
     }
 
@@ -377,10 +381,7 @@ class TelegramBot
      */
     public function sendChatAction($chat_id, $action)
     {
-        $response=$this->endpoint("sendChatAction", array(
-            'chat_id'=>$chat_id,
-            'action'=>$action
-        ));
+        $response=$this->endpoint("sendChatAction", ['chat_id'=>$chat_id, 'action'=>$action]);
 
         /** @var bool $object */
         $object=$response->result;
@@ -406,7 +407,7 @@ class TelegramBot
         $response=$this->endpoint("getUserProfilePhotos", $parameters);
 
         /** @var UserProfilePhotos $object */
-        $object=$response->result===null?null:$this->mapper->map($response->result,new UserProfilePhotos());
+        $object=$this->mapper->map($response->result,new UserProfilePhotos());
         return $object;
     }
 
@@ -428,7 +429,7 @@ class TelegramBot
         $response=$this->endpoint("getFile", array('file_id' => $file_id));
 
         /** @var File $object */
-        $object=$response->result===null?null:$this->mapper->map($response->result,new File());
+        $object=$this->mapper->map($response->result,new File());
         return $object;
     }
 
@@ -454,27 +455,27 @@ class TelegramBot
         $object=$response->result;
         return $object;
     }
-	
-	/**
-	 * Use this method to unban a previously kicked user in a supergroup.
-	 * The user will not return to the group automatically, but will be able to join via link, etc.
-	 * The bot must be an administrator in the group for this to work.
-	 * Returns True on success.
-	 * @param int|string $chat_id
-	 * @param int $user_id
-	 * @return bool
-	 */
-	public function unbanChatMember($chat_id, $user_id)
-	{
-		$response=$this->endpoint("unbanChatMember", array(
-			'chat_id'=>$chat_id,
-			'user_id'=>$user_id
-		));
-		
-		/** @var bool $object */
-		$object=$response->result;
-		return $object;
-	}
+
+    /**
+     * Use this method to unban a previously kicked user in a supergroup.
+     * The user will not return to the group automatically, but will be able to join via link, etc.
+     * The bot must be an administrator in the group for this to work.
+     * Returns True on success.
+     * @param int|string $chat_id
+     * @param int $user_id
+     * @return bool
+     */
+    public function unbanChatMember($chat_id, $user_id)
+    {
+        $response=$this->endpoint("unbanChatMember", array(
+            'chat_id'=>$chat_id,
+            'user_id'=>$user_id
+        ));
+
+        /** @var bool $object */
+        $object=$response->result;
+        return $object;
+    }
 
     /**
      * Use this method for your bot to leave a group, supergroup or channel. Returns True on success.
@@ -499,10 +500,10 @@ class TelegramBot
      */
     public function getChat($chat_id)
     {
-        $response=$this->endpoint("getChat", array('chat_id'=>$chat_id));
+        $response=$this->endpoint('getChat', array('chat_id'=>$chat_id),false);
 
         /** @var Chat $object */
-        $object=$response->result===null?null:$this->mapper->map($response->result,new Chat());
+        $object=$this->mapper->map($response->result,new Chat());
         return $object;
     }
 
@@ -516,10 +517,10 @@ class TelegramBot
      */
     public function getChatAdministrators($chat_id)
     {
-        $response=$this->endpoint("getChatAdministrators", array('chat_id'=>$chat_id));
+        $response=$this->endpoint('getChatAdministrators', array('chat_id'=>$chat_id),false);
 
         /** @var array $response->result */
-        $object=$response===null?null:$this->mapper->mapArray($response->result,array(),'TelegramBot\Types\ChatMember');
+        $object=$this->mapper->mapArray($response->result,array(),'TelegramBot\Types\ChatMember');
 
         /** @var ChatMember[] $object */
         return $object;
@@ -532,7 +533,7 @@ class TelegramBot
      */
     public function getChatMembersCount($chat_id)
     {
-        $response=$this->endpoint("getChatMembersCount", array('chat_id'=>$chat_id));
+        $response=$this->endpoint('getChatMembersCount', array('chat_id'=>$chat_id),false);
 
         /** @var int $object */
         $object=$response->result;
@@ -548,13 +549,13 @@ class TelegramBot
      */
     public function getChatMember($chat_id, $user_id)
     {
-        $response=$this->endpoint("getChatMember", array(
+        $response=$this->endpoint('getChatMember', array(
             'chat_id'=>$chat_id,
             'user_id'=>$user_id
-        ));
+        ),false);
 
         /** @var ChatMember $object */
-        $object=$response->result===null?null:$this->mapper->map($response->result,new ChatMember());
+        $object=$this->mapper->map($response->result,new ChatMember());
         return $object;
     }
 
@@ -571,9 +572,10 @@ class TelegramBot
     public function answerCallbackQuery($parameters)
     {
         $data=$this->endpoint('answerCallbackQuery',$parameters);
-        $object=$data->result;
 
         /** @var bool $object */
+        $object=$data->result;
+
         return $object;
     }
 
@@ -589,7 +591,7 @@ class TelegramBot
      */
     public function editMessageText($parameters)
     {
-        $response=$this->endpoint("editMessageText", $parameters);
+        $response=$this->endpoint('editMessageText', $parameters);
 
         if(is_bool($response->result))
         {
@@ -600,7 +602,7 @@ class TelegramBot
         else
         {
             /** @var Message $object */
-            $object=$response->result===null?null:$this->mapper->map($response->result,new Message());
+            $object=$this->mapper->map($response->result,new Message());
             return $object;
         }
     }
@@ -613,7 +615,7 @@ class TelegramBot
      */
     public function editMessageCaption($parameters)
     {
-        $response=$this->endpoint("editMessageCaption", $parameters);
+        $response=$this->endpoint('editMessageCaption', $parameters);
 
         if(is_bool($response->result))
         {
@@ -624,7 +626,7 @@ class TelegramBot
         else
         {
             /** @var Message $object */
-            $object=$response->result===null?null:$this->mapper->map($response->result,new Message());
+            $object=$this->mapper->map($response->result,new Message());
             return $object;
         }
     }
@@ -637,7 +639,7 @@ class TelegramBot
      */
     public function editMessageReplyMarkup($parameters)
     {
-        $response=$this->endpoint("editMessageReplyMarkup", $parameters);
+        $response=$this->endpoint('editMessageReplyMarkup', $parameters);
 
         if(is_bool($response->result))
         {
@@ -648,34 +650,34 @@ class TelegramBot
         else
         {
             /** @var Message $object */
-            $object=$response->result===null?null:$this->mapper->map($response->result,new Message());
+            $object=$this->mapper->map($response->result,new Message());
             return $object;
         }
     }
-	
-	/**
-	 * Use this method to delete a message. A message can only be deleted if it was sent less than 48 hours ago.
-	 * Any such recently sent outgoing message may be deleted. Additionally, if the bot is an administrator in a
-	 * group chat, it can delete any message.
-	 * If the bot is an administrator in a supergroup, it can delete messages from any other user
-	 * and service messages about people joining or leaving the group (other types of service messages may
-	 * only be removed by the group creator).
-	 * In channels, bots can only remove their own messages. Returns True on success.
-	 * @param $chat_id int|string Unique identifier for the target chat or username of the target channel (in the format @channelusername)
-	 * @param $message_id int Identifier of the message to delete
-	 * @return bool
-	 */
-	public function deleteMessage($chat_id,$message_id)
-	{
-		$response=$this->endpoint("deleteMessage", [
-			'chat_id'=>$chat_id,
-			'message_id'=>$message_id
-		]);
-		
-		/** @var bool $object */
-		$object=$response->result;
-		return $object;
-	}
+
+    /**
+     * Use this method to delete a message. A message can only be deleted if it was sent less than 48 hours ago.
+     * Any such recently sent outgoing message may be deleted. Additionally, if the bot is an administrator in a
+     * group chat, it can delete any message.
+     * If the bot is an administrator in a supergroup, it can delete messages from any other user
+     * and service messages about people joining or leaving the group (other types of service messages may
+     * only be removed by the group creator).
+     * In channels, bots can only remove their own messages. Returns True on success.
+     * @param $chat_id int|string Unique identifier for the target chat or username of the target channel (in the format @channelusername)
+     * @param $message_id int Identifier of the message to delete
+     * @return bool
+     */
+    public function deleteMessage($chat_id,$message_id)
+    {
+        $response=$this->endpoint('deleteMessage', [
+            'chat_id'=>$chat_id,
+            'message_id'=>$message_id
+        ]);
+
+        /** @var bool $object */
+        $object=$response->result;
+        return $object;
+    }
 
     //</editor-fold>
 
@@ -689,7 +691,7 @@ class TelegramBot
      */
     public function answerInlineQuery($parameters)
     {
-        $response=$this->endpoint("answerInlineQuery", $parameters);
+        $response=$this->endpoint('answerInlineQuery', $parameters);
 
         /** @var bool $object */
         $object=$response->result;
@@ -697,71 +699,71 @@ class TelegramBot
     }
 
     //</editor-fold>
-	
-	//<editor-fold desc="PAYMENTS">
-	/**
-	 * Your bot can accept payments from Telegram users.
-	 * Please see the introduction to payments for more details
-	 * on the process and how to set up payments for your bot.
-	 * Please note that users will need Telegram v.4.0 or
-	 * higher to use payments (released on May 18, 2017).
-	 */
-	
-	/**
-	 * Use this method to send invoices.
-	 * On success, the sent Message is returned.
-	 * @param array $parameters
-	 * @return Message
-	 */
-	public function sendInvoice($parameters)
-	{
-		$data=$this->endpoint('sendInvoice',$parameters);
-		
-		/** @var Message $object */
-		$object=$this->mapper->map($data->result,new Message());
-		return $object;
-	}
-	
-	/**
-	 * If you sent an invoice requesting a shipping address and the parameter
-	 * is_flexible was specified, the Bot API will send an Update with a
-	 * shipping_query field to the bot.
-	 * Use this method to reply to shipping queries.
-	 * On success, True is returned.
-	 * @param object[] $parameters
-	 * @return bool
-	 */
-	public function answerShippingQuery($parameters)
-	{
-		$response=$this->endpoint("answerShippingQuery", $parameters);
-		
-		/** @var bool $object */
-		$object=$response->result;
-		return $object;
-	}
-	
-	/**
-	 * Once the user has confirmed their payment and shipping details,
-	 * the Bot API sends the final confirmation in the form of an Update
-	 * with the field pre_checkout_query.
-	 * Use this method to respond to such pre-checkout queries.
-	 * On success, True is returned.
-	 * Note: The Bot API must receive an answer within 10 seconds
-	 * after the pre-checkout query was sent.
-	 * @param object[] $parameters
-	 * @return bool
-	 */
-	public function answerPreCheckoutQuery($parameters)
-	{
-		$response=$this->endpoint("answerPreCheckoutQuery", $parameters);
-		
-		/** @var bool $object */
-		$object=$response->result;
-		return $object;
-	}
 
-	//</editor-fold>
-	
+    //<editor-fold desc="PAYMENTS">
+    /**
+     * Your bot can accept payments from Telegram users.
+     * Please see the introduction to payments for more details
+     * on the process and how to set up payments for your bot.
+     * Please note that users will need Telegram v.4.0 or
+     * higher to use payments (released on May 18, 2017).
+     */
+
+    /**
+     * Use this method to send invoices.
+     * On success, the sent Message is returned.
+     * @param array $parameters
+     * @return Message
+     */
+    public function sendInvoice($parameters)
+    {
+        $data=$this->endpoint('sendInvoice',$parameters);
+
+        /** @var Message $object */
+        $object=$this->mapper->map($data->result,new Message());
+        return $object;
+    }
+
+    /**
+     * If you sent an invoice requesting a shipping address and the parameter
+     * is_flexible was specified, the Bot API will send an Update with a
+     * shipping_query field to the bot.
+     * Use this method to reply to shipping queries.
+     * On success, True is returned.
+     * @param object[] $parameters
+     * @return bool
+     */
+    public function answerShippingQuery($parameters)
+    {
+        $response=$this->endpoint('answerShippingQuery', $parameters);
+
+        /** @var bool $object */
+        $object=$response->result;
+        return $object;
+    }
+
+    /**
+     * Once the user has confirmed their payment and shipping details,
+     * the Bot API sends the final confirmation in the form of an Update
+     * with the field pre_checkout_query.
+     * Use this method to respond to such pre-checkout queries.
+     * On success, True is returned.
+     * Note: The Bot API must receive an answer within 10 seconds
+     * after the pre-checkout query was sent.
+     * @param object[] $parameters
+     * @return bool
+     */
+    public function answerPreCheckoutQuery($parameters)
+    {
+        $response=$this->endpoint('answerPreCheckoutQuery', $parameters);
+
+        /** @var bool $object */
+        $object=$response->result;
+        return $object;
+    }
+
+    //</editor-fold>
+
     //<editor-fold desc="GAMES">
 
     /**
@@ -774,7 +776,7 @@ class TelegramBot
         $response=$this->endpoint('sendGame',$parameters);
 
         /** @var Message $object */
-        $object=$response->result===null?null:$this->mapper->map($response->result,new Message());
+        $object=$this->mapper->map($response->result,new Message());
         return $object;
     }
 
@@ -798,7 +800,7 @@ class TelegramBot
         else
         {
             /** @var Message $object */
-            $object=$response->result===null?null:$this->mapper->map($response->result,new Message());
+            $object=$this->mapper->map($response->result,new Message());
             return $object;
         }
     }
@@ -815,10 +817,10 @@ class TelegramBot
      */
     public function getGameHighScores($parameters)
     {
-        $response=$this->endpoint('getGameHighScores',$parameters);
+        $response=$this->endpoint('getGameHighScores',$parameters,false);
 
         /** @var array $response->result */
-        $object=$response===null?null:$this->mapper->mapArray($response->result,array(),'TelegramBot\Types\GameHighScore');
+        $object=$this->mapper->mapArray($response->result,array(),'TelegramBot\Types\GameHighScore');
 
         /** @var GameHighScore[] $object */
         return $object;
@@ -835,9 +837,9 @@ class TelegramBot
      */
     public function downloadFile($telegram_file_path, $local_file_path)
     {
-        $file_url = "https://api.telegram.org/file/bot" . $this->token . "/" . $telegram_file_path;
-        $in = fopen($file_url, "rb");
-        $out = fopen($local_file_path, "wb");
+        $file_url = 'https://api.telegram.org/file/bot' . $this->token . '/' . $telegram_file_path;
+        $in = fopen($file_url, 'rb');
+        $out = fopen($local_file_path, 'wb');
 
         while ($chunk = fread($in, 8192)) {
             fwrite($out, $chunk, 8192);
@@ -888,13 +890,13 @@ class TelegramBot
      * @param string $switch_inline_query
      * @return array
      */
-    public function buildInlineKeyboardButton($text, $url = '', $callback_data = '', $switch_inline_query = '', $switch_inline_query_current_chat = "", $callback_game = "")
+    public function buildInlineKeyboardButton($text, $url = '', $callback_data = '', $switch_inline_query = '', $switch_inline_query_current_chat = '', $callback_game = '')
     {
         $replyMarkup = array(
             'text' => $text
         );
 
-        if($url != "")
+        if($url != '')
         {
             $replyMarkup['url'] = $url;
         }
@@ -906,13 +908,13 @@ class TelegramBot
         {
             $replyMarkup['switch_inline_query'] = $switch_inline_query;
         }
-        else if($switch_inline_query_current_chat != "")
+        else if($switch_inline_query_current_chat != '')
         {
-        	$replyMarkup['switch_inline_query_current_chat'] = $switch_inline_query_current_chat;
+            $replyMarkup['switch_inline_query_current_chat'] = $switch_inline_query_current_chat;
         }
-        else if($callback_game != "")
+        else if($callback_game != '')
         {
-        	$replyMarkup['callback_game'] = $callback_game;
+            $replyMarkup['callback_game'] = $callback_game;
         }
 
         return $replyMarkup;
@@ -965,16 +967,30 @@ class TelegramBot
         $encodedMarkup = json_encode($replyMarkup, true);
         return $encodedMarkup;
     }
-	
-	/**
-	 * A method for responding http to Telegram.
-	 * @return string return the HTTP 200 to Telegram
-	 */
-	public function respondSuccess()
-	{
-		http_response_code(200);
-		return json_encode(array("status" => "success"));
-	}
+
+    /**
+     * A method for responding http to Telegram.
+     * @return string return the HTTP 200 to Telegram
+     */
+    public function respondSuccess()
+    {
+        http_response_code(200);
+        return json_encode(array('status' => 'success'));
+    }
+
+    /**
+     * Get Package version
+     * @return string
+     */
+    public static function getFrameworkVersion()
+    {
+        $reflector = new \ReflectionClass(TelegramBot::class);
+        $vendorPath = preg_replace('/^(.*)\/composer\/ClassLoader\.php$/', '$1', $reflector->getFileName() );
+        $vendorPath = dirname(dirname($vendorPath)).DIRECTORY_SEPARATOR;
+        $content = file_get_contents($vendorPath.'composer.json');
+        $content = json_decode($content,true);
+        return $content['version'];
+    }
 
     //</editor-fold>
 
@@ -984,39 +1000,39 @@ class TelegramBot
      * Endpoint request
      * @param string $api API
      * @param array $content Parameteres to send
-     * @param bool $post Request method
+     * @param bool $isPost Request method
      * @return Response
      * @throws Exception
      */
-    private function endpoint($api, array $content, $post = true)
+    private function endpoint($api, array $content, $isPost = true)
     {
-        $url = 'https://api.telegram.org/bot' . $this->token . '/' . $api;
+        $response=$this->sendRequest('https://api.telegram.org/bot' . $this->token . '/' . $api, $content, $isPost);
+        $result=$response['result'];
+        $body=$response['body'];
+        $info=$response['info'];
+        $error=$response['error'];
 
-        if ($post)
+        if(!$result && $error!=false)
         {
-            $reply = $this->sendRequest($url, $content);
-        }
-        else
-        {
-            $reply = $this->sendRequest($url, array(), false);
-        }
-
-        if($reply===false)
-        {
-            throw new TelegramException('Server offline.');
+            throw new TelegramException("CURL request failed.\n"+$error);
         }
 
-        if(!Tools::isJSON($reply))
+        if(!Tools::isJSON($body))
         {
             throw new TelegramException('The response cannot be parsed to json.');
         }
 
         /** @var Response $data */
-        $data=json_decode($reply);
+        $data=$this->mapper->map(json_decode($body),new Response());
 
         if(!$data->ok)
         {
             throw new TelegramException($data->description,$data->error_code);
+        }
+
+        if(is_null($data) || is_null($data->result))
+        {
+            throw new TelegramException('Response or Response result is null!');
         }
 
         return $data;
@@ -1025,25 +1041,42 @@ class TelegramBot
     /**
      * Send a API request to Telegram
      * @param string $url Endpoint API
-     * @param array $content Parameters to send
-     * @param bool $post Request method. Allowed: GET, POST
+     * @param array $parameters Parameters to send
+     * @param bool $isPost Request method. Allowed: GET, POST
      * @return string
      */
-    private function sendRequest($url, array $content, $post = true)
+    private function sendRequest($url, array $parameters, $isPost)
     {
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $url.Tools::parametersToString($content));
-        curl_setopt($ch, CURLOPT_HEADER, false);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        if ($post)
+        $request = curl_init();
+
+        if(!$isPost)
         {
-            curl_setopt($ch, CURLOPT_POST, 1);
-            curl_setopt($ch, CURLOPT_POSTFIELDS, $content);
+            if ($query = http_build_query($parameters)) {
+                $url .= '?'.$query;
+            }
         }
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        $result = curl_exec($ch);
-        curl_close($ch);
-        return $result;
+        else
+        {
+            curl_setopt($request, CURLOPT_POST, true);
+            curl_setopt($request, CURLOPT_POSTFIELDS, http_build_query($parameters));
+        }
+
+        curl_setopt($request, CURLOPT_URL, $url);
+        curl_setopt($request, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($request, CURLOPT_SSL_VERIFYPEER, true);
+
+        $body = curl_exec($request);
+        $info = curl_getinfo($request);
+        $error = curl_error($request);
+
+        curl_close($request);
+
+        return [
+            'result'=>$body===false?false:true,
+            'body'=>$body,
+            'info'=>$info,
+            'error'=>empty($error)?false:$error
+        ];
     }
 
     /**
@@ -1068,10 +1101,10 @@ class TelegramBot
 /** Helper for Uploading file using CURL */
 if (!function_exists('curl_file_create'))
 {
-	function curl_file_create($filename, $mimetype = '', $postname = '')
-	{
-		return "@$filename;filename="
-			. ($postname ? : basename($filename))
-			. ($mimetype ? ";type=$mimetype" : '');
-	}
+    function curl_file_create($filename, $mimetype = '', $postname = '')
+    {
+        return "@$filename;filename="
+            . ($postname ? : basename($filename))
+            . ($mimetype ? ";type=$mimetype" : '');
+    }
 }
