@@ -163,4 +163,13 @@ class Message
         return null;
     }
 
+    /**
+     * Check if the message is forwarded
+     * @return bool
+     */
+    public function isForwarded()
+    {
+        return $this->forward_from!==null;
+    }
+
 }
