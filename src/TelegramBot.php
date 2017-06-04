@@ -1043,7 +1043,7 @@ class TelegramBot
      * @param string $url Endpoint API
      * @param array $parameters Parameters to send
      * @param bool $isPost Request method. Allowed: GET, POST
-     * @return string
+     * @return array
      */
     private function sendRequest($url, array $parameters, $isPost)
     {
@@ -1058,7 +1058,7 @@ class TelegramBot
         else
         {
             curl_setopt($request, CURLOPT_POST, true);
-            curl_setopt($request, CURLOPT_POSTFIELDS, http_build_query($parameters));
+            curl_setopt($request, CURLOPT_POSTFIELDS, $parameters);
         }
 
         curl_setopt($request, CURLOPT_URL, $url);
