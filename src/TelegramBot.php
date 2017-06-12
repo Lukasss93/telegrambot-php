@@ -68,8 +68,10 @@ class TelegramBot
         $parameters = array('offset' => $offset, 'limit' => $limit, 'timeout' => $timeout);
         $response = $this->endpoint("getUpdates", $parameters);
 
-        /** @var array $response->result */
-        $this->updatesData=$this->mapper->mapArray($response->result,array(),'TelegramBot\Types\Update');
+        /** @var array $updates */
+        $updates=$response->result;
+
+        $this->updatesData=$this->mapper->mapArray($updates,array(),'TelegramBot\Types\Update');
 
         if(count($this->updatesData) >= 1)
         {
@@ -1107,4 +1109,10 @@ if (!function_exists('curl_file_create'))
             . ($postname ? : basename($filename))
             . ($mimetype ? ";type=$mimetype" : '');
     }
+}
+
+/** Helper for Uploading file using CURL with auto mime */
+function curl_file_create_auto_mime($filename, $postname = '')
+{
+    return curl_file_create($filename,'',$postname);
 }

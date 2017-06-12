@@ -91,6 +91,18 @@ $file = $telegram->getFile($file_id);
 $telegram->downloadFile($file->file_path, "./my_downloaded_file_on_local_server.png");
 ```
 
+If you want to use getUpdates instead of the WebHook you need a for cycle.
+```php
+$updates=$telegram->getUpdated();
+for ($i = 0; $i < count($updates); $i++) {
+    //single update
+    $update=$updates[$i];
+    if($update->message->getCommand()=='/start'){
+        //working!
+    }
+}
+```
+
 Message Object Methods
 ------------
 Message Objects provide 2 methods:

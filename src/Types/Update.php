@@ -2,6 +2,8 @@
 
 namespace TelegramBot\Types;
 
+use TelegramBot\TelegramUpdateTypes;
+
 /**
  * This object represents an incoming update.
  * At most one of the optional parameters can be present in any given update.
@@ -42,4 +44,94 @@ class Update
     
     /** @var PreCheckoutQuery Optional. New incoming pre-checkout query. Contains full information about checkout */
     public $pre_checkout_query;
+
+    /**
+     * Return the current update type
+     * @return false|string
+     */
+    public function getUpdateType()
+    {
+        if(!is_null($this->callback_query))
+        {
+            return TelegramUpdateTypes::CALLBACK_QUERY;
+        }
+        if(!is_null($this->edited_message))
+        {
+            return TelegramUpdateTypes::EDITED_MESSAGE;
+        }
+        if(!is_null($this->message->reply_to_message))
+        {
+            return TelegramUpdateTypes::REPLY;
+        }
+        if(!is_null($this->message->forward_from))
+        {
+            return TelegramUpdateTypes::FORWARD_USER;
+        }
+        if(!is_null($this->message->forward_from_chat))
+        {
+            return TelegramUpdateTypes::FORWARD_CHAT;
+        }
+        if(!is_null($this->message->text))
+        {
+            return TelegramUpdateTypes::MESSAGE;
+        }
+        if(!is_null($this->message->game))
+        {
+            return TelegramUpdateTypes::GAME;
+        }
+        if(!is_null($this->message->sticker))
+        {
+            return TelegramUpdateTypes::STICKER;
+        }
+        if(!is_null($this->message->photo))
+        {
+            return TelegramUpdateTypes::PHOTO;
+        }
+        if(!is_null($this->message->video))
+        {
+            return TelegramUpdateTypes::VIDEO;
+        }
+        if(!is_null($this->message->audio))
+        {
+            return TelegramUpdateTypes::AUDIO;
+        }
+        if(!is_null($this->message->voice))
+        {
+            return TelegramUpdateTypes::VOICE;
+        }
+        if(!is_null($this->message->contact))
+        {
+            return TelegramUpdateTypes::CONTACT;
+        }
+        if(!is_null($this->message->document))
+        {
+            return TelegramUpdateTypes::DOCUMENT;
+        }
+        if(!is_null($this->message->location))
+        {
+            return TelegramUpdateTypes::LOCATION;
+        }
+        if(!is_null($this->message->venue))
+        {
+            return TelegramUpdateTypes::VENUE;
+        }
+        if(!is_null($this->message->video_note))
+        {
+            return TelegramUpdateTypes::VIDEO_NOTE;
+        }
+        if(!is_null($this->message->pinned_message))
+        {
+            return TelegramUpdateTypes::PINNED_MESSAGE;
+        }
+        if(!is_null($this->message->invoice))
+        {
+            return TelegramUpdateTypes::INVOICE;
+        }
+        if(!is_null($this->message->successful_payment))
+        {
+            return TelegramUpdateTypes::SUCCESSFUL_PAYMENT;
+        }
+
+        return false;
+    }
 }

@@ -123,7 +123,7 @@ class Message
     /**
      * Returns only the command string without @BotUsername
      * Example:
-     * IN: /hello@MyDearBot
+     * IN: /hello or /hello@MyDearBot
      * OUT: /hello
      * @return string
      */
@@ -169,7 +169,7 @@ class Message
      */
     public function isForwarded()
     {
-        return $this->forward_from!==null;
+        return !is_null($this->forward_from) || !is_null($this->forward_from_chat);
     }
 
 }
