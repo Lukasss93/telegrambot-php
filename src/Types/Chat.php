@@ -25,4 +25,13 @@ class Chat
 
     /** @var bool Optional. True if a group has ‘All Members Are Admins’ enabled */
     public $all_members_are_administrators;
+
+    /** @var ChatPhoto Optional. Chat photo. Returned only in getChat. */
+    public $photo;
+
+    /** @var string Optional. Description, for supergroups and channel chats. Returned only in getChat. */
+    public $description;
+
+    /** @var string Optional. Chat invite link, for supergroups and channel chats. Returned only in getChat. */
+    public $invite_link;
 }
