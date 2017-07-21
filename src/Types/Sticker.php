@@ -20,6 +20,12 @@ class Sticker
     /** @var string Optional. Emoji associated with the sticker */
     public $emoji;
 
+    /** @var string Optional. Name of the sticker set to which the sticker belongs */
+    public $set_name;
+
+    /** @var MaskPosition Optional. For mask stickers, the position where the mask should be placed */
+    public $mask_position;
+
     /** @var int Optional. File size */
     public $file_size;
 }
