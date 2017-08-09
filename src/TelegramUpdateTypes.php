@@ -6,6 +6,7 @@ namespace TelegramBot;
 class TelegramUpdateTypes
 {
     const CALLBACK_QUERY = 'callback_query';
+    const INLINE_QUERY = 'inline_query';
     const EDITED_MESSAGE = 'edited_message';
     const REPLY = 'reply';
     const FORWARD_USER = 'forward_user';

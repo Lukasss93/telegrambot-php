@@ -51,83 +51,87 @@ class Update
      */
     public function getUpdateType()
     {
-        if(!is_null($this->callback_query))
+        if($this->callback_query!==null)
         {
             return TelegramUpdateTypes::CALLBACK_QUERY;
         }
-        if(!is_null($this->edited_message))
+        else if($this->inline_query!==null)
+        {
+            return TelegramUpdateTypes::INLINE_QUERY;
+        }
+        else if($this->edited_message!==null)
         {
             return TelegramUpdateTypes::EDITED_MESSAGE;
         }
-        if(!is_null($this->message->reply_to_message))
+        else if($this->message->reply_to_message!==null)
         {
             return TelegramUpdateTypes::REPLY;
         }
-        if(!is_null($this->message->forward_from))
+        else if($this->message->forward_from!==null)
         {
             return TelegramUpdateTypes::FORWARD_USER;
         }
-        if(!is_null($this->message->forward_from_chat))
+        else if($this->message->forward_from_chat!==null)
         {
             return TelegramUpdateTypes::FORWARD_CHAT;
         }
-        if(!is_null($this->message->text))
+        else if($this->message->text!==null)
         {
             return TelegramUpdateTypes::MESSAGE;
         }
-        if(!is_null($this->message->game))
+        else if($this->message->game!==null)
         {
             return TelegramUpdateTypes::GAME;
         }
-        if(!is_null($this->message->sticker))
+        else if($this->message->sticker!==null)
         {
             return TelegramUpdateTypes::STICKER;
         }
-        if(!is_null($this->message->photo))
+        else if($this->message->photo!==null)
         {
             return TelegramUpdateTypes::PHOTO;
         }
-        if(!is_null($this->message->video))
+        else if($this->message->video!==null)
         {
             return TelegramUpdateTypes::VIDEO;
         }
-        if(!is_null($this->message->audio))
+        else if($this->message->audio!==null)
         {
             return TelegramUpdateTypes::AUDIO;
         }
-        if(!is_null($this->message->voice))
+        else if($this->message->voice!==null)
         {
             return TelegramUpdateTypes::VOICE;
         }
-        if(!is_null($this->message->contact))
+        else if($this->message->contact!==null)
         {
             return TelegramUpdateTypes::CONTACT;
         }
-        if(!is_null($this->message->document))
+        else if($this->message->document!==null)
         {
             return TelegramUpdateTypes::DOCUMENT;
         }
-        if(!is_null($this->message->location))
+        else if($this->message->location!==null)
         {
             return TelegramUpdateTypes::LOCATION;
         }
-        if(!is_null($this->message->venue))
+        else if($this->message->venue!==null)
         {
             return TelegramUpdateTypes::VENUE;
         }
-        if(!is_null($this->message->video_note))
+        else if($this->message->video_note!==null)
         {
             return TelegramUpdateTypes::VIDEO_NOTE;
         }
-        if(!is_null($this->message->pinned_message))
+        else if($this->message->pinned_message!==null)
         {
             return TelegramUpdateTypes::PINNED_MESSAGE;
         }
-        if(!is_null($this->message->invoice))
+        else if($this->message->invoice!==null)
         {
             return TelegramUpdateTypes::INVOICE;
         }
-        if(!is_null($this->message->successful_payment))
+        else if($this->message->successful_payment!==null)
         {
             return TelegramUpdateTypes::SUCCESSFUL_PAYMENT;
         }
