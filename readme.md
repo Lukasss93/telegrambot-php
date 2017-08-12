@@ -187,3 +187,7 @@ To-Do list
 * Optimize keyboards
 * Commands listener with callback
 * Config parameters in class properties
+
+Changelog
+------------
+All notable changes to this project will be documented [here](https://github.com/Lukasss93/telegrambot-php/blob/master/CHANGELOG.md).
