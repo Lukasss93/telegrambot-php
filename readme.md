@@ -105,7 +105,7 @@ for ($i = 0; $i < count($updates); $i++) {
 
 Message Object Methods
 ------------
-Message Objects provide 2 methods:
+Message object mainly provide 2 methods:
 * getCommand()
 
     ```php

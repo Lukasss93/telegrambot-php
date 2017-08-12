@@ -1280,7 +1280,7 @@ class TelegramBot
      * @param array $content Parameteres to send
      * @param bool $isPost Request method
      * @return Response
-     * @throws Exception
+     * @throws TelegramException
      */
     private function endpoint($api, array $content, $isPost = true)
     {
@@ -1291,7 +1291,7 @@ class TelegramBot
         $error = $response['error'];
 
         if (!$result && $error != false) {
-            throw new TelegramException("CURL request failed.\n" + $error);
+            throw new TelegramException("CURL request failed.\n" . $error);
         }
 
         if (!is_json($body)) {
