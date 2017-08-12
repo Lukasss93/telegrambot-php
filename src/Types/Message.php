@@ -2,6 +2,8 @@
 
 namespace TelegramBot\Types;
 
+use TelegramBot\Constants\MessageTypes;
+
 /** This object represents a message. */
 class Message
 {
@@ -171,5 +173,119 @@ class Message
     {
         return !is_null($this->forward_from) || !is_null($this->forward_from_chat);
     }
+
+	/**
+	 * Return the current message type
+	 * @return false|string
+	 */
+	public function getType()
+	{
+		if($this->text!==null)
+		{
+			return MessageTypes::TEXT;
+		}
+		else if($this->audio!==null)
+		{
+			return MessageTypes::AUDIO;
+		}
+		else if($this->document!==null)
+		{
+			return MessageTypes::DOCUMENT;
+		}
+		else if($this->game!==null)
+		{
+			return MessageTypes::GAME;
+		}
+		else if($this->photo!==null)
+		{
+			return MessageTypes::PHOTO;
+		}
+		else if($this->sticker!==null)
+		{
+			return MessageTypes::STICKER;
+		}
+		else if($this->video!==null)
+		{
+			return MessageTypes::VIDEO;
+		}
+		else if($this->voice!==null)
+		{
+			return MessageTypes::VOICE;
+		}
+		else if($this->video_note!==null)
+		{
+			return MessageTypes::VIDEO_NOTE;
+		}
+		else if($this->new_chat_members!==null)
+		{
+			return MessageTypes::NEW_CHAT_MEMBERS;
+		}
+		else if($this->contact!==null)
+		{
+			return MessageTypes::CONTACT;
+		}
+		else if($this->location!==null)
+		{
+			return MessageTypes::LOCATION;
+		}
+		else if($this->venue!==null)
+		{
+			return MessageTypes::VENUE;
+		}
+		else if($this->new_chat_member!==null)
+		{
+			return MessageTypes::NEW_CHAT_MEMBER;
+		}
+		else if($this->left_chat_member!==null)
+		{
+			return MessageTypes::LEFT_CHAT_MEMBER;
+		}
+		else if($this->new_chat_title!==null)
+		{
+			return MessageTypes::NEW_CHAT_TITLE;
+		}
+		else if($this->new_chat_photo!==null)
+		{
+			return MessageTypes::NEW_CHAT_PHOTO;
+		}
+		else if($this->delete_chat_photo!==null)
+		{
+			return MessageTypes::DELETE_CHAT_PHOTO;
+		}
+		else if($this->group_chat_created!==null)
+		{
+			return MessageTypes::GROUP_CHAT_CREATED;
+		}
+		else if($this->supergroup_chat_created!==null)
+		{
+			return MessageTypes::SUPERGROUP_CHAT_CREATED;
+		}
+		else if($this->channel_chat_created!==null)
+		{
+			return MessageTypes::CHANNEL_CHAT_CREATED;
+		}
+		else if($this->migrate_to_chat_id!==null)
+		{
+			return MessageTypes::MIGRATE_TO_CHAT_ID;
+		}
+		else if($this->migrate_from_chat_id!==null)
+		{
+			return MessageTypes::MIGRATE_FROM_CHAT_ID;
+		}
+		else if($this->pinned_message!==null)
+		{
+			return MessageTypes::PINNED_MESSAGE;
+		}
+		else if($this->invoice!==null)
+		{
+			return MessageTypes::INVOICE;
+		}
+		else if($this->successful_payment!==null)
+		{
+			return MessageTypes::SUCCESSFUL_PAYMENT;
+		}
+
+		return false;
+	}
 
 }

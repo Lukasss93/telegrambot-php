@@ -3,7 +3,7 @@
     "description": "Framework for Telegram Bot API",
     "license": "MIT",
     "type": "project",
-    "version": "1.4.1",
+    "version": "1.4.2",
     "authors": [
         {
             "name": "Luca Patera",
@@ -19,7 +19,8 @@
     "autoload": {
         "psr-4": {
             "TelegramBot\\": "src/",
-            "TelegramBot\\Types\\": "src/Types/"
+            "TelegramBot\\Types\\": "src/Types/",
+            "TelegramBot\\Constants\\": "src/Constants/"
         }
     }
 }

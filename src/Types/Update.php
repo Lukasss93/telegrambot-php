@@ -2,7 +2,7 @@
 
 namespace TelegramBot\Types;
 
-use TelegramBot\TelegramUpdateTypes;
+use TelegramBot\Constants\UpdateTypes;
 
 /**
  * This object represents an incoming update.
@@ -49,91 +49,43 @@ class Update
      * Return the current update type
      * @return false|string
      */
-    public function getUpdateType()
+    public function getType()
     {
-        if($this->callback_query!==null)
+        if($this->message!==null)
         {
-            return TelegramUpdateTypes::CALLBACK_QUERY;
-        }
-        else if($this->inline_query!==null)
-        {
-            return TelegramUpdateTypes::INLINE_QUERY;
+            return UpdateTypes::MESSAGE;
         }
         else if($this->edited_message!==null)
         {
-            return TelegramUpdateTypes::EDITED_MESSAGE;
+            return UpdateTypes::EDITED_MESSAGE;
         }
-        else if($this->message->reply_to_message!==null)
+        else if($this->channel_post!==null)
         {
-            return TelegramUpdateTypes::REPLY;
+            return UpdateTypes::CHANNEL_POST;
         }
-        else if($this->message->forward_from!==null)
+        else if($this->edited_channel_post!==null)
         {
-            return TelegramUpdateTypes::FORWARD_USER;
+            return UpdateTypes::EDITED_CHANNEL_POST;
         }
-        else if($this->message->forward_from_chat!==null)
+        else if($this->inline_query!==null)
         {
-            return TelegramUpdateTypes::FORWARD_CHAT;
+            return UpdateTypes::INLINE_QUERY;
         }
-        else if($this->message->text!==null)
+        else if($this->chosen_inline_result!==null)
         {
-            return TelegramUpdateTypes::MESSAGE;
+            return UpdateTypes::CHOSEN_INLINE_RESULT;
         }
-        else if($this->message->game!==null)
+        else if($this->callback_query!==null)
         {
-            return TelegramUpdateTypes::GAME;
+            return UpdateTypes::CALLBACK_QUERY;
         }
-        else if($this->message->sticker!==null)
+        else if($this->shipping_query!==null)
         {
-            return TelegramUpdateTypes::STICKER;
+            return UpdateTypes::SHIPPING_QUERY;
         }
-        else if($this->message->photo!==null)
+        else if($this->pre_checkout_query!==null)
         {
-            return TelegramUpdateTypes::PHOTO;
-        }
-        else if($this->message->video!==null)
-        {
-            return TelegramUpdateTypes::VIDEO;
-        }
-        else if($this->message->audio!==null)
-        {
-            return TelegramUpdateTypes::AUDIO;
-        }
-        else if($this->message->voice!==null)
-        {
-            return TelegramUpdateTypes::VOICE;
-        }
-        else if($this->message->contact!==null)
-        {
-            return TelegramUpdateTypes::CONTACT;
-        }
-        else if($this->message->document!==null)
-        {
-            return TelegramUpdateTypes::DOCUMENT;
-        }
-        else if($this->message->location!==null)
-        {
-            return TelegramUpdateTypes::LOCATION;
-        }
-        else if($this->message->venue!==null)
-        {
-            return TelegramUpdateTypes::VENUE;
-        }
-        else if($this->message->video_note!==null)
-        {
-            return TelegramUpdateTypes::VIDEO_NOTE;
-        }
-        else if($this->message->pinned_message!==null)
-        {
-            return TelegramUpdateTypes::PINNED_MESSAGE;
-        }
-        else if($this->message->invoice!==null)
-        {
-            return TelegramUpdateTypes::INVOICE;
-        }
-        else if($this->message->successful_payment!==null)
-        {
-            return TelegramUpdateTypes::SUCCESSFUL_PAYMENT;
+            return UpdateTypes::PRE_CHECKOUT_QUERY;
         }
 
         return false;
