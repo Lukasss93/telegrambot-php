@@ -2,7 +2,6 @@
 
 namespace TelegramBot;
 
-use AuraX\Tools;
 use Exception;
 use JsonMapper;
 use TelegramBot\Types\Chat;
@@ -1295,7 +1294,7 @@ class TelegramBot
             throw new TelegramException("CURL request failed.\n" + $error);
         }
 
-        if (!Tools::isJSON($body)) {
+        if (!is_json($body)) {
             throw new TelegramException('The response cannot be parsed to json.');
         }
 
@@ -1367,18 +1366,4 @@ class TelegramBot
     }
 
     //endregion
-}
-
-/** Helper for Uploading file using CURL */
-if (!function_exists('curl_file_create')) {
-    function curl_file_create($filename, $mimetype = '', $postname = '')
-    {
-        return "@$filename;filename=" . ($postname ?: basename($filename)) . ($mimetype ? ";type=$mimetype" : '');
-    }
-}
-
-/** Helper for Uploading file using CURL with auto mime */
-function curl_file_create_auto_mime($filename, $postname = '')
-{
-    return curl_file_create($filename, '', $postname);
 }
