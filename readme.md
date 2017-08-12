@@ -173,3 +173,17 @@ Contact me
 ------------
 You can contact me [via Telegram](https://telegram.me/Lukasss93) but if you have an issue 
 please [open](https://github.com/Lukasss93/telegrambot-php/issues) one.
+
+To-Do list
+------------
+![in progress](https://img.shields.io/badge/Status-In%20progress-green.svg)
+* Optional predictive parameters in methods
+* Auto split very long messages
+* Raw method to call any new apis if the framework doesn't update immediately.
+
+![not started](https://img.shields.io/badge/Status-Not%20started-red.svg)
+
+* Chat conversations
+* Optimize keyboards
+* Commands listener with callback
+* Config parameters in class properties
