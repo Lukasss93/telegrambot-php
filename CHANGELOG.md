@@ -1,7 +1,7 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
-## [Unreleased]
+## [1.4.4]
 ### Added
 - Added license file
 - Added todo list to readme
@@ -10,6 +10,7 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 - Fixed concatenation error 
 - Fixed PhpDoc error
+- Fixed TelegramHelper not available globally
 
 ## [1.4.3]
 ### Added
