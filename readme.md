@@ -189,7 +189,7 @@ Changelog
 ------------
 All notable changes to this project will be documented [here](https://github.com/Lukasss93/telegrambot-php/blob/master/CHANGELOG.md).
 
-####Recent changes
+### Recent changes
 ## [1.5.0]
 ### Added
 - Added new `endpoint` method to call api methods manually
