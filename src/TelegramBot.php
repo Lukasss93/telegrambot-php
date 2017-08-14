@@ -23,11 +23,18 @@ use TelegramBot\Types\WebhookInfo;
  */
 class TelegramBot
 {
+	#region CONFIG
+
+	/** @var string Bot token */
+	private $token;
+
+	/** @var bool Automatic split message*/
+	public $splitLongMessage=false;
+
+	#endregion
+
     /** @var JsonMapper */
     private $mapper;
-
-    /** @var string Bot token */
-    private $token;
 
     /** @var Update Webhook update */
     public $webhookData;
@@ -191,16 +198,45 @@ class TelegramBot
 
     /**
      * Use this method to send text messages. On success, the sent Message is returned.
+     * If splitLongMessage property is true, Messages[] is returned.
      * @param array $parameters
-     * @return Message
+     * @return Message|Message[]
+     * @throws TelegramException text parameter not set.
      */
     public function sendMessage($parameters)
     {
-        $data = $this->endpoint('sendMessage', $parameters);
+    	if($this->splitLongMessage)
+	    {
+	    	if(!isset($parameters['text']))
+		    {
+		    	throw new TelegramException('text parameter not set.');
+		    }
+		    else
+		    {
+		    	/** @var Message[] $messages */
+		    	$messages=[];
+			    $amessages = str_split($parameters['text'], 4096);
 
-        /** @var Message $object */
-        $object = $this->mapper->map($data->result, new Message());
-        return $object;
+			    foreach($amessages as $amessage)
+			    {
+			    	$parameters['text']=$amessage;
+				    $data = $this->endpoint('sendMessage', $parameters);
+
+				    /** @var Message $object */
+				    $object = $this->mapper->map($data->result, new Message());
+				    $messages[]=$object;
+			    }
+			    return $messages;
+		    }
+	    }
+	    else
+	    {
+		    $data = $this->endpoint('sendMessage', $parameters);
+
+		    /** @var Message $object */
+		    $object = $this->mapper->map($data->result, new Message());
+		    return $object;
+	    }
     }
 
     /**
@@ -1282,7 +1318,7 @@ class TelegramBot
      * @return Response
      * @throws TelegramException
      */
-    private function endpoint($api, array $content, $isPost = true)
+	public function endpoint($api, $content, $isPost = true)
     {
         $response = $this->sendRequest('https://api.telegram.org/bot' . $this->token . '/' . $api, $content, $isPost);
         $result = $response['result'];
@@ -1319,7 +1355,7 @@ class TelegramBot
      * @param bool $isPost Request method. Allowed: GET, POST
      * @return array
      */
-    private function sendRequest($url, array $parameters, $isPost)
+    private function sendRequest($url, $parameters, $isPost)
     {
         $request = curl_init();
 

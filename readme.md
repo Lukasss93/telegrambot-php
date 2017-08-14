@@ -178,16 +178,29 @@ To-Do list
 ------------
 ![in progress](https://img.shields.io/badge/Status-In%20progress-green.svg)
 * Optional predictive parameters in methods
-* Auto split very long messages
-* Raw method to call any new apis if the framework doesn't update immediately.
+* Optimize keyboards
 
 ![not started](https://img.shields.io/badge/Status-Not%20started-red.svg)
 
 * Chat conversations
-* Optimize keyboards
 * Commands listener with callback
-* Config parameters in class properties
 
 Changelog
 ------------
 All notable changes to this project will be documented [here](https://github.com/Lukasss93/telegrambot-php/blob/master/CHANGELOG.md).
+
+####Recent changes
+## [1.5.0]
+### Added
+- Added new `endpoint` method to call api methods manually
+- Added 2 classes in constants namespace:
+    - *ChatActions* to use (if you want) in `action` parameter (sendChatAction method)
+    - *ParseModes* to use (if you want) in `parse_mode` parameter
+- Auto split very long text in `sendMessage` method (4096 characters per message)
+    - Enable it after class instantiation:
+      ```php
+      $bot = new TelegramBot($token);
+      $bot->splitLongMessage=true;
+      ```
+    - Default: `false`
+    - Return `Message[]`
