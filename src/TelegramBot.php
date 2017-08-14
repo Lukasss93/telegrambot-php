@@ -1308,19 +1308,19 @@ class TelegramBot
 
     //endregion
 
-    //region PRIVATE METHODS
+    //region OTHERS METHODS
 
     /**
      * Endpoint request
-     * @param string $api API
-     * @param array $content Parameteres to send
-     * @param bool $isPost Request method
+     * @param string $api        API
+     * @param array  $parameters Parameters to send
+     * @param bool   $isPost     Request method
      * @return Response
      * @throws TelegramException
      */
-	public function endpoint($api, $content, $isPost = true)
+	public function endpoint($api, $parameters, $isPost = true)
     {
-        $response = $this->sendRequest('https://api.telegram.org/bot' . $this->token . '/' . $api, $content, $isPost);
+        $response = $this->sendRequest('https://api.telegram.org/bot' . $this->token . '/' . $api, $parameters, $isPost);
         $result = $response['result'];
         $body = $response['body'];
         $info = $response['info'];

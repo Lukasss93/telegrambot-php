@@ -192,7 +192,10 @@ All notable changes to this project will be documented [here](https://github.com
 ### Recent changes
 ## [1.5.0]
 ### Added
-- Added new `endpoint` method to call api methods manually
+- Added new `endpoint` method to call api methods manually. Parameters:
+    - $api `string` - api endpoint name
+    - $parameters `array` - parameters as key/value array
+    - $isPost=true `bool` - calling method  
 - Added 2 classes in constants namespace:
     - *ChatActions* to use (if you want) in `action` parameter (sendChatAction method)
     - *ParseModes* to use (if you want) in `parse_mode` parameter
@@ -203,4 +206,4 @@ All notable changes to this project will be documented [here](https://github.com
       $bot->splitLongMessage=true;
       ```
     - Default: `false`
-    - Return `Message[]`
+    - The *sendMessage* method will return `Message[]` instead of `Message`
