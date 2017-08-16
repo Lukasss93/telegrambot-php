@@ -31,9 +31,9 @@ Installation
     Copy **src** folder in your project, rename it and include all classes in your new bot script.
     
     ```php
-    //add a script to include the entire folder first!
+    //include the entire folder first!  
     use TelegramBot\TelegramBot;
-    $telegram = new TelegramBot($token);
+    $bot = new TelegramBot($token);
     ```
     
 * #### Composer
@@ -58,10 +58,10 @@ Examples
 ```php
 use TelegramBot\TelegramBot;
 
-$telegram = new TelegramBot($token);
-$input=$telegram->getWebhookUpdate();
-$this->telegram->sendMessage([
-    'chat_id' => $input->message->chat->id,
+$bot = new TelegramBot($token);
+$update=$bot->getWebhookUpdate();
+$bot->sendMessage([
+    'chat_id' => $update->message->chat->id,
     'text' => 'Hello world!'
 ]);
 ```
@@ -70,16 +70,16 @@ If you want to get some specific parameter from the Telegram webhook, simply cal
 ```php
 use TelegramBot\TelegramBot;
 
-$telegram = new TelegramBot($token);
-$input=$telegram->getWebhookUpdate();
-$text=$input->message->text
+$bot = new TelegramBot($token);
+$update=$bot->getWebhookUpdate();
+$text=$update->message->text;
 ```
 
 To upload a Photo or some other files, you need to load it with CurlFile:
 ```php
 // Load a local file to upload. If is already on Telegram's Servers just pass the resource id
 $img = curl_file_create('test.png','image/png');
-$telegram->sendPhoto([
+$bot->sendPhoto([
     'chat_id' => $chat_id, 
     'photo' => $img
 ]);
@@ -87,13 +87,13 @@ $telegram->sendPhoto([
 
 To download a file on the Telegram's servers
 ```php
-$file = $telegram->getFile($file_id);
-$telegram->downloadFile($file->file_path, "./my_downloaded_file_on_local_server.png");
+$file = $bot->getFile($file_id);
+$bot->downloadFile($file->file_path, "./my_downloaded_file_on_local_server.png");
 ```
 
 If you want to use getUpdates instead of the WebHook you need a for cycle.
 ```php
-$updates=$telegram->getUpdated();
+$updates=$bot->getUpdated();
 for ($i = 0; $i < count($updates); $i++) {
     //single update
     $update=$updates[$i];
@@ -109,18 +109,18 @@ Message object mainly provide 2 methods:
 * getCommand()
 
     ```php
-    //$input->message->text => '/test@ExampleBot my args'
-    $command=$input->message->getCommand();
+    //$update->message->text => '/test@ExampleBot my args'
+    $command=$update->message->getCommand();
     //$command => '/text'
     ```
 * getArgs(bool $asString=false)
 
     ```php
-    //$input->message->text => '/test@ExampleBot my args'
-    $args_array=$input->message->getArgs();
+    //$update->message->text => '/test@ExampleBot my args'
+    $args_array=$update->message->getArgs();
     //$args_array[0] => 'my'
     //$args_array[1] => 'args'
-    $args_string=$input->message->getArgs(true);
+    $args_string=$update->message->getArgs(true);
     //$args_string => 'my args'
     ```
 
