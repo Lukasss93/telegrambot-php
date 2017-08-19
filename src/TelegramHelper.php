@@ -15,7 +15,7 @@ if (!function_exists('curl_file_create')) {
  */
 function curl_file_create_auto_mime($path, $postname = '')
 {
-	return curl_file_create($path, '', $postname);
+	return curl_file_create($path, mime_content_type($path), $postname);
 }
 
 /** Check if a string is a json
