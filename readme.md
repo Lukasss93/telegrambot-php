@@ -249,5 +249,6 @@ Changelog
 All notable changes to this project will be documented [here](https://github.com/Lukasss93/telegrambot-php/blob/master/CHANGELOG.md).
 
 ### Recent changes
-## [1.5.1]
-- Fixed curl_file_create_auto_mime function
+## [1.5.2]
+### Changed
+- Renamed curl_file_create_auto_mime function in curl_file_create_automime

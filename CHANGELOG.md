@@ -1,12 +1,15 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [1.5.2]
+### Changed
+- Renamed curl_file_create_auto_mime function in curl_file_create_automime
 
 ## [1.5.1]
+### Fixed
 - Fixed curl_file_create_auto_mime function
 
 ## [1.5.0]
-### Fixed
 ### Added
 - Added new `endpoint` method to call api methods manually. Parameters:
     - $api `string` - api endpoint name
