@@ -34,4 +34,7 @@ class Chat
 
     /** @var string Optional. Chat invite link, for supergroups and channel chats. Returned only in getChat. */
     public $invite_link;
+
+    /** @var Message Optional. Pinned message, for supergroups. Returned only in getChat. */
+    public $pinned_message;
 }

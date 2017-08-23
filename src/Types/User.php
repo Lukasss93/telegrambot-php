@@ -8,6 +8,9 @@ class User
     /** @var int Unique identifier for this user or bot */
     public $id;
 
+    /** @var bool True, if this user is a bot */
+    public $is_bot;
+
     /** @var string User‘s or bot’s first name */
     public $first_name;
 

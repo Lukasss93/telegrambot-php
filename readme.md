@@ -1,6 +1,6 @@
 # TelegramBot-PHP
 
-[![API](https://img.shields.io/badge/Telegram%20Bot%20API-July%2021%2C%202017-blue.svg)](https://core.telegram.org/bots/api)
+[![API](https://img.shields.io/badge/Telegram%20Bot%20API-August%2023%2C%202017-blue.svg)](https://core.telegram.org/bots/api)
 ![PHP](https://img.shields.io/badge/php-%3E%3D5.6-8892bf.svg)
 ![CURL](https://img.shields.io/badge/cURL-required-green.svg)
 
@@ -13,7 +13,7 @@
 Requirements
 ---------
 
-* PHP 5.6+
+* PHP >= 5.6
 * Curl for PHP must be enabled.
 * Telegram API Key, you can get one simply with [@BotFather](https://core.telegram.org/bots#botfather) with simple commands right after creating your bot.
 
@@ -249,6 +249,6 @@ Changelog
 All notable changes to this project will be documented [here](https://github.com/Lukasss93/telegrambot-php/blob/master/CHANGELOG.md).
 
 ### Recent changes
-## [1.5.2]
+## [1.6.0]
 ### Changed
-- Renamed curl_file_create_auto_mime function in curl_file_create_automime
+- Updated to Telegram Bot API 3.3

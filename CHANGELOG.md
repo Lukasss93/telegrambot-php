@@ -1,6 +1,10 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [1.6.0]
+### Changed
+- Updated to Telegram Bot API 3.3
+
 ## [1.5.2]
 ### Changed
 - Renamed curl_file_create_auto_mime function in curl_file_create_automime

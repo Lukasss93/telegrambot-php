@@ -28,6 +28,9 @@ class Message
     /** @var int Optional. For forwarded channel posts, identifier of the original message in the channel */
     public $forward_from_message_id;
 
+    /** @var string Optional. Signature of the post author for messages forwarded from channels */
+    public $forward_signature;
+
     /** @var int Optional. For forwarded messages, date the original message was sent in Unix time */
     public $forward_date;
 
@@ -36,6 +39,9 @@ class Message
 
     /** @var int Optional. Date the message was last edited in Unix time */
     public $edit_date;
+
+    /** @var string Optional. Signature of the post author for messages in channels */
+    public $author_signature;
 
     /** @var string Optional. For text messages, the actual UTF-8 text of the message, 0-4096 characters */
     public $text;
