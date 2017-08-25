@@ -171,6 +171,21 @@ class Message
         return null;
     }
 
+	/**
+	 * Returns the args as string
+	 * @return string
+	 */
+    public function getArgsAsString()
+    {
+	    if($this->text!==null)
+	    {
+		    $commandArray=explode(' ', $this->text);
+		    array_shift($commandArray);
+		    return implode(' ',$commandArray);
+	    }
+	    return null;
+    }
+
     /**
      * Check if the message is forwarded
      * @return bool
