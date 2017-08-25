@@ -149,23 +149,23 @@ class Message
 
     /**
      * Returns the args as array or as string
-     * @param bool $asString
-     * @return array|string
+     * @param int $index
+     * @return string|null
      */
-    public function getArgs($asString=false)
+    public function getArgs($index)
     {
         if($this->text!==null)
         {
             $commandArray=explode(' ', $this->text);
             array_shift($commandArray);
 
-            if($asString)
+            if(array_key_exists($index,$commandArray))
             {
-                return implode(' ',$commandArray);
+            	return $commandArray[$index];
             }
             else
             {
-                return $commandArray;
+            	return null;
             }
         }
         return null;
@@ -173,7 +173,7 @@ class Message
 
 	/**
 	 * Returns the args as string
-	 * @return string
+	 * @return string|null
 	 */
     public function getArgsAsString()
     {
