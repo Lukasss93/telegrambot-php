@@ -19,7 +19,8 @@
     "psr-4": {
       "TelegramBot\\": "src/",
       "TelegramBot\\Types\\": "src/Types/",
-      "TelegramBot\\Constants\\": "src/Constants/"
+      "TelegramBot\\Constants\\": "src/Constants/",
+      "TelegramBot\\Parameters\\": "src/Parameters/"
     },
     "files": [
       "src/TelegramHelper.php"

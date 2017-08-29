@@ -149,17 +149,21 @@ class Message
 
     /**
      * Returns the args as array or as string
-     * @param int $index
+     * @param int|null $index
      * @return string|null
      */
-    public function getArgs($index)
+    public function getArgs($index=null)
     {
         if($this->text!==null)
         {
             $commandArray=explode(' ', $this->text);
             array_shift($commandArray);
 
-            if(array_key_exists($index,$commandArray))
+            if($index==null)
+            {
+            	return $commandArray;
+            }
+            else if(array_key_exists($index,$commandArray))
             {
             	return $commandArray[$index];
             }
