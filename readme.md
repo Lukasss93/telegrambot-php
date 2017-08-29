@@ -236,13 +236,15 @@ please [open](https://github.com/Lukasss93/telegrambot-php/issues) one.
 To-Do list
 ------------
 ![in progress](https://img.shields.io/badge/Status-In%20progress-green.svg)
-* Optional predictive parameters in methods
 * Optimize keyboards
 
 ![not started](https://img.shields.io/badge/Status-Not%20started-red.svg)
 
 * Chat conversations
-* Commands listener with callback
+* Commands listener with callback + events
+
+![new version](https://img.shields.io/badge/Status-New%20version%20(2.0)%20--%20WIP-blue.svg)
+* Optional predictive parameters in methods
 
 Changelog
 ------------
