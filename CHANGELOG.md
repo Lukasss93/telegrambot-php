@@ -1,6 +1,10 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [1.6.2]
+### Fixed
+- Fixed `getCommand()` method in Message object.
+
 ## [1.6.1]
 ### Changed
 - Now `getCommand()` method in Message object return `null` if `text` property isn't a command.

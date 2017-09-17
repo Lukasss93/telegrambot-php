@@ -251,6 +251,6 @@ Changelog
 All notable changes to this project will be documented [here](https://github.com/Lukasss93/telegrambot-php/blob/master/CHANGELOG.md).
 
 ### Recent changes
-## [1.6.1]
-### Changed
-- Now `getCommand()` method in Message object return `null` if `text` property isn't a command.
+## [1.6.2]
+### Fixed
+- Fixed `getCommand()` method in Message object.
