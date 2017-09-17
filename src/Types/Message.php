@@ -139,10 +139,16 @@ class Message
     {
         if($this->text!==null)
         {
-            $commandArray=explode(' ', $this->text);
-            $command=array_shift($commandArray);
-            $command=preg_replace('/@.*/','',$command);
-            return $command;
+	        $result=preg_match('/^(\/\w+)@\w+$/',$this->text,$matches);
+
+	        if(!$result)
+	        {
+	        	return null;
+	        }
+	        else
+	        {
+	        	return $matches[1];
+	        }
         }
         return null;
     }

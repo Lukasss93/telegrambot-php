@@ -1,6 +1,10 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [1.6.1]
+### Changed
+- Now `getCommand()` method in Message object return `null` if `text` property isn't a command.
+
 ## [1.6.0]
 ### Changed
 - Updated to Telegram Bot API 3.3
