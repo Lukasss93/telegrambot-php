@@ -155,26 +155,45 @@ class Message
 
     /**
      * Returns the args as array or as string
-     * @param bool $asString
-     * @return array|string
+     * @param int|null $index
+     * @return string|null
      */
-    public function getArgs($asString=false)
+    public function getArgs($index=null)
     {
         if($this->text!==null)
         {
             $commandArray=explode(' ', $this->text);
             array_shift($commandArray);
 
-            if($asString)
+            if($index==null)
             {
-                return implode(' ',$commandArray);
+            	return $commandArray;
+            }
+            else if(array_key_exists($index,$commandArray))
+            {
+            	return $commandArray[$index];
             }
             else
             {
-                return $commandArray;
+            	return null;
             }
         }
         return null;
+    }
+
+	/**
+	 * Returns the args as string
+	 * @return string|null
+	 */
+    public function getArgsAsString()
+    {
+	    if($this->text!==null)
+	    {
+		    $commandArray=explode(' ', $this->text);
+		    array_shift($commandArray);
+		    return implode(' ',$commandArray);
+	    }
+	    return null;
     }
 
     /**

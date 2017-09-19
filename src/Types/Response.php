@@ -14,7 +14,7 @@ class Response
     /** @var string Optional field with a human-readable description of the result.  */
     public $description;
 
-    /** @var object Result object */
+    /** @var mixed Result object */
     public $result;
 
     /** @var ResponseParameters Optional field which can help to automatically handle the error. */
