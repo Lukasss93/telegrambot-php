@@ -139,7 +139,7 @@ class Message
     {
         if($this->text!==null)
         {
-	        $result=preg_match('/^(\/\w+)(@\w+)?$/',$this->text,$matches);
+	        $result=preg_match('/^(\/\w+)(@\w+)?(.+)?$/',$this->text,$matches);
 
 	        if(!$result)
 	        {
