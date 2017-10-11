@@ -49,6 +49,9 @@ class Message
     /** @var MessageEntity[] Optional. For text messages, special entities like usernames, URLs, bot commands, etc. that appear in the text */
     public $entities;
 
+    /** @var MessageEntity[] Optional. For messages with a caption, special entities like usernames, URLs, bot commands, etc. that appear in the caption */
+    public $caption_entities;
+
     /** @var Audio Optional. Message is an audio file, information about the file */
     public $audio;
 

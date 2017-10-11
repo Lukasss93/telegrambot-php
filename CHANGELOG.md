@@ -1,6 +1,10 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [1.6.4]
+### Changed
+- Updated to Telegram Bot API 3.4
+
 ## [1.6.3]
 ### Fixed
 - Fixed `getCommand()` method in Message object.

@@ -362,6 +362,53 @@ class TelegramBot
         return $object;
     }
 
+	/**
+	 * Use this method to edit live location messages sent by the bot or via the bot (for inline bots).
+	 * A location can be edited until its live_period expires or editing is explicitly disabled by a call to stopMessageLiveLocation.
+	 * On success, if the edited message was sent by the bot, the edited Message is returned, otherwise True is returned.
+	 * @param array $parameters
+	 * @return Message|bool
+	 */
+	public function editMessageLiveLocation($parameters)
+	{
+		$response = $this->endpoint("editMessageLiveLocation", $parameters);
+
+		if(is_bool($response->result))
+		{
+			$object=$response->result;
+		}
+		else
+		{
+			$object = $this->mapper->map($response->result, new Message());
+		}
+
+		/** @var Message|bool $object */
+		return $object;
+	}
+
+	/**
+	 * Use this method to stop updating a live location message sent by the bot or via the bot (for inline bots) before live_period expires.
+	 * On success, if the message was sent by the bot, the sent Message is returned, otherwise True is returned.
+	 * @param array $parameters
+	 * @return Message|bool
+	 */
+	public function stopMessageLiveLocation($parameters)
+	{
+		$response = $this->endpoint("stopMessageLiveLocation", $parameters);
+
+		if(is_bool($response->result))
+		{
+			$object=$response->result;
+		}
+		else
+		{
+			$object = $this->mapper->map($response->result, new Message());
+		}
+
+		/** @var Message|bool $object */
+		return $object;
+	}
+
     /**
      * Use this method to send information about a venue. On success, the sent Message is returned.
      * @param array $parameters
@@ -1000,6 +1047,41 @@ class TelegramBot
         $object = $response->result;
         return $object;
     }
+
+	/**
+	 * Use this method to set a new group sticker set for a supergroup.
+	 * The bot must be an administrator in the chat for this to work and must have the appropriate admin rights.
+	 * Use the field can_set_sticker_set optionally returned in getChat requests to check if the bot can use this method.
+	 * Returns True on success.
+	 * @param int|string $chat_id Unique identifier for the target chat or username of the target supergroup (in the format [at]supergroupusername)
+	 * @param string $sticker_set_name Name of the sticker set to be set as the group sticker set
+	 * @return bool
+	 */
+	public function setChatStickerSet($chat_id, $sticker_set_name)
+	{
+		$response = $this->endpoint("setChatStickerSet", ['chat_id' => $chat_id, 'sticker_set_name' => $sticker_set_name]);
+
+		/** @var bool $object */
+		$object = $response->result;
+		return $object;
+	}
+
+	/**
+	 * Use this method to delete a group sticker set from a supergroup.
+	 * The bot must be an administrator in the chat for this to work and must have the appropriate admin rights.
+	 * Use the field can_set_sticker_set optionally returned in getChat requests to check if the bot can use this method.
+	 * Returns True on success.
+	 * @param int|string $chat_id Unique identifier for the target chat or username of the target supergroup (in the format [at]supergroupusername)
+	 * @return bool
+	 */
+	public function deleteChatStickerSet($chat_id)
+	{
+		$response = $this->endpoint("deleteChatStickerSet", ['chat_id' => $chat_id]);
+
+		/** @var bool $object */
+		$object = $response->result;
+		return $object;
+	}
 
     //endregion
 

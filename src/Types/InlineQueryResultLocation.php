@@ -25,6 +25,9 @@ class InlineQueryResultLocation
     /** @var string Location title */
     public $title;
 
+    /** @var int Optional. Period in seconds for which the location can be updated, should be between 60 and 86400. */
+    public $live_period;
+
     /** @var InlineKeyboardMarkup Optional. Inline keyboard attached to the message */
     public $reply_markup;
 

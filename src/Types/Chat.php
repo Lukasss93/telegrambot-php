@@ -37,4 +37,10 @@ class Chat
 
     /** @var Message Optional. Pinned message, for supergroups. Returned only in getChat. */
     public $pinned_message;
+
+    /** @var string Optional. For supergroups, name of Group sticker set. Returned only in getChat. */
+    public $sticker_set_name;
+
+    /** @var bool Optional. True, if the bot can change group the sticker set. Returned only in getChat. */
+    public $can_set_sticker_set;
 }
