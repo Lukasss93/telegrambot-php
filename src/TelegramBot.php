@@ -349,6 +349,21 @@ class TelegramBot
     }
 
     /**
+     * Use this method to send a group of photos or videos as an album.
+     * On success, an array of the sent Messages is returned.
+     * @param array $parameters
+     * @return Message
+     */
+    public function sendMediaGroup($parameters)
+    {
+        $response = $this->endpoint("sendMediaGroup", $parameters);
+
+        /** @var Message $object */
+        $object = $this->mapper->map($response->result, new Message());
+        return $object;
+    }
+
+    /**
      * Use this method to send point on the map. On success, the sent Message is returned.
      * @param array $parameters
      * @return Message
@@ -704,11 +719,13 @@ class TelegramBot
     }
 
     /**
-     * Use this method to pin a message in a supergroup.
-     * The bot must be an administrator in the chat for this to work and must have the appropriate admin rights.
+     * Use this method to pin a message in a supergroup or a channel.
+     * The bot must be an administrator in the chat for this to work and must have the ‘can_pin_messages’
+     * admin right in the supergroup or ‘can_edit_messages’ admin right in the channel.
      * Returns True on success.
+     *
      * @param int|string $chat_id Unique identifier for the target chat or username of the target
-     *                                         supergroup (in the format @supergroupusername)
+     *                                         supergroup/channel (in the format [at]username)
      * @param int $message_id Identifier of a message to pin
      * @param bool $disable_notification Pass true, if it is not necessary to send a notification to all group
      *                                         members about the new pinned message
@@ -733,11 +750,12 @@ class TelegramBot
     }
 
     /**
-     * Use this method to unpin a message in a supergroup chat.
-     * The bot must be an administrator in the chat for this to work and must have the appropriate admin rights.
+     * Use this method to unpin a message in a supergroup or a channel.
+     * The bot must be an administrator in the chat for this to work and must have the ‘can_pin_messages’
+     * admin right in the supergroup or ‘can_edit_messages’ admin right in the channel.
      * Returns True on success.
-     * @param int|string $chat_id Unique identifier for the target chat or username of the target supergroup (in the
-     *                            format @supergroupusername)
+     * @param int|string $chat_id Unique identifier for the target chat or username of the target supergroup/channel (in the
+     *                            format [at]username)
      * @return bool
      */
     public function unpinChatMessage($chat_id)
