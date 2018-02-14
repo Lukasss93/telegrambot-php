@@ -130,6 +130,9 @@ class Message
     /** @var SuccessfulPayment Optional. Message is a service message about a successful payment, information about the payment. */
     public $successful_payment;
 
+    /** @var String Optional. The domain name of the website on which the user has logged in. https://core.telegram.org/widgets/login */
+    public $connected_website;
+
 
     /**
      * Returns only the command string without @BotUsername

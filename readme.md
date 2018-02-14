@@ -251,6 +251,6 @@ Changelog
 All notable changes to this project will be documented [here](https://github.com/Lukasss93/telegrambot-php/blob/master/CHANGELOG.md).
 
 ### Recent changes
-## [1.6.5]
+## [1.6.6]
 ### Changed
-- Updated to Telegram Bot API 3.5
+- Updated to Telegram Bot API 3.6
