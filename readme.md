@@ -251,6 +251,6 @@ Changelog
 All notable changes to this project will be documented [here](https://github.com/Lukasss93/telegrambot-php/blob/master/CHANGELOG.md).
 
 ### Recent changes
-## [1.6.6]
+## [1.6.7]
 ### Changed
-- Updated to Telegram Bot API 3.6
+- Fixed uploadStickerFile method

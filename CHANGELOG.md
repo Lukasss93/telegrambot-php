@@ -1,6 +1,10 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [1.6.7]
+### Changed
+- Fixed uploadStickerFile method
+
 ## [1.6.6]
 ### Changed
 - Updated to Telegram Bot API 3.6

@@ -1002,7 +1002,7 @@ class TelegramBot
      */
     public function uploadStickerFile($user_id, $png_sticker)
     {
-        $response = $this->endpoint("getStickerSet", ['user_id' => $user_id, 'png_sticker' => $png_sticker]);
+        $response = $this->endpoint("uploadStickerFile", ['user_id' => $user_id, 'png_sticker' => $png_sticker]);
 
         /** @var File $object */
         $object = $this->mapper->map($response->result, new File());
