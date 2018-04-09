@@ -1,6 +1,12 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [1.6.8]
+### Fixed
+- Bug fix: JsonMapper Exception `true` type
+### Added
+- Added `isCommand()` method to `Message` Class
+
 ## [1.6.7]
 ### Changed
 - Fixed uploadStickerFile method

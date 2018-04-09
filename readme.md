@@ -251,6 +251,8 @@ Changelog
 All notable changes to this project will be documented [here](https://github.com/Lukasss93/telegrambot-php/blob/master/CHANGELOG.md).
 
 ### Recent changes
-## [1.6.7]
-### Changed
-- Fixed uploadStickerFile method
+## [1.6.8]
+### Fixed
+- Bug fix: JsonMapper Exception `true` type
+### Added
+- Added `isCommand()` method to `Message` Class

@@ -103,16 +103,16 @@ class Message
     /** @var PhotoSize[] Optional. A chat photo was change to this value */
     public $new_chat_photo;
 
-    /** @var true Optional. Service message: the chat photo was deleted */
+    /** @var bool Optional. Service message: the chat photo was deleted */
     public $delete_chat_photo;
 
-    /** @var true Optional. Service message: the group has been created */
+    /** @var bool Optional. Service message: the group has been created */
     public $group_chat_created;
 
-    /** @var true Optional. Service message: the supergroup has been created. This field can‘t be received in a message coming through updates, because bot can’t be a member of a supergroup when it is created. It can only be found in reply_to_message if someone replies to a very first message in a directly created supergroup */
+    /** @var bool Optional. Service message: the supergroup has been created. This field can‘t be received in a message coming through updates, because bot can’t be a member of a supergroup when it is created. It can only be found in reply_to_message if someone replies to a very first message in a directly created supergroup */
     public $supergroup_chat_created;
 
-    /** @var true Optional. Service message: the channel has been created. This field can‘t be received in a message coming through updates, because bot can’t be a member of a channel when it is created. It can only be found in reply_to_message if someone replies to a very first message in a channel */
+    /** @var bool Optional. Service message: the channel has been created. This field can‘t be received in a message coming through updates, because bot can’t be a member of a channel when it is created. It can only be found in reply_to_message if someone replies to a very first message in a channel */
     public $channel_chat_created;
 
     /** @var int Optional. The group has been migrated to a supergroup with the specified identifier. This number may be greater than 32 bits and some programming languages may have difficulty/silent defects in interpreting it. But it smaller than 52 bits, so a signed 64 bit integer or double-precision float type are safe for storing this identifier */
@@ -132,7 +132,14 @@ class Message
 
     /** @var String Optional. The domain name of the website on which the user has logged in. https://core.telegram.org/widgets/login */
     public $connected_website;
-
+	
+	/**
+	 * Check if the message is a command
+	 * @return bool
+	 */
+    public function isCommand(){
+    	return $this->getCommand()!==null;
+    }
 
     /**
      * Returns only the command string without @BotUsername
