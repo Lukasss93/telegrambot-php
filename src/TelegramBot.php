@@ -76,11 +76,12 @@ class TelegramBot {
 	 * @return Update[]
 	 * @throws TelegramException
 	 * @throws \JsonMapper_Exception
+	 * @link https://core.telegram.org/bots/api#getupdates
 	 */
 	public function getUpdates($offset = 0, $limit = 100, $timeout = 0, $allowed_updates = []) {
 		$parameters = ['offset' => $offset, 'limit' => $limit, 'timeout' => $timeout];
-		if(count($allowed_updates)>0){
-			$parameters['allowed_updates']=$allowed_updates;
+		if(count($allowed_updates) > 0) {
+			$parameters['allowed_updates'] = $allowed_updates;
 		}
 		
 		$response = $this->endpoint("getUpdates", $parameters);
@@ -328,6 +329,24 @@ class TelegramBot {
 	}
 	
 	/**
+	 * Use this method to send animation files (GIF or H.264/MPEG-4 AVC video without sound). On success, the sent
+	 * Message is returned. Bots can currently send animation files of up to 50 MB in size, this limit may be changed
+	 * in the future.
+	 * @link https://core.telegram.org/bots/api#sendanimation
+	 * @param $parameters
+	 * @return Message
+	 * @throws TelegramException
+	 * @throws \JsonMapper_Exception
+	 */
+	public function sendAnimation($parameters) {
+		$response = $this->endpoint("sendAnimation", $parameters);
+		
+		/** @var Message $object */
+		$object = $this->mapper->map($response->result, new Message());
+		return $object;
+	}
+	
+	/**
 	 * Use this method to send audio files, if you want Telegram clients to display the file as a playable voice
 	 * message. For this to work, your audio must be in an .ogg file encoded with OPUS
 	 * (other formats may be sent as Audio or Document). On success, the sent Message is returned.
@@ -394,8 +413,9 @@ class TelegramBot {
 	
 	/**
 	 * Use this method to edit live location messages sent by the bot or via the bot (for inline bots).
-	 * A location can be edited until its live_period expires or editing is explicitly disabled by a call to stopMessageLiveLocation.
-	 * On success, if the edited message was sent by the bot, the edited Message is returned, otherwise True is returned.
+	 * A location can be edited until its live_period expires or editing is explicitly disabled by a call to
+	 * stopMessageLiveLocation. On success, if the edited message was sent by the bot, the edited Message is returned,
+	 * otherwise True is returned.
 	 * @param array $parameters
 	 * @return Message|bool
 	 * @throws TelegramException
@@ -416,8 +436,9 @@ class TelegramBot {
 	}
 	
 	/**
-	 * Use this method to stop updating a live location message sent by the bot or via the bot (for inline bots) before live_period expires.
-	 * On success, if the message was sent by the bot, the sent Message is returned, otherwise True is returned.
+	 * Use this method to stop updating a live location message sent by the bot or via the bot (for inline bots) before
+	 * live_period expires. On success, if the message was sent by the bot, the sent Message is returned, otherwise
+	 * True is returned.
 	 * @param array $parameters
 	 * @return Message|bool
 	 * @throws TelegramException
@@ -782,8 +803,8 @@ class TelegramBot {
 	 * The bot must be an administrator in the chat for this to work and must have the ‘can_pin_messages’
 	 * admin right in the supergroup or ‘can_edit_messages’ admin right in the channel.
 	 * Returns True on success.
-	 * @param int|string $chat_id Unique identifier for the target chat or username of the target supergroup/channel (in the
-	 *                            format [at]username)
+	 * @param int|string $chat_id Unique identifier for the target chat or username of the target supergroup/channel
+	 *     (in the format [at]username)
 	 * @return bool
 	 * @throws TelegramException
 	 * @throws \JsonMapper_Exception
@@ -957,6 +978,32 @@ class TelegramBot {
 	}
 	
 	/**
+	 * Use this method to edit audio, document, photo, or video messages. If a message is a part of a message album,
+	 * then it can be edited only to a photo or a video. Otherwise, message type can be changed arbitrarily. When
+	 * inline message is edited, new file can't be uploaded. Use previously uploaded file via its file_id or specify a
+	 * URL. On success, if the edited message was sent by the bot, the edited Message is returned, otherwise True is
+	 * returned.
+	 * @param $parameters
+	 * @return bool|Message
+	 * @throws TelegramException
+	 * @throws \JsonMapper_Exception
+	 */
+	public function editMessageMedia($parameters) {
+		$response = $this->endpoint('editMessageMedia', $parameters);
+		
+		if(is_bool($response->result)) {
+			/** @var bool $object */
+			$object = $response->result;
+			return $object;
+		}
+		else {
+			/** @var Message $object */
+			$object = $this->mapper->map($response->result, new Message());
+			return $object;
+		}
+	}
+	
+	/**
 	 * Use this method to edit only the reply markup of messages sent by the bot or via the bot (for inline bots).
 	 * On success, if edited message is sent by the bot, the edited Message is returned, otherwise True is returned.
 	 * @param array $parameters
@@ -1043,7 +1090,8 @@ class TelegramBot {
 	 * Use this method to upload a .png file with a sticker for later use in createNewStickerSet
 	 * and addStickerToSet methods (can be used multiple times). Returns the uploaded File on success.
 	 * @param int $user_id User identifier of sticker file owner
-	 * @param mixed $png_sticker [InputFile] Png image with the sticker, must be up to 512 kilobytes in size, dimensions must not exceed 512px, and either width or height must be exactly 512px.
+	 * @param mixed $png_sticker [InputFile] Png image with the sticker, must be up to 512 kilobytes in size,
+	 *     dimensions must not exceed 512px, and either width or height must be exactly 512px.
 	 * @return File
 	 * @throws TelegramException
 	 * @throws \JsonMapper_Exception
@@ -1057,7 +1105,8 @@ class TelegramBot {
 	}
 	
 	/**
-	 * Use this method to create new sticker set owned by a user. The bot will be able to edit the created sticker set. Returns True on success.
+	 * Use this method to create new sticker set owned by a user. The bot will be able to edit the created sticker set.
+	 * Returns True on success.
 	 * @param array $parameters Parameters
 	 * @return bool
 	 * @throws TelegramException
@@ -1120,9 +1169,10 @@ class TelegramBot {
 	/**
 	 * Use this method to set a new group sticker set for a supergroup.
 	 * The bot must be an administrator in the chat for this to work and must have the appropriate admin rights.
-	 * Use the field can_set_sticker_set optionally returned in getChat requests to check if the bot can use this method.
-	 * Returns True on success.
-	 * @param int|string $chat_id Unique identifier for the target chat or username of the target supergroup (in the format [at]supergroupusername)
+	 * Use the field can_set_sticker_set optionally returned in getChat requests to check if the bot can use this
+	 * method. Returns True on success.
+	 * @param int|string $chat_id Unique identifier for the target chat or username of the target supergroup (in the
+	 *     format [at]supergroupusername)
 	 * @param string $sticker_set_name Name of the sticker set to be set as the group sticker set
 	 * @return bool
 	 * @throws TelegramException
@@ -1139,9 +1189,10 @@ class TelegramBot {
 	/**
 	 * Use this method to delete a group sticker set from a supergroup.
 	 * The bot must be an administrator in the chat for this to work and must have the appropriate admin rights.
-	 * Use the field can_set_sticker_set optionally returned in getChat requests to check if the bot can use this method.
-	 * Returns True on success.
-	 * @param int|string $chat_id Unique identifier for the target chat or username of the target supergroup (in the format [at]supergroupusername)
+	 * Use the field can_set_sticker_set optionally returned in getChat requests to check if the bot can use this
+	 * method. Returns True on success.
+	 * @param int|string $chat_id Unique identifier for the target chat or username of the target supergroup (in the
+	 *     format [at]supergroupusername)
 	 * @return bool
 	 * @throws TelegramException
 	 * @throws \JsonMapper_Exception
@@ -1235,6 +1286,38 @@ class TelegramBot {
 	 */
 	public function answerPreCheckoutQuery($parameters) {
 		$response = $this->endpoint('answerPreCheckoutQuery', $parameters);
+		
+		/** @var bool $object */
+		$object = $response->result;
+		return $object;
+	}
+	
+	//endregion
+	
+	//region TELEGRAM PASSPORT
+	/*
+	 * Telegram Passport is a unified authorization method for services that require personal identification.
+	 * Users can upload their documents once, then instantly share
+	 * their data with services that require real-world ID (finance, ICOs, etc.).
+	 * Please see the manual for details.
+	 */
+	
+	
+	/**
+	 * Informs a user that some of the Telegram Passport elements they provided contains errors. The user will not be
+	 * able to re-submit their Passport to you until the errors are fixed (the contents of the field for which you
+	 * returned the error must change). Returns True on success.
+	 *
+	 * Use this if the data submitted by the user doesn't satisfy the standards your service requires for any reason.
+	 * For example, if a birthday date seems invalid, a submitted document is blurry, a scan shows evidence of
+	 * tampering, etc. Supply some details in the error message to make sure the user knows how to correct the issues.
+	 * @param $parameters
+	 * @return bool
+	 * @throws TelegramException
+	 * @throws \JsonMapper_Exception
+	 */
+	public function setPassportDataErrors($parameters) {
+		$response = $this->endpoint("setPassportDataErrors", $parameters);
 		
 		/** @var bool $object */
 		$object = $response->result;
@@ -1393,8 +1476,8 @@ class TelegramBot {
 		else if($callback_game != '') {
 			$replyMarkup['callback_game'] = $callback_game;
 		}
-		else if($pay){
-			$replyMarkup['pay']=true;
+		else if($pay) {
+			$replyMarkup['pay'] = true;
 		}
 		
 		return $replyMarkup;

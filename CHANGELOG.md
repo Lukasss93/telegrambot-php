@@ -1,6 +1,25 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [1.6.9]
+### Added
+- Added 3 classes in constants namespace:
+    - *MessageEntityTypes*
+    - *PassportSources*
+    - *PassportTypes*
+### Changed
+- Updated to __Telegram Bot API 4.0__
+- Updated license file.
+- Updated phpdocs in methods.
+- Updated code indentation.
+- Replaced whitespaces with tabs.
+### Removed
+- Removed unused variables.
+### Fixed
+- JsonMapper Exception `true` type
+- `$pay` parameter unused in `buildInlineKeyboardButton()` method.
+- Missing `$allowed_updates` parameter to `getUpdates()` method.
+
 ## [1.6.8]
 ### Fixed
 - Bug fix: JsonMapper Exception `true` type

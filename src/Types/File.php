@@ -9,14 +9,13 @@ namespace TelegramBot\Types;
  * When the link expires, a new one can be requested by calling getFile.
  * Maximum file size to download is 20 MB.
  */
-class File
-{
-    /** @var string Unique identifier for this file */
-    public $file_id;
-
-    /** @var int Optional. File size, if known */
-    public $file_size;
-
-    /** @var string Optional. File path. Use https://api.telegram.org/file/bot<token>/<file_path> to get the file. */
-    public $file_path;
+class File {
+	/** @var string Unique identifier for this file */
+	public $file_id;
+	
+	/** @var int Optional. File size, if known */
+	public $file_size;
+	
+	/** @var string Optional. File path. Use https://api.telegram.org/file/bot<token>/<file_path> to get the file. */
+	public $file_path;
 }

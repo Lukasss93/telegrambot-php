@@ -3,10 +3,9 @@
 namespace TelegramBot\Types;
 
 /** This object represents one shipping option. */
-class ShippingOption
-{
+class ShippingOption {
 	/** @var string Shipping option identifier */
-    public $id;
+	public $id;
 	
 	/** @var string Option title */
 	public $title;

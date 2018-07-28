@@ -1,6 +1,6 @@
 # TelegramBot-PHP
 
-[![API](https://img.shields.io/badge/Telegram%20Bot%20API-August%2023%2C%202017-blue.svg)](https://core.telegram.org/bots/api)
+[![API](https://img.shields.io/badge/Telegram%20Bot%20API-v4.0%20--%20July%2026%2C%202018-blue.svg)](https://core.telegram.org/bots/api)
 ![PHP](https://img.shields.io/badge/php-%3E%3D5.6-8892bf.svg)
 ![CURL](https://img.shields.io/badge/cURL-required-green.svg)
 
@@ -251,8 +251,21 @@ Changelog
 All notable changes to this project will be documented [here](https://github.com/Lukasss93/telegrambot-php/blob/master/CHANGELOG.md).
 
 ### Recent changes
-## [1.6.8]
-### Fixed
-- Bug fix: JsonMapper Exception `true` type
+## [1.6.9]
 ### Added
-- Added `isCommand()` method to `Message` Class
+- Added 3 classes in constants namespace:
+    - *MessageEntityTypes*
+    - *PassportSources*
+    - *PassportTypes*
+### Changed
+- Updated to __Telegram Bot API 4.0__
+- Updated license file.
+- Updated phpdocs in methods.
+- Updated code indentation.
+- Replaced whitespaces with tabs.
+### Removed
+- Removed unused variables.
+### Fixed
+- JsonMapper Exception `true` type
+- `$pay` parameter unused in `buildInlineKeyboardButton()` method.
+- Missing `$allowed_updates` parameter to `getUpdates()` method.

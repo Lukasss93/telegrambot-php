@@ -3,12 +3,11 @@
 namespace TelegramBot\Types;
 
 /** This object contains information about an incoming pre-checkout query. */
-class PreCheckoutQuery
-{
+class PreCheckoutQuery {
 	/** @var string Unique query identifier */
-    public $id;
-    
-    /** @var User User who sent the query */
+	public $id;
+	
+	/** @var User User who sent the query */
 	public $from;
 	
 	/** @var string Three-letter ISO 4217 currency code */

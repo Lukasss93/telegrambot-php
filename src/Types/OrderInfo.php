@@ -3,10 +3,9 @@
 namespace TelegramBot\Types;
 
 /** This object represents information about an order. */
-class OrderInfo
-{
+class OrderInfo {
 	/** @var string Optional. User name */
-    public $name;
+	public $name;
 	
 	/** @var string Optional. User's phone number */
 	public $phone_number;

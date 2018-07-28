@@ -3,10 +3,9 @@
 namespace TelegramBot\Types;
 
 /** This object represents a shipping address. */
-class ShippingAddress
-{
+class ShippingAddress {
 	/** @var string ISO 3166-1 alpha-2 country code */
-    public $country_code;
+	public $country_code;
 	
 	/** @var string State, if applicable */
 	public $state;

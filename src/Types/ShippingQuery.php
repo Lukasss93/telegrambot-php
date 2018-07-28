@@ -3,12 +3,11 @@
 namespace TelegramBot\Types;
 
 /** This object contains information about an incoming shipping query. */
-class ShippingQuery
-{
+class ShippingQuery {
 	/** @var string Unique query identifier */
-    public $id;
-    
-    /** @var User  	User who sent the query */
+	public $id;
+	
+	/** @var User    User who sent the query */
 	public $from;
 	
 	/** @var string Bot specified invoice payload */
