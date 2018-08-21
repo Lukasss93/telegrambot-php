@@ -22,6 +22,7 @@ use TelegramBot\Types\WebhookInfo;
  */
 class TelegramBot {
 	
+	//region PROPERTIES
 	/** @var string $token Bot token */
 	private $token;
 	
@@ -36,6 +37,7 @@ class TelegramBot {
 	
 	/** @var Update[] $updatesData GetUpdates data */
 	public $updatesData;
+	//endregion
 	
 	/**
 	 * TelegramBot constructor
@@ -75,7 +77,6 @@ class TelegramBot {
 	 *                              so unwanted updates may be received for a short period of time.
 	 * @return Update[]
 	 * @throws TelegramException
-	 * @throws \JsonMapper_Exception
 	 * @link https://core.telegram.org/bots/api#getupdates
 	 */
 	public function getUpdates($offset = 0, $limit = 100, $timeout = 0, $allowed_updates = []) {
@@ -120,7 +121,6 @@ class TelegramBot {
 	 * @param array $parameters
 	 * @return bool
 	 * @throws TelegramException
-	 * @throws \JsonMapper_Exception
 	 */
 	public function setWebhook($parameters) {
 		if(isset($parameters['certificate'])) {
@@ -139,7 +139,6 @@ class TelegramBot {
 	 * Returns True on success. Requires no parameters.
 	 * @return bool
 	 * @throws TelegramException
-	 * @throws \JsonMapper_Exception
 	 */
 	public function deleteWebhook() {
 		$data = $this->endpoint('deleteWebhook', []);
@@ -224,7 +223,7 @@ class TelegramBot {
 			else {
 				/** @var Message[] $messages */
 				$messages = [];
-				$amessages = str_split($parameters['text'], 4096);
+				$amessages = mb_str_split($parameters['text'], 4096);
 				
 				foreach($amessages as $amessage) {
 					$parameters['text'] = $amessage;
@@ -499,7 +498,6 @@ class TelegramBot {
 	 * @param string $action
 	 * @return bool
 	 * @throws TelegramException
-	 * @throws \JsonMapper_Exception
 	 */
 	public function sendChatAction($chat_id, $action) {
 		$response = $this->endpoint("sendChatAction", ['chat_id' => $chat_id, 'action' => $action]);
@@ -572,7 +570,6 @@ class TelegramBot {
 	 *                               from the current time they are considered to be banned forever
 	 * @return bool
 	 * @throws TelegramException
-	 * @throws \JsonMapper_Exception
 	 */
 	public function kickChatMember($chat_id, $user_id, $until_date = null) {
 		$options = [
@@ -601,7 +598,6 @@ class TelegramBot {
 	 * @param int $user_id
 	 * @return bool
 	 * @throws TelegramException
-	 * @throws \JsonMapper_Exception
 	 */
 	public function unbanChatMember($chat_id, $user_id) {
 		$response = $this->endpoint("unbanChatMember", [
@@ -621,7 +617,6 @@ class TelegramBot {
 	 * @param array $parameters
 	 * @return bool
 	 * @throws TelegramException
-	 * @throws \JsonMapper_Exception
 	 */
 	public function restrictChatMember($parameters) {
 		$response = $this->endpoint("restrictChatMember", $parameters);
@@ -639,7 +634,6 @@ class TelegramBot {
 	 * @param array $parameters
 	 * @return bool
 	 * @throws TelegramException
-	 * @throws \JsonMapper_Exception
 	 */
 	public function promoteChatMember($parameters) {
 		$response = $this->endpoint("promoteChatMember", $parameters);
@@ -657,7 +651,6 @@ class TelegramBot {
 	 *                            format @channelusername)
 	 * @return string
 	 * @throws TelegramException
-	 * @throws \JsonMapper_Exception
 	 */
 	public function exportChatInviteLink($chat_id) {
 		$response = $this->endpoint("exportChatInviteLink", [
@@ -680,7 +673,6 @@ class TelegramBot {
 	 * @param mixed $photo [InputFile] New chat photo, uploaded using multipart/form-data
 	 * @return bool
 	 * @throws TelegramException
-	 * @throws \JsonMapper_Exception
 	 */
 	public function setChatPhoto($chat_id, $photo) {
 		$response = $this->endpoint("setChatPhoto", [
@@ -703,7 +695,6 @@ class TelegramBot {
 	 *                            format @channelusername)
 	 * @return bool
 	 * @throws TelegramException
-	 * @throws \JsonMapper_Exception
 	 */
 	public function deleteChatPhoto($chat_id) {
 		$response = $this->endpoint("deleteChatPhoto", [
@@ -727,7 +718,6 @@ class TelegramBot {
 	 * @param string $title New chat title, 1-255 characters
 	 * @return bool
 	 * @throws TelegramException
-	 * @throws \JsonMapper_Exception
 	 */
 	public function setChatTitle($chat_id, $title) {
 		$response = $this->endpoint("setChatTitle", [
@@ -750,7 +740,6 @@ class TelegramBot {
 	 * @param string $description New chat description, 0-255 characters
 	 * @return bool
 	 * @throws TelegramException
-	 * @throws \JsonMapper_Exception
 	 */
 	public function setChatDescription($chat_id, $description = null) {
 		$options = ['chat_id' => $chat_id];
@@ -779,7 +768,6 @@ class TelegramBot {
 	 *                                         members about the new pinned message
 	 * @return bool
 	 * @throws TelegramException
-	 * @throws \JsonMapper_Exception
 	 */
 	public function pinChatMessage($chat_id, $message_id, $disable_notification = false) {
 		$options = [
@@ -807,7 +795,6 @@ class TelegramBot {
 	 *     (in the format [at]username)
 	 * @return bool
 	 * @throws TelegramException
-	 * @throws \JsonMapper_Exception
 	 */
 	public function unpinChatMessage($chat_id) {
 		$response = $this->endpoint("unpinChatMessage", ['chat_id' => $chat_id,]);
@@ -822,7 +809,6 @@ class TelegramBot {
 	 * @param int|string $chat_id
 	 * @return bool
 	 * @throws TelegramException
-	 * @throws \JsonMapper_Exception
 	 */
 	public function leaveChat($chat_id) {
 		$response = $this->endpoint("leaveChat", ['chat_id' => $chat_id]);
@@ -857,7 +843,6 @@ class TelegramBot {
 	 * @param int|string $chat_id
 	 * @return ChatMember[]
 	 * @throws TelegramException
-	 * @throws \JsonMapper_Exception
 	 */
 	public function getChatAdministrators($chat_id) {
 		$response = $this->endpoint('getChatAdministrators', ['chat_id' => $chat_id], false);
@@ -876,7 +861,6 @@ class TelegramBot {
 	 * @param int|string $chat_id
 	 * @return int
 	 * @throws TelegramException
-	 * @throws \JsonMapper_Exception
 	 */
 	public function getChatMembersCount($chat_id) {
 		$response = $this->endpoint('getChatMembersCount', ['chat_id' => $chat_id], false);
@@ -916,7 +900,6 @@ class TelegramBot {
 	 * @param $parameters
 	 * @return bool
 	 * @throws TelegramException
-	 * @throws \JsonMapper_Exception
 	 */
 	public function answerCallbackQuery($parameters) {
 		$data = $this->endpoint('answerCallbackQuery', $parameters);
@@ -1039,7 +1022,6 @@ class TelegramBot {
 	 * @param $message_id int Identifier of the message to delete
 	 * @return bool
 	 * @throws TelegramException
-	 * @throws \JsonMapper_Exception
 	 */
 	public function deleteMessage($chat_id, $message_id) {
 		$response = $this->endpoint('deleteMessage', [
@@ -1110,7 +1092,6 @@ class TelegramBot {
 	 * @param array $parameters Parameters
 	 * @return bool
 	 * @throws TelegramException
-	 * @throws \JsonMapper_Exception
 	 */
 	public function createNewStickerSet($parameters) {
 		$response = $this->endpoint("createNewStickerSet", $parameters);
@@ -1125,7 +1106,6 @@ class TelegramBot {
 	 * @param array $parameters Parameters
 	 * @return bool
 	 * @throws TelegramException
-	 * @throws \JsonMapper_Exception
 	 */
 	public function addStickerToSet($parameters) {
 		$response = $this->endpoint("addStickerToSet", $parameters);
@@ -1141,7 +1121,6 @@ class TelegramBot {
 	 * @param int $position New sticker position in the set, zero-based
 	 * @return bool
 	 * @throws TelegramException
-	 * @throws \JsonMapper_Exception
 	 */
 	public function setStickerPositionInSet($sticker, $position) {
 		$response = $this->endpoint("setStickerPositionInSet", ['sticker' => $sticker, 'position' => $position]);
@@ -1156,7 +1135,6 @@ class TelegramBot {
 	 * @param string $sticker File identifier of the sticker
 	 * @return bool
 	 * @throws TelegramException
-	 * @throws \JsonMapper_Exception
 	 */
 	public function deleteStickerFromSet($sticker) {
 		$response = $this->endpoint("deleteStickerFromSet", ['sticker' => $sticker]);
@@ -1176,7 +1154,6 @@ class TelegramBot {
 	 * @param string $sticker_set_name Name of the sticker set to be set as the group sticker set
 	 * @return bool
 	 * @throws TelegramException
-	 * @throws \JsonMapper_Exception
 	 */
 	public function setChatStickerSet($chat_id, $sticker_set_name) {
 		$response = $this->endpoint("setChatStickerSet", ['chat_id' => $chat_id, 'sticker_set_name' => $sticker_set_name]);
@@ -1195,7 +1172,6 @@ class TelegramBot {
 	 *     format [at]supergroupusername)
 	 * @return bool
 	 * @throws TelegramException
-	 * @throws \JsonMapper_Exception
 	 */
 	public function deleteChatStickerSet($chat_id) {
 		$response = $this->endpoint("deleteChatStickerSet", ['chat_id' => $chat_id]);
@@ -1215,7 +1191,6 @@ class TelegramBot {
 	 * @param array $parameters
 	 * @return bool
 	 * @throws TelegramException
-	 * @throws \JsonMapper_Exception
 	 */
 	public function answerInlineQuery($parameters) {
 		$response = $this->endpoint('answerInlineQuery', $parameters);
@@ -1261,7 +1236,6 @@ class TelegramBot {
 	 * @param object[] $parameters
 	 * @return bool
 	 * @throws TelegramException
-	 * @throws \JsonMapper_Exception
 	 */
 	public function answerShippingQuery($parameters) {
 		$response = $this->endpoint('answerShippingQuery', $parameters);
@@ -1282,7 +1256,6 @@ class TelegramBot {
 	 * @param object[] $parameters
 	 * @return bool
 	 * @throws TelegramException
-	 * @throws \JsonMapper_Exception
 	 */
 	public function answerPreCheckoutQuery($parameters) {
 		$response = $this->endpoint('answerPreCheckoutQuery', $parameters);
@@ -1314,7 +1287,6 @@ class TelegramBot {
 	 * @param $parameters
 	 * @return bool
 	 * @throws TelegramException
-	 * @throws \JsonMapper_Exception
 	 */
 	public function setPassportDataErrors($parameters) {
 		$response = $this->endpoint("setPassportDataErrors", $parameters);
@@ -1377,7 +1349,6 @@ class TelegramBot {
 	 * @param array $parameters
 	 * @return GameHighScore[]
 	 * @throws TelegramException
-	 * @throws \JsonMapper_Exception
 	 */
 	public function getGameHighScores($parameters) {
 		$response = $this->endpoint('getGameHighScores', $parameters, false);
@@ -1562,7 +1533,6 @@ class TelegramBot {
 	 * @param bool $isPost Request method
 	 * @return Response
 	 * @throws TelegramException
-	 * @throws \JsonMapper_Exception
 	 */
 	public function endpoint($api, $parameters, $isPost = true) {
 		$response = $this->sendRequest('https://api.telegram.org/bot' . $this->token . '/' . $api, $parameters, $isPost);
@@ -1579,8 +1549,13 @@ class TelegramBot {
 			throw new TelegramException('The response cannot be parsed to json.');
 		}
 		
-		/** @var Response $data */
-		$data = $this->mapper->map(json_decode($body), new Response());
+		try {
+			/** @var Response $data */
+			$data = $this->mapper->map(json_decode($body), new Response());
+		}
+		catch(\JsonMapper_Exception $e) {
+			throw new TelegramException('The json cannot be mapped to object.');
+		}
 		
 		if(!$data->ok) {
 			throw new TelegramException($data->description, $data->error_code);

@@ -1,6 +1,12 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [1.6.10]
+### Fixed
+- `JsonMapper Exception` PHPDoc message in all methods.
+- Exception using `sendMessage + split message feature` with unicode strings.
+- Missing php extensions in `composer.json`.
+
 ## [1.6.9]
 ### Added
 - Added 3 classes in constants namespace:

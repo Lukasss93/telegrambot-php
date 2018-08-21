@@ -1,28 +1,32 @@
 {
-  "name": "lukasss93/telegrambot-php",
-  "description": "Framework for Telegram Bot API",
-  "license": "MIT",
-  "type": "project",
-  "version": "1.6.9",
-  "authors": [
-    {
-      "name": "Luca Patera",
-      "email": "lucapatera@outlook.it",
-      "homepage": "http://www.lucapatera.it/"
-    }
-  ],
-  "require": {
-    "php": ">=5.6",
-    "netresearch/jsonmapper": ">=v1.1.0"
-  },
-  "autoload": {
-    "psr-4": {
-      "TelegramBot\\": "src/",
-      "TelegramBot\\Types\\": "src/Types/",
-      "TelegramBot\\Constants\\": "src/Constants/"
-    },
-    "files": [
-      "src/TelegramHelper.php"
-    ]
-  }
+	"name": "lukasss93/telegrambot-php",
+	"description": "Framework for Telegram Bot API",
+	"license": "MIT",
+	"type": "project",
+	"version": "1.6.10",
+	"authors": [
+		{
+			"name": "Luca Patera",
+			"email": "lucapatera@outlook.it",
+			"homepage": "http://www.lucapatera.it/"
+		}
+	],
+	"require": {
+		"php": ">=5.6",
+		"ext-mbstring": "*",
+		"ext-curl":"*",
+		"ext-fileinfo":"*",
+		"ext-json":"*",
+		"netresearch/jsonmapper": ">=v1.1.0"
+	},
+	"autoload": {
+		"psr-4": {
+			"TelegramBot\\": "src/",
+			"TelegramBot\\Types\\": "src/Types/",
+			"TelegramBot\\Constants\\": "src/Constants/"
+		},
+		"files": [
+			"src/TelegramHelper.php"
+		]
+	}
 }

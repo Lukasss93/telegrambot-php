@@ -1,13 +1,6 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: PLUS-SW
- * Date: 17/01/2017
- * Time: 11:22
- */
 
 namespace TelegramBot;
-
 
 use Exception;
 
