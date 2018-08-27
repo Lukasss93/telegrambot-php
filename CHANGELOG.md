@@ -1,6 +1,17 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [1.6.11]
+### Added
+- Added custom method: `clearUpdates()`. It's an alias for `$this->getUpdates(-1);`
+- Added `TelegramLimits` class constants to get the download/upload file limit.
+### Changed
+- Updated to __Telegram Bot API 4.1__
+- You can now get the string argument at the array index position with the `getArgs()` method. Pass:
+    - True to get an array of strings;
+    - False to get a string;
+    - Integer to get the string at the array index position. 
+
 ## [1.6.10]
 ### Fixed
 - `JsonMapper Exception` PHPDoc message in all methods.

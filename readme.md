@@ -1,6 +1,6 @@
 # TelegramBot-PHP
 
-[![API](https://img.shields.io/badge/Telegram%20Bot%20API-v4.0%20--%20July%2026%2C%202018-blue.svg)](https://core.telegram.org/bots/api)
+[![API](https://img.shields.io/badge/Telegram%20Bot%20API-v4.1%20--%20August%2027%2C%202018-blue.svg)](https://core.telegram.org/bots/api)
 ![PHP](https://img.shields.io/badge/php-%3E%3D5.6-8892bf.svg)
 ![CURL](https://img.shields.io/badge/cURL-required-green.svg)
 
@@ -251,27 +251,13 @@ Changelog
 All notable changes to this project will be documented [here](https://github.com/Lukasss93/telegrambot-php/blob/master/CHANGELOG.md).
 
 ### Recent changes
-## [1.6.10]
-### Fixed
-- `JsonMapper Exception` PHPDoc message in all methods.
-- Exception using `sendMessage + split message feature` with unicode strings.
-- Missing php extensions in `composer.json`.
-
-## [1.6.9]
+## [1.6.11]
 ### Added
-- Added 3 classes in constants namespace:
-    - *MessageEntityTypes*
-    - *PassportSources*
-    - *PassportTypes*
+- Added custom method: `clearUpdates()`. It's an alias for `$this->getUpdates(-1);`
+- Added `TelegramLimits` class constants to get the download/upload file limit.
 ### Changed
-- Updated to __Telegram Bot API 4.0__
-- Updated license file.
-- Updated phpdocs in methods.
-- Updated code indentation.
-- Replaced whitespaces with tabs.
-### Removed
-- Removed unused variables.
-### Fixed
-- JsonMapper Exception `true` type
-- `$pay` parameter unused in `buildInlineKeyboardButton()` method.
-- Missing `$allowed_updates` parameter to `getUpdates()` method.
+- Updated to __Telegram Bot API 4.1__
+- You can now get the string argument at the array index position with the `getArgs()` method. Pass:
+    - True to get an array of strings;
+    - False to get a string;
+    - Integer to get the string at the array index position. 

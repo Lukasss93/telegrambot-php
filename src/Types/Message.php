@@ -147,9 +147,9 @@ class Message {
 	}
 	
 	/**
-	 * Returns only the command string without @BotUsername
+	 * Returns only the command string without [at]BotUsername
 	 * Example:
-	 * IN: /hello or /hello@MyDearBot
+	 * IN: /hello or /hello[at]MyDearBot
 	 * OUT: /hello
 	 * @return string
 	 */
@@ -169,19 +169,24 @@ class Message {
 	
 	/**
 	 * Returns the args as array or as string
-	 * @param bool $asString
+	 * @param bool|int $asStringorKey True to get an array of strings;
+	 *                                False to get a string;
+	 *                                Integer to get the string at the array index position.
 	 * @return array|string
 	 */
-	public function getArgs($asString = false) {
+	public function getArgs($asStringorKey = false) {
 		if($this->text !== null) {
 			$commandArray = explode(' ', $this->text);
 			array_shift($commandArray);
 			
-			if($asString) {
+			if($asStringorKey === true) {
 				return implode(' ', $commandArray);
 			}
-			else {
+			else if($asStringorKey === false) {
 				return $commandArray;
+			}
+			else if(is_int($asStringorKey)){
+				return $commandArray[$asStringorKey];
 			}
 		}
 		return null;

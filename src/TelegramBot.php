@@ -187,6 +187,15 @@ class TelegramBot {
 		return $current;
 	}
 	
+	/**
+	 * Clear all updates stored on Telegram Server.
+	 * This method is an alias for "$this->getUpdates(-1);"
+	 * @throws \TelegramBot\TelegramException
+	 */
+	public function clearUpdates(){
+		$this->getUpdates(-1);
+	}
+	
 	//endregion
 	
 	//region AVAILABLE METHODS

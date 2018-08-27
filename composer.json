@@ -3,7 +3,7 @@
 	"description": "Framework for Telegram Bot API",
 	"license": "MIT",
 	"type": "project",
-	"version": "1.6.10",
+	"version": "1.6.11",
 	"authors": [
 		{
 			"name": "Luca Patera",
