@@ -26,19 +26,9 @@ For the GetUpdates:
 
 Installation
 ---------
+You can install this library with composer:
 
-* #### Manual 
-    Copy **src** folder in your project, rename it and include all classes in your new bot script.
-    
-    ```php
-    //include the entire folder first!  
-    use TelegramBot\TelegramBot;
-    $bot = new TelegramBot($token);
-    ```
-    
-* #### Composer
-
-    `composer require lukasss93/telegrambot-php`
+ `composer require lukasss93/telegrambot-php`
 
 Configuration (WebHook)
 ---------
@@ -130,9 +120,7 @@ Build keyboard parameters
 Telegram's bots can have two different kind of keyboards: Inline and Reply.
 The InlineKeyboard is linked to a particular message, while the ReplyKeyboard is linked to the whole chat.
 They are both an array of array of buttons, which rapresent the rows and columns.
-For instance you can arrange a ReplyKeyboard like this: 
-![1](https://camo.githubusercontent.com/8af69f730130d48f06c50e9c0a9684d4cc86127f/68747470733a2f2f7069636c6f61642e6f72672f696d6167652f72696c636c6377722f7265706c796b6579626f6172642e706e67)
-using this code:
+For instance you can arrange a ReplyKeyboard using this code:
 ```php
 $buttons = [ 
     //First row
@@ -158,7 +146,6 @@ $telegram->sendMessage([
 ```
 When a user click on the button, the button text is send back to the bot.
 For an InlineKeyboard it's pretty much the same (but you need to provide a valid URL or a Callback data) 
-![2](https://camo.githubusercontent.com/ac0ce06b10f06fd76c96b780b7caaa2d96e4582b/68747470733a2f2f7069636c6f61642e6f72672f696d6167652f72696c636c6377612f7265706c796b6579626f617264696e6c696e652e706e67)
 ```php
 $buttons = [ 
     //First row
