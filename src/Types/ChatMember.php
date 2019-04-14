@@ -10,7 +10,7 @@ class ChatMember {
 	/** @var string The member's status in the chat. Can be “creator”, “administrator”, “member”, “left” or “kicked” */
 	public $status;
 	
-	/** @var int Optional. Restictred and kicked only. Date when restrictions will be lifted for this user, unix time */
+	/** @var int Optional. Restricted and kicked only. Date when restrictions will be lifted for this user, unix time */
 	public $until_date;
 	
 	/** @var bool Optional. Administrators only. True, if the bot is allowed to edit administrator privileges of that user */
@@ -40,6 +40,9 @@ class ChatMember {
 	/** @var bool Optional. Administrators only. True, if the administrator can add new administrators with a subset of his own privileges or demote administrators that he has promoted, directly or indirectly (promoted by administrators that were appointed by the user) */
 	public $can_promote_members;
 	
+	/** @var bool Optional. Restricted only. True, if the user is a member of the chat at the moment of the request */
+	public $is_member;
+
 	/** @var bool Optional. Restricted only. True, if the user can send text messages, contacts, locations and venues */
 	public $can_send_messages;
 	

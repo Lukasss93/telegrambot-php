@@ -3,7 +3,7 @@
 	"description": "Framework for Telegram Bot API",
 	"license": "MIT",
 	"type": "project",
-	"version": "1.6.11",
+	"version": "1.6.12",
 	"authors": [
 		{
 			"name": "Luca Patera",
@@ -17,7 +17,7 @@
 		"ext-curl":"*",
 		"ext-fileinfo":"*",
 		"ext-json":"*",
-		"netresearch/jsonmapper": ">=v1.1.0"
+		"netresearch/jsonmapper": "v1.4.*"
 	},
 	"autoload": {
 		"psr-4": {

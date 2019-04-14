@@ -5,10 +5,8 @@ namespace TelegramBot\Types;
 use TelegramBot\Constants\UpdateTypes;
 
 /**
- * This object represents an incoming update.
- * At most one of the optional parameters can be present in any given update.
+ * This object represents an incoming update. At most one of the optional parameters can be present in any given update.
  * @package TelegramBot\Types
- * @link    https://core.telegram.org/bots/api#update
  */
 class Update {
 	/**
@@ -66,6 +64,9 @@ class Update {
 	 * Contains full information about checkout
 	 */
 	public $pre_checkout_query;
+	
+	/** @var Poll Optional. New poll state. Bots receive only updates about polls, which are sent or stopped by the bot */
+	public $poll;
 	
 	/**
 	 * Return the current update type

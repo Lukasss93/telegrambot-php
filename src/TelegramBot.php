@@ -21,22 +21,27 @@ use TelegramBot\Types\WebhookInfo;
  * @package TelegramBot
  */
 class TelegramBot {
+	#region CONFIG
 	
-	//region PROPERTIES
-	/** @var string $token Bot token */
+	/** @var string Bot token */
 	private $token;
 	
-	/** @var bool $splitLongMessage Automatic split message */
+	/** @var bool Automatic split message*/
 	public $splitLongMessage = false;
 	
-	/** @var JsonMapper $mapper Json mapper */
-	private $mapper;
+	#endregion
 	
-	/** @var Update $webhookData Webhook update */
-	public $webhookData;
+	//region PROPERTIES
 	
-	/** @var Update[] $updatesData GetUpdates data */
-	public $updatesData;
+    /** @var JsonMapper */
+    private $mapper;
+
+    /** @var Update Webhook update */
+    public $webhookData;
+
+    /** @var Update[] GetUpdates data */
+    public $updatesData;
+    
 	//endregion
 	
 	/**
@@ -490,6 +495,19 @@ class TelegramBot {
 	 */
 	public function sendContact($parameters) {
 		$response = $this->endpoint("sendContact", $parameters);
+		
+		/** @var Message $object */
+		$object = $this->mapper->map($response->result, new Message());
+		return $object;
+	}
+	
+	/**
+	 * Use this method to send a native poll. A native poll can't be sent to a private chat. On success, the sent Message is returned.
+	 * @param array $parameters
+	 * @return Message
+	 */
+	public function sendPoll($parameters) {
+		$response = $this->endpoint("sendPoll", $parameters);
 		
 		/** @var Message $object */
 		$object = $this->mapper->map($response->result, new Message());
@@ -957,12 +975,11 @@ class TelegramBot {
 	public function editMessageCaption($parameters) {
 		$response = $this->endpoint('editMessageCaption', $parameters);
 		
-		if(is_bool($response->result)) {
+		if (is_bool($response->result)) {
 			/** @var bool $object */
 			$object = $response->result;
 			return $object;
-		}
-		else {
+		} else {
 			/** @var Message $object */
 			$object = $this->mapper->map($response->result, new Message());
 			return $object;
@@ -970,15 +987,13 @@ class TelegramBot {
 	}
 	
 	/**
-	 * Use this method to edit audio, document, photo, or video messages. If a message is a part of a message album,
-	 * then it can be edited only to a photo or a video. Otherwise, message type can be changed arbitrarily. When
-	 * inline message is edited, new file can't be uploaded. Use previously uploaded file via its file_id or specify a
-	 * URL. On success, if the edited message was sent by the bot, the edited Message is returned, otherwise True is
-	 * returned.
-	 * @param $parameters
+	 * Use this method to edit animation, audio, document, photo, or video messages. 
+	 * If a message is a part of a message album, then it can be edited only to a photo or a video. 
+	 * Otherwise, message type can be changed arbitrarily. When inline message is edited, new file can't be uploaded. 
+	 * Use previously uploaded file via its file_id or specify a URL. 
+	 * On success, if the edited message was sent by the bot, the edited Message is returned, otherwise True is returned.
+	 * @param array $parameters
 	 * @return bool|Message
-	 * @throws TelegramException
-	 * @throws \JsonMapper_Exception
 	 */
 	public function editMessageMedia($parameters) {
 		$response = $this->endpoint('editMessageMedia', $parameters);
@@ -1019,13 +1034,35 @@ class TelegramBot {
 	}
 	
 	/**
-	 * Use this method to delete a message. A message can only be deleted if it was sent less than 48 hours ago.
-	 * Any such recently sent outgoing message may be deleted. Additionally, if the bot is an administrator in a
-	 * group chat, it can delete any message.
-	 * If the bot is an administrator in a supergroup, it can delete messages from any other user
-	 * and service messages about people joining or leaving the group (other types of service messages may
-	 * only be removed by the group creator).
-	 * In channels, bots can only remove their own messages. Returns True on success.
+	 * Use this method to stop a poll which was sent by the bot. 
+	 * On success, the stopped Poll with the final results is returned.
+	 * @param array $parameters
+	 * @return bool|Message
+	 */
+	public function stopPoll($parameters) {
+		$response = $this->endpoint('stopPoll', $parameters);
+		
+		if (is_bool($response->result)) {
+			/** @var bool $object */
+			$object = $response->result;
+			return $object;
+		} else {
+			/** @var Message $object */
+			$object = $this->mapper->map($response->result, new Message());
+			return $object;
+		}
+	}
+	
+	/**
+	 * Use this method to delete a message, including service messages, with the following limitations:
+	 * - A message can only be deleted if it was sent less than 48 hours ago.
+	 * - Bots can delete outgoing messages in private chats, groups, and supergroups.
+	 * - Bots can delete incoming messages in private chats.
+	 * - Bots granted can_post_messages permissions can delete outgoing messages in channels.
+	 * - If the bot is an administrator of a group, it can delete any message there.
+	 * - If the bot has can_delete_messages permission in a supergroup or a channel, it can delete any message there.
+	 * 
+	 * Returns True on success.
 	 * @param $chat_id    int|string Unique identifier for the target chat or username of the target channel (in the
 	 *                    format @channelusername)
 	 * @param $message_id int Identifier of the message to delete

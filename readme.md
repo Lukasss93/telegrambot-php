@@ -1,6 +1,6 @@
 # TelegramBot-PHP
 
-[![API](https://img.shields.io/badge/Telegram%20Bot%20API-v4.1%20--%20August%2027%2C%202018-blue.svg)](https://core.telegram.org/bots/api)
+[![API](https://img.shields.io/badge/Telegram%20Bot%20API-4.2%20--%20April%2014%2C%202019-blue.svg)](https://core.telegram.org/bots/api)
 ![PHP](https://img.shields.io/badge/php-%3E%3D5.6-8892bf.svg)
 ![CURL](https://img.shields.io/badge/cURL-required-green.svg)
 
@@ -238,13 +238,6 @@ Changelog
 All notable changes to this project will be documented [here](https://github.com/Lukasss93/telegrambot-php/blob/master/CHANGELOG.md).
 
 ### Recent changes
-## [1.6.11]
-### Added
-- Added custom method: `clearUpdates()`. It's an alias for `$this->getUpdates(-1);`
-- Added `TelegramLimits` class constants to get the download/upload file limit.
+## [1.6.12]
 ### Changed
-- Updated to __Telegram Bot API 4.1__
-- You can now get the string argument at the array index position with the `getArgs()` method. Pass:
-    - True to get an array of strings;
-    - False to get a string;
-    - Integer to get the string at the array index position. 
+- Updated to Telegram Bot API 4.2
