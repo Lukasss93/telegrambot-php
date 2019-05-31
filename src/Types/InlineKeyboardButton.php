@@ -10,6 +10,13 @@ class InlineKeyboardButton {
 	/** @var string Optional. HTTP url to be opened when button is pressed */
 	public $url;
 	
+	/**
+	 * @var LoginUrl Optional. An HTTP URL used to automatically authorize the user. Can be used as a replacement for
+	 *      the Telegram Login Widget.
+	 * @see https://core.telegram.org/widgets/login Telegram Login Widget
+	 */
+	public $login_url;
+	
 	/** @var string Optional. Data to be sent in a callback query to the bot when button is pressed, 1-64 bytes */
 	public $callback_data;
 	

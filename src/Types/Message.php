@@ -96,6 +96,9 @@ class Message {
 	/** @var Venue Optional. Message is a venue, information about the venue */
 	public $venue;
 	
+	/** @var Poll Optional. Message is a native poll, information about the poll */
+	public $poll;
+	
 	/** @var User Optional. A new member was added to the group, information about them (this member may be the bot itself) */
 	public $new_chat_member;
 	
@@ -140,6 +143,11 @@ class Message {
 	
 	/** @var PassportData $passport_data Optional. Telegram Passport data */
 	public $passport_data;
+	
+	/**
+	 * @var InlineKeyboardMarkup Optional. Inline keyboard that appears right next to the message it belongs to.
+	 */
+	public $reply_markup;
 	
 	/**
 	 * Check if the message is a command

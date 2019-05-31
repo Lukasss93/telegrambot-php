@@ -1,6 +1,14 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [1.6.13]
+### Changed
+- Updated to Telegram Bot API 4.3
+- Updated phpdocs
+
+### Fixed
+- Missing $poll variable inside `Message` class
+
 ## [1.6.12]
 ### Changed
 - Updated to Telegram Bot API 4.2

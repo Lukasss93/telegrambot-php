@@ -1,6 +1,6 @@
 # TelegramBot-PHP
 
-[![API](https://img.shields.io/badge/Telegram%20Bot%20API-4.2%20--%20April%2014%2C%202019-blue.svg)](https://core.telegram.org/bots/api)
+[![API](https://img.shields.io/badge/Telegram%20Bot%20API-4.3%20--%20May%2031%2C%202019-blue.svg)](https://core.telegram.org/bots/api)
 ![PHP](https://img.shields.io/badge/php-%3E%3D5.6-8892bf.svg)
 ![CURL](https://img.shields.io/badge/cURL-required-green.svg)
 
@@ -238,6 +238,10 @@ Changelog
 All notable changes to this project will be documented [here](https://github.com/Lukasss93/telegrambot-php/blob/master/CHANGELOG.md).
 
 ### Recent changes
-## [1.6.12]
+## [1.6.13]
 ### Changed
-- Updated to Telegram Bot API 4.2
+- Updated to Telegram Bot API 4.3
+- Updated phpdocs
+
+### Fixed
+- Missing $poll variable inside `Message` class

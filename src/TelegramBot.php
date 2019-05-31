@@ -3,6 +3,9 @@
 namespace TelegramBot;
 
 use JsonMapper;
+use JsonMapper_Exception;
+use ReflectionClass;
+use ReflectionException;
 use TelegramBot\Types\Chat;
 use TelegramBot\Types\ChatMember;
 use TelegramBot\Types\File;
@@ -47,7 +50,7 @@ class TelegramBot {
 	/**
 	 * TelegramBot constructor
 	 * @param string $token Bot token
-	 * @throws \JsonMapper_Exception
+	 * @throws JsonMapper_Exception
 	 */
 	public function __construct($token) {
 		//json mapper
@@ -160,7 +163,7 @@ class TelegramBot {
 	 * If the bot is using getUpdates, will return an object with the url field empty.
 	 * @return WebhookInfo
 	 * @throws TelegramException
-	 * @throws \JsonMapper_Exception
+	 * @throws JsonMapper_Exception
 	 */
 	public function getWebhookInfo() {
 		$data = $this->endpoint('getWebhookInfo', [], false);
@@ -173,7 +176,7 @@ class TelegramBot {
 	/**
 	 * Incoming update from webhook
 	 * @return Update|null
-	 * @throws \JsonMapper_Exception
+	 * @throws JsonMapper_Exception
 	 */
 	public function getWebhookUpdate() {
 		$current = null;
@@ -195,7 +198,7 @@ class TelegramBot {
 	/**
 	 * Clear all updates stored on Telegram Server.
 	 * This method is an alias for "$this->getUpdates(-1);"
-	 * @throws \TelegramBot\TelegramException
+	 * @throws TelegramException
 	 */
 	public function clearUpdates(){
 		$this->getUpdates(-1);
@@ -211,7 +214,7 @@ class TelegramBot {
 	 * Returns basic information about the bot in form of a User object.
 	 * @return User
 	 * @throws TelegramException
-	 * @throws \JsonMapper_Exception
+	 * @throws JsonMapper_Exception
 	 */
 	public function getMe() {
 		$data = $this->endpoint('getMe', [], false);
@@ -227,7 +230,7 @@ class TelegramBot {
 	 * @param array $parameters
 	 * @return Message|Message[]
 	 * @throws TelegramException text parameter not set.
-	 * @throws \JsonMapper_Exception
+	 * @throws JsonMapper_Exception
 	 */
 	public function sendMessage($parameters) {
 		if($this->splitLongMessage) {
@@ -264,7 +267,7 @@ class TelegramBot {
 	 * @param $parameters
 	 * @return Message
 	 * @throws TelegramException
-	 * @throws \JsonMapper_Exception
+	 * @throws JsonMapper_Exception
 	 */
 	public function forwardMessage($parameters) {
 		$response = $this->endpoint("forwardMessage", $parameters);
@@ -279,7 +282,7 @@ class TelegramBot {
 	 * @param $parameters
 	 * @return Message
 	 * @throws TelegramException
-	 * @throws \JsonMapper_Exception
+	 * @throws JsonMapper_Exception
 	 */
 	public function sendPhoto($parameters) {
 		$response = $this->endpoint("sendPhoto", $parameters);
@@ -297,7 +300,7 @@ class TelegramBot {
 	 * @param array $parameters
 	 * @return Message
 	 * @throws TelegramException
-	 * @throws \JsonMapper_Exception
+	 * @throws JsonMapper_Exception
 	 */
 	public function sendAudio($parameters) {
 		$response = $this->endpoint("sendAudio", $parameters);
@@ -314,7 +317,7 @@ class TelegramBot {
 	 * @param array $parameters
 	 * @return Message
 	 * @throws TelegramException
-	 * @throws \JsonMapper_Exception
+	 * @throws JsonMapper_Exception
 	 */
 	public function sendDocument($parameters) {
 		$response = $this->endpoint("sendDocument", $parameters);
@@ -331,7 +334,7 @@ class TelegramBot {
 	 * @param array $parameters
 	 * @return Message
 	 * @throws TelegramException
-	 * @throws \JsonMapper_Exception
+	 * @throws JsonMapper_Exception
 	 */
 	public function sendVideo($parameters) {
 		$response = $this->endpoint("sendVideo", $parameters);
@@ -349,7 +352,7 @@ class TelegramBot {
 	 * @param $parameters
 	 * @return Message
 	 * @throws TelegramException
-	 * @throws \JsonMapper_Exception
+	 * @throws JsonMapper_Exception
 	 */
 	public function sendAnimation($parameters) {
 		$response = $this->endpoint("sendAnimation", $parameters);
@@ -367,7 +370,7 @@ class TelegramBot {
 	 * @param array $parameters
 	 * @return Message
 	 * @throws TelegramException
-	 * @throws \JsonMapper_Exception
+	 * @throws JsonMapper_Exception
 	 */
 	public function sendVoice($parameters) {
 		$response = $this->endpoint("sendVoice", $parameters);
@@ -383,7 +386,7 @@ class TelegramBot {
 	 * @param array $parameters
 	 * @return Message
 	 * @throws TelegramException
-	 * @throws \JsonMapper_Exception
+	 * @throws JsonMapper_Exception
 	 */
 	public function sendVideoNote($parameters) {
 		$response = $this->endpoint("sendVideoNote", $parameters);
@@ -399,7 +402,7 @@ class TelegramBot {
 	 * @param array $parameters
 	 * @return Message
 	 * @throws TelegramException
-	 * @throws \JsonMapper_Exception
+	 * @throws JsonMapper_Exception
 	 */
 	public function sendMediaGroup($parameters) {
 		$response = $this->endpoint("sendMediaGroup", $parameters);
@@ -414,7 +417,7 @@ class TelegramBot {
 	 * @param array $parameters
 	 * @return Message
 	 * @throws TelegramException
-	 * @throws \JsonMapper_Exception
+	 * @throws JsonMapper_Exception
 	 */
 	public function sendLocation($parameters) {
 		$response = $this->endpoint("sendLocation", $parameters);
@@ -432,7 +435,7 @@ class TelegramBot {
 	 * @param array $parameters
 	 * @return Message|bool
 	 * @throws TelegramException
-	 * @throws \JsonMapper_Exception
+	 * @throws JsonMapper_Exception
 	 */
 	public function editMessageLiveLocation($parameters) {
 		$response = $this->endpoint("editMessageLiveLocation", $parameters);
@@ -455,7 +458,7 @@ class TelegramBot {
 	 * @param array $parameters
 	 * @return Message|bool
 	 * @throws TelegramException
-	 * @throws \JsonMapper_Exception
+	 * @throws JsonMapper_Exception
 	 */
 	public function stopMessageLiveLocation($parameters) {
 		$response = $this->endpoint("stopMessageLiveLocation", $parameters);
@@ -476,7 +479,7 @@ class TelegramBot {
 	 * @param array $parameters
 	 * @return Message
 	 * @throws TelegramException
-	 * @throws \JsonMapper_Exception
+	 * @throws JsonMapper_Exception
 	 */
 	public function sendVenue($parameters) {
 		$response = $this->endpoint("sendVenue", $parameters);
@@ -491,7 +494,7 @@ class TelegramBot {
 	 * @param array $parameters
 	 * @return Message
 	 * @throws TelegramException
-	 * @throws \JsonMapper_Exception
+	 * @throws JsonMapper_Exception
 	 */
 	public function sendContact($parameters) {
 		$response = $this->endpoint("sendContact", $parameters);
@@ -503,8 +506,12 @@ class TelegramBot {
 	
 	/**
 	 * Use this method to send a native poll. A native poll can't be sent to a private chat. On success, the sent Message is returned.
+	 *
 	 * @param array $parameters
+	 *
 	 * @return Message
+	 * @throws TelegramException
+	 * @throws JsonMapper_Exception
 	 */
 	public function sendPoll($parameters) {
 		$response = $this->endpoint("sendPoll", $parameters);
@@ -541,7 +548,7 @@ class TelegramBot {
 	 * @param int $limit
 	 * @return UserProfilePhotos
 	 * @throws TelegramException
-	 * @throws \JsonMapper_Exception
+	 * @throws JsonMapper_Exception
 	 */
 	public function getUserProfilePhotos($user_id, $offset = null, $limit = 100) {
 		$parameters = [
@@ -573,7 +580,7 @@ class TelegramBot {
 	 * @param string $file_id
 	 * @return File
 	 * @throws TelegramException
-	 * @throws \JsonMapper_Exception
+	 * @throws JsonMapper_Exception
 	 */
 	public function getFile($file_id) {
 		$response = $this->endpoint("getFile", ['file_id' => $file_id]);
@@ -852,7 +859,7 @@ class TelegramBot {
 	 * @param int|string $chat_id
 	 * @return Chat
 	 * @throws TelegramException
-	 * @throws \JsonMapper_Exception
+	 * @throws JsonMapper_Exception
 	 */
 	public function getChat($chat_id) {
 		$response = $this->endpoint('getChat', ['chat_id' => $chat_id], false);
@@ -904,7 +911,7 @@ class TelegramBot {
 	 * @param int $user_id
 	 * @return ChatMember
 	 * @throws TelegramException
-	 * @throws \JsonMapper_Exception
+	 * @throws JsonMapper_Exception
 	 */
 	public function getChatMember($chat_id, $user_id) {
 		$response = $this->endpoint('getChatMember', [
@@ -947,7 +954,7 @@ class TelegramBot {
 	 * @param array $parameters
 	 * @return bool|Message
 	 * @throws TelegramException
-	 * @throws \JsonMapper_Exception
+	 * @throws JsonMapper_Exception
 	 */
 	public function editMessageText($parameters) {
 		$response = $this->endpoint('editMessageText', $parameters);
@@ -970,7 +977,7 @@ class TelegramBot {
 	 * @param array $parameters
 	 * @return bool|Message
 	 * @throws TelegramException
-	 * @throws \JsonMapper_Exception
+	 * @throws JsonMapper_Exception
 	 */
 	public function editMessageCaption($parameters) {
 		$response = $this->endpoint('editMessageCaption', $parameters);
@@ -987,13 +994,17 @@ class TelegramBot {
 	}
 	
 	/**
-	 * Use this method to edit animation, audio, document, photo, or video messages. 
-	 * If a message is a part of a message album, then it can be edited only to a photo or a video. 
-	 * Otherwise, message type can be changed arbitrarily. When inline message is edited, new file can't be uploaded. 
-	 * Use previously uploaded file via its file_id or specify a URL. 
+	 * Use this method to edit animation, audio, document, photo, or video messages.
+	 * If a message is a part of a message album, then it can be edited only to a photo or a video.
+	 * Otherwise, message type can be changed arbitrarily. When inline message is edited, new file can't be uploaded.
+	 * Use previously uploaded file via its file_id or specify a URL.
 	 * On success, if the edited message was sent by the bot, the edited Message is returned, otherwise True is returned.
+	 *
 	 * @param array $parameters
+	 *
 	 * @return bool|Message
+	 * @throws JsonMapper_Exception
+	 * @throws TelegramException
 	 */
 	public function editMessageMedia($parameters) {
 		$response = $this->endpoint('editMessageMedia', $parameters);
@@ -1016,7 +1027,7 @@ class TelegramBot {
 	 * @param array $parameters
 	 * @return bool|Message
 	 * @throws TelegramException
-	 * @throws \JsonMapper_Exception
+	 * @throws JsonMapper_Exception
 	 */
 	public function editMessageReplyMarkup($parameters) {
 		$response = $this->endpoint('editMessageReplyMarkup', $parameters);
@@ -1034,10 +1045,14 @@ class TelegramBot {
 	}
 	
 	/**
-	 * Use this method to stop a poll which was sent by the bot. 
+	 * Use this method to stop a poll which was sent by the bot.
 	 * On success, the stopped Poll with the final results is returned.
+	 *
 	 * @param array $parameters
+	 *
 	 * @return bool|Message
+	 * @throws JsonMapper_Exception
+	 * @throws TelegramException
 	 */
 	public function stopPoll($parameters) {
 		$response = $this->endpoint('stopPoll', $parameters);
@@ -1089,7 +1104,7 @@ class TelegramBot {
 	 * @param array $parameters
 	 * @return Message
 	 * @throws TelegramException
-	 * @throws \JsonMapper_Exception
+	 * @throws JsonMapper_Exception
 	 */
 	public function sendSticker($parameters) {
 		$response = $this->endpoint("sendSticker", $parameters);
@@ -1104,7 +1119,7 @@ class TelegramBot {
 	 * @param string $name Short name of the sticker set that is used in t.me/addstickers/ URLs (e.g., animals)
 	 * @return StickerSet
 	 * @throws TelegramException
-	 * @throws \JsonMapper_Exception
+	 * @throws JsonMapper_Exception
 	 */
 	public function getStickerSet($name) {
 		$response = $this->endpoint("getStickerSet", ['name' => $name]);
@@ -1122,7 +1137,7 @@ class TelegramBot {
 	 *     dimensions must not exceed 512px, and either width or height must be exactly 512px.
 	 * @return File
 	 * @throws TelegramException
-	 * @throws \JsonMapper_Exception
+	 * @throws JsonMapper_Exception
 	 */
 	public function uploadStickerFile($user_id, $png_sticker) {
 		$response = $this->endpoint("uploadStickerFile", ['user_id' => $user_id, 'png_sticker' => $png_sticker]);
@@ -1262,7 +1277,7 @@ class TelegramBot {
 	 * On success, the sent Message is returned.
 	 * @param array $parameters
 	 * @return Message
-	 * @throws \JsonMapper_Exception
+	 * @throws JsonMapper_Exception
 	 * @throws TelegramException
 	 */
 	public function sendInvoice($parameters) {
@@ -1350,7 +1365,7 @@ class TelegramBot {
 	 * Use this method to send a game. On success, the sent Message is returned.
 	 * @param array $parameters
 	 * @return Message
-	 * @throws \JsonMapper_Exception
+	 * @throws JsonMapper_Exception
 	 * @throws TelegramException
 	 */
 	public function sendGame($parameters) {
@@ -1367,7 +1382,7 @@ class TelegramBot {
 	 * Returns an error, if the new score is not greater than the user's current score in the chat and force is False.
 	 * @param $parameters
 	 * @return bool|Message
-	 * @throws \JsonMapper_Exception
+	 * @throws JsonMapper_Exception
 	 * @throws TelegramException
 	 */
 	public function setGameScore($parameters) {
@@ -1557,10 +1572,10 @@ class TelegramBot {
 	/**
 	 * Get Package version
 	 * @return string
-	 * @throws \ReflectionException
+	 * @throws ReflectionException
 	 */
 	public static function getFrameworkVersion() {
-		$reflector = new \ReflectionClass(TelegramBot::class);
+		$reflector = new ReflectionClass(TelegramBot::class);
 		$vendorPath = preg_replace('/^(.*)\/composer\/ClassLoader\.php$/', '$1', $reflector->getFileName());
 		$vendorPath = dirname(dirname($vendorPath)) . DIRECTORY_SEPARATOR;
 		$content = file_get_contents($vendorPath . 'composer.json');
@@ -1599,7 +1614,7 @@ class TelegramBot {
 			/** @var Response $data */
 			$data = $this->mapper->map(json_decode($body), new Response());
 		}
-		catch(\JsonMapper_Exception $e) {
+		catch(JsonMapper_Exception $e) {
 			throw new TelegramException('The json cannot be mapped to object.');
 		}
 		
