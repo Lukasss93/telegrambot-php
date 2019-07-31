@@ -1,6 +1,10 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [1.6.14]
+### Changed
+- Updated to Telegram Bot API 4.4
+
 ## [1.6.13]
 ### Changed
 - Updated to Telegram Bot API 4.3

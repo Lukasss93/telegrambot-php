@@ -13,6 +13,9 @@ class Sticker {
 	/** @var int Sticker height */
 	public $height;
 	
+	/** @var bool True, if the sticker is animated */
+	public $is_animated;
+	
 	/** @var PhotoSize Optional. Sticker thumbnail in .webp or .jpg format */
 	public $thumb;
 	

@@ -8,6 +8,7 @@ use ReflectionClass;
 use ReflectionException;
 use TelegramBot\Types\Chat;
 use TelegramBot\Types\ChatMember;
+use TelegramBot\Types\ChatPermissions;
 use TelegramBot\Types\File;
 use TelegramBot\Types\GameHighScore;
 use TelegramBot\Types\Message;
@@ -29,22 +30,22 @@ class TelegramBot {
 	/** @var string Bot token */
 	private $token;
 	
-	/** @var bool Automatic split message*/
+	/** @var bool Automatic split message */
 	public $splitLongMessage = false;
 	
 	#endregion
 	
 	//region PROPERTIES
 	
-    /** @var JsonMapper */
-    private $mapper;
-
-    /** @var Update Webhook update */
-    public $webhookData;
-
-    /** @var Update[] GetUpdates data */
-    public $updatesData;
-    
+	/** @var JsonMapper */
+	private $mapper;
+	
+	/** @var Update Webhook update */
+	public $webhookData;
+	
+	/** @var Update[] GetUpdates data */
+	public $updatesData;
+	
 	//endregion
 	
 	/**
@@ -89,7 +90,7 @@ class TelegramBot {
 	 */
 	public function getUpdates($offset = 0, $limit = 100, $timeout = 0, $allowed_updates = []) {
 		$parameters = ['offset' => $offset, 'limit' => $limit, 'timeout' => $timeout];
-		if(count($allowed_updates) > 0) {
+		if (count($allowed_updates) > 0) {
 			$parameters['allowed_updates'] = $allowed_updates;
 		}
 		
@@ -100,7 +101,7 @@ class TelegramBot {
 		
 		$this->updatesData = $this->mapper->mapArray($updates, [], 'TelegramBot\Types\Update');
 		
-		if(count($this->updatesData) >= 1) {
+		if (count($this->updatesData) >= 1) {
 			$last_element_id = $this->updatesData[count($this->updatesData) - 1]->update_id + 1;
 			$parameters = ['offset' => $last_element_id, 'limit' => "1", 'timeout' => 100];
 			$this->endpoint("getUpdates", $parameters);
@@ -131,7 +132,7 @@ class TelegramBot {
 	 * @throws TelegramException
 	 */
 	public function setWebhook($parameters) {
-		if(isset($parameters['certificate'])) {
+		if (isset($parameters['certificate'])) {
 			$parameters['certificate'] = $this->encodeFile($parameters['certificate']);
 		}
 		
@@ -181,13 +182,12 @@ class TelegramBot {
 	public function getWebhookUpdate() {
 		$current = null;
 		
-		if($this->webhookData === null) {
+		if ($this->webhookData === null) {
 			$rawData = file_get_contents("php://input");
 			$current = json_decode($rawData);
 			
 			$current = $current === null ? null : $this->mapper->map($current, new Update());
-		}
-		else {
+		} else {
 			$current = $this->webhookData;
 		}
 		
@@ -200,7 +200,7 @@ class TelegramBot {
 	 * This method is an alias for "$this->getUpdates(-1);"
 	 * @throws TelegramException
 	 */
-	public function clearUpdates(){
+	public function clearUpdates() {
 		$this->getUpdates(-1);
 	}
 	
@@ -233,16 +233,15 @@ class TelegramBot {
 	 * @throws JsonMapper_Exception
 	 */
 	public function sendMessage($parameters) {
-		if($this->splitLongMessage) {
-			if(!isset($parameters['text'])) {
+		if ($this->splitLongMessage) {
+			if (!isset($parameters['text'])) {
 				throw new TelegramException('text parameter not set.');
-			}
-			else {
+			} else {
 				/** @var Message[] $messages */
 				$messages = [];
 				$amessages = mb_str_split($parameters['text'], 4096);
 				
-				foreach($amessages as $amessage) {
+				foreach ($amessages as $amessage) {
 					$parameters['text'] = $amessage;
 					$data = $this->endpoint('sendMessage', $parameters);
 					
@@ -252,8 +251,7 @@ class TelegramBot {
 				}
 				return $messages;
 			}
-		}
-		else {
+		} else {
 			$data = $this->endpoint('sendMessage', $parameters);
 			
 			/** @var Message $object */
@@ -440,10 +438,9 @@ class TelegramBot {
 	public function editMessageLiveLocation($parameters) {
 		$response = $this->endpoint("editMessageLiveLocation", $parameters);
 		
-		if(is_bool($response->result)) {
+		if (is_bool($response->result)) {
 			$object = $response->result;
-		}
-		else {
+		} else {
 			$object = $this->mapper->map($response->result, new Message());
 		}
 		
@@ -463,10 +460,9 @@ class TelegramBot {
 	public function stopMessageLiveLocation($parameters) {
 		$response = $this->endpoint("stopMessageLiveLocation", $parameters);
 		
-		if(is_bool($response->result)) {
+		if (is_bool($response->result)) {
 			$object = $response->result;
-		}
-		else {
+		} else {
 			$object = $this->mapper->map($response->result, new Message());
 		}
 		
@@ -556,7 +552,7 @@ class TelegramBot {
 			'limit'   => $limit
 		];
 		
-		if($offset !== null) {
+		if ($offset !== null) {
 			$parameters['offset'] = $offset;
 		}
 		
@@ -611,7 +607,7 @@ class TelegramBot {
 			'user_id' => $user_id
 		];
 		
-		if($until_date !== null) {
+		if ($until_date !== null) {
 			$options['until_date'] = $until_date;
 		}
 		
@@ -671,6 +667,26 @@ class TelegramBot {
 	 */
 	public function promoteChatMember($parameters) {
 		$response = $this->endpoint("promoteChatMember", $parameters);
+		
+		/** @var bool $object */
+		$object = $response->result;
+		return $object;
+	}
+	
+	/**
+	 * Use this method to set default chat permissions for all members.
+	 * The bot must be an administrator in the group or a supergroup for this to work and must have the can_restrict_members admin rights.
+	 * Returns True on success.
+	 * @param int|string $chat_id Unique identifier for the target chat or username of the target supergroup (in the format [at]supergroupusername)
+	 * @param ChatPermissions $permissions New default chat permissions
+	 * @return bool
+	 * @throws TelegramException
+	 */
+	public function setChatPermissions($chat_id, $permissions) {
+		$response = $this->endpoint("setChatPermissions", [
+			'chat_id'     => $chat_id,
+			'permissions' => $permissions
+		]);
 		
 		/** @var bool $object */
 		$object = $response->result;
@@ -778,7 +794,7 @@ class TelegramBot {
 	public function setChatDescription($chat_id, $description = null) {
 		$options = ['chat_id' => $chat_id];
 		
-		if($description !== null) {
+		if ($description !== null) {
 			$options['description'] = $description;
 		}
 		
@@ -809,7 +825,7 @@ class TelegramBot {
 			'message_id' => $message_id
 		];
 		
-		if($disable_notification) {
+		if ($disable_notification) {
 			$options['disable_notification'] = true;
 		}
 		
@@ -959,12 +975,11 @@ class TelegramBot {
 	public function editMessageText($parameters) {
 		$response = $this->endpoint('editMessageText', $parameters);
 		
-		if(is_bool($response->result)) {
+		if (is_bool($response->result)) {
 			/** @var bool $object */
 			$object = $response->result;
 			return $object;
-		}
-		else {
+		} else {
 			/** @var Message $object */
 			$object = $this->mapper->map($response->result, new Message());
 			return $object;
@@ -1009,12 +1024,11 @@ class TelegramBot {
 	public function editMessageMedia($parameters) {
 		$response = $this->endpoint('editMessageMedia', $parameters);
 		
-		if(is_bool($response->result)) {
+		if (is_bool($response->result)) {
 			/** @var bool $object */
 			$object = $response->result;
 			return $object;
-		}
-		else {
+		} else {
 			/** @var Message $object */
 			$object = $this->mapper->map($response->result, new Message());
 			return $object;
@@ -1032,12 +1046,11 @@ class TelegramBot {
 	public function editMessageReplyMarkup($parameters) {
 		$response = $this->endpoint('editMessageReplyMarkup', $parameters);
 		
-		if(is_bool($response->result)) {
+		if (is_bool($response->result)) {
 			/** @var bool $object */
 			$object = $response->result;
 			return $object;
-		}
-		else {
+		} else {
 			/** @var Message $object */
 			$object = $this->mapper->map($response->result, new Message());
 			return $object;
@@ -1076,7 +1089,7 @@ class TelegramBot {
 	 * - Bots granted can_post_messages permissions can delete outgoing messages in channels.
 	 * - If the bot is an administrator of a group, it can delete any message there.
 	 * - If the bot has can_delete_messages permission in a supergroup or a channel, it can delete any message there.
-	 * 
+	 *
 	 * Returns True on success.
 	 * @param $chat_id    int|string Unique identifier for the target chat or username of the target channel (in the
 	 *                    format @channelusername)
@@ -1388,12 +1401,11 @@ class TelegramBot {
 	public function setGameScore($parameters) {
 		$response = $this->endpoint('setGameScore', $parameters);
 		
-		if(is_bool($response->result)) {
+		if (is_bool($response->result)) {
 			/** @var bool $object */
 			$object = $response->result;
 			return $object;
-		}
-		else {
+		} else {
 			/** @var Message $object */
 			$object = $this->mapper->map($response->result, new Message());
 			return $object;
@@ -1437,7 +1449,7 @@ class TelegramBot {
 		$in = fopen($file_url, 'rb');
 		$out = fopen($local_file_path, 'wb');
 		
-		while($chunk = fread($in, 8192)) {
+		while ($chunk = fread($in, 8192)) {
 			fwrite($out, $chunk, 8192);
 		}
 		fclose($in);
@@ -1493,22 +1505,17 @@ class TelegramBot {
 			'text' => $text
 		];
 		
-		if($url != '') {
+		if ($url != '') {
 			$replyMarkup['url'] = $url;
-		}
-		else if($callback_data != '') {
+		} else if ($callback_data != '') {
 			$replyMarkup['callback_data'] = $callback_data;
-		}
-		else if($switch_inline_query != '') {
+		} else if ($switch_inline_query != '') {
 			$replyMarkup['switch_inline_query'] = $switch_inline_query;
-		}
-		else if($switch_inline_query_current_chat != '') {
+		} else if ($switch_inline_query_current_chat != '') {
 			$replyMarkup['switch_inline_query_current_chat'] = $switch_inline_query_current_chat;
-		}
-		else if($callback_game != '') {
+		} else if ($callback_game != '') {
 			$replyMarkup['callback_game'] = $callback_game;
-		}
-		else if($pay) {
+		} else if ($pay) {
 			$replyMarkup['pay'] = true;
 		}
 		
@@ -1602,27 +1609,26 @@ class TelegramBot {
 		//$info = $response['info'];
 		$error = $response['error'];
 		
-		if(!$result && $error != false) {
+		if (!$result && $error != false) {
 			throw new TelegramException("CURL request failed.\n" . $error);
 		}
 		
-		if(!is_json($body)) {
+		if (!is_json($body)) {
 			throw new TelegramException('The response cannot be parsed to json.');
 		}
 		
 		try {
 			/** @var Response $data */
 			$data = $this->mapper->map(json_decode($body), new Response());
-		}
-		catch(JsonMapper_Exception $e) {
+		} catch (JsonMapper_Exception $e) {
 			throw new TelegramException('The json cannot be mapped to object.');
 		}
 		
-		if(!$data->ok) {
+		if (!$data->ok) {
 			throw new TelegramException($data->description, $data->error_code);
 		}
 		
-		if(is_null($data) || is_null($data->result)) {
+		if (is_null($data) || is_null($data->result)) {
 			throw new TelegramException('Response or Response result is null!');
 		}
 		
@@ -1639,12 +1645,11 @@ class TelegramBot {
 	private function sendRequest($url, $parameters, $isPost) {
 		$request = curl_init();
 		
-		if(!$isPost) {
-			if($query = http_build_query($parameters)) {
+		if (!$isPost) {
+			if ($query = http_build_query($parameters)) {
 				$url .= '?' . $query;
 			}
-		}
-		else {
+		} else {
 			curl_setopt($request, CURLOPT_POST, true);
 			curl_setopt($request, CURLOPT_POSTFIELDS, $parameters);
 		}
@@ -1675,7 +1680,7 @@ class TelegramBot {
 	 */
 	private function encodeFile($file) {
 		$fp = fopen($file, 'r');
-		if($fp === false) {
+		if ($fp === false) {
 			throw new TelegramException('Cannot open "' . $file . '" for reading');
 		}
 		return $fp;

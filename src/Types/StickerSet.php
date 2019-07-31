@@ -10,6 +10,9 @@ class StickerSet {
 	/** @var string Sticker set title */
 	public $title;
 	
+	/** @var bool True, if the sticker is animated */
+	public $is_animated;
+	
 	/** @var bool True, if the sticker set contains masks */
 	public $is_masks;
 	

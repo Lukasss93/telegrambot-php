@@ -22,20 +22,26 @@ class Chat {
 	/** @var string Optional. Last name of the other party in a private chat */
 	public $last_name;
 	
-	/** @var bool Optional. True if a group has ‘All Members Are Admins’ enabled */
+	/** 
+	 * @var bool $all_members_are_administrators Optional. True if a group has ‘All Members Are Admins’ enabled 
+	 * @deprecated The field all_members_are_administrators has been removed from the documentation for the Chat object. The field is still returned in the object for backward compatibility, but new bots should use the permissions field instead.
+	 */
 	public $all_members_are_administrators;
 	
 	/** @var ChatPhoto Optional. Chat photo. Returned only in getChat. */
 	public $photo;
 	
-	/** @var string Optional. Description, for supergroups and channel chats. Returned only in getChat. */
+	/** @var string Optional. Description, for groups, supergroups and channel chats. Returned only in getChat. */
 	public $description;
 	
-	/** @var string Optional. Chat invite link, for supergroups and channel chats. Returned only in getChat. */
+	/** @var string Optional. Chat invite link, for groups, supergroups and channel chats. Each administrator in a chat generates their own invite links, so the bot must first generate the link using exportChatInviteLink. Returned only in getChat. */
 	public $invite_link;
 	
 	/** @var Message Optional. Pinned message, for supergroups. Returned only in getChat. */
 	public $pinned_message;
+	
+	/** @var ChatPermissions Optional. Default chat member permissions, for groups and supergroups. Returned only in getChat. */
+	public $permissions;
 	
 	/** @var string Optional. For supergroups, name of Group sticker set. Returned only in getChat. */
 	public $sticker_set_name;
