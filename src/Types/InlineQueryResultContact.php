@@ -5,39 +5,77 @@ namespace TelegramBot\Types;
 /**
  * Represents a contact with a phone number. By default, this contact will be sent by the user.
  * Alternatively, you can use input_message_content to send a message with the specified content instead of the contact.
+ *
  * Note: This will only work in Telegram versions released after 9 April, 2016. Older clients will ignore them.
+ * @see https://core.telegram.org/bots/api#inlinequeryresultcontact
  */
-class InlineQueryResultContact {
-	/** @var string Type of the result, must be contact */
-	public $type;
-	
-	/** @var string Unique identifier for this result, 1-64 Bytes */
-	public $id;
-	
-	/** @var string Contact's phone number */
-	public $phone_number;
-	
-	/** @var string Contact's first name */
-	public $first_name;
-	
-	/** @var string Optional. Contact's last name */
-	public $last_name;
-	
-	/** @var string $vcard Optional. Additional data about the contact in the form of a vCard*/
-	public $vcard;
-	
-	/** @var InlineKeyboardMarkup Optional. Inline keyboard attached to the message */
-	public $reply_markup;
-	
-	/** @var InputTextMessageContent|InputLocationMessageContent|InputVenueMessageContent|InputContactMessageContent Optional. Content of the message to be sent instead of the contact */
-	public $input_message_content;
-	
-	/** @var string Optional. Url of the thumbnail for the result */
-	public $thumb_url;
-	
-	/** @var int Optional. Thumbnail width */
-	public $thumb_width;
-	
-	/** @var int Optional. Thumbnail height */
-	public $thumb_height;
+class InlineQueryResultContact
+{
+    /**
+     * Type of the result, must be contact
+     * @var string $type
+     */
+    public $type;
+    
+    /**
+     * Unique identifier for this result, 1-64 Bytes
+     * @var string $id
+     */
+    public $id;
+    
+    /**
+     * Contact's phone number
+     * @var string $phone_number
+     */
+    public $phone_number;
+    
+    /**
+     * Contact's first name
+     * @var string $first_name
+     */
+    public $first_name;
+    
+    /**
+     * Optional. Contact's last name
+     * @var string $last_name
+     */
+    public $last_name;
+    
+    /**
+     * $vcard Optional. Additional data about the contact in the form of a vCard, 0-2048 bytes
+     * @var string $vcard
+     */
+    public $vcard;
+    
+    /**
+     * Optional.
+     * {@see https://core.telegram.org/bots#inline-keyboards-and-on-the-fly-updating Inline keyboard}
+     * attached to the message
+     * @var InlineKeyboardMarkup $reply_markup
+     */
+    public $reply_markup;
+    
+    /**
+     * Optional. Content of the message to be sent instead of the contact
+     * @var InputTextMessageContent|InputLocationMessageContent|InputVenueMessageContent|InputContactMessageContent $input_message_content
+     */
+    public $input_message_content;
+    
+    /**
+     * Optional. Url of the thumbnail for the result
+     * @var string $thumb_url
+     */
+    public $thumb_url;
+    
+    /**
+     * Optional. Thumbnail width
+     * @var int $thumb_width
+     */
+    public $thumb_width;
+    
+    /**
+     * Optional. Thumbnail height
+     * @var int $thumb_height
+     */
+    public $thumb_height;
 }

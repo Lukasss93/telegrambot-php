@@ -5,45 +5,89 @@ namespace TelegramBot\Types;
 /**
  * Represents a venue. By default, the venue will be sent by the user.
  * Alternatively, you can use input_message_content to send a message with the specified content instead of the venue.
+ *
  * Note: This will only work in Telegram versions released after 9 April, 2016. Older clients will ignore them.
+ * @see https://core.telegram.org/bots/api#inlinequeryresultvenue
  */
-class InlineQueryResultVenue {
-	/** @var string Type of the result, must be venue */
-	public $type;
-	
-	/** @var string Unique identifier for this result, 1-64 Bytes */
-	public $id;
-	
-	/** @var double Latitude of the venue location in degrees */
-	public $latitude;
-	
-	/** @var double Longitude of the venue location in degrees */
-	public $longitude;
-	
-	/** @var string Title of the venue */
-	public $title;
-	
-	/** @var string Address of the venue */
-	public $address;
-	
-	/** @var string Optional. Foursquare identifier of the venue if known */
-	public $foursquare_id;
-	
-	/** @var string $foursquare_type Optional. Foursquare type of the venue. (For example, “arts_entertainment/default”, “arts_entertainment/aquarium” or “food/icecream”.) */
-	public $foursquare_type;
-	
-	/** @var InlineKeyboardMarkup Optional. Inline keyboard attached to the message */
-	public $reply_markup;
-	
-	/** @var InputTextMessageContent|InputLocationMessageContent|InputVenueMessageContent|InputContactMessageContent Optional. Content of the message to be sent instead of the venue */
-	public $input_message_content;
-	
-	/** @var string Optional. Url of the thumbnail for the result */
-	public $thumb_url;
-	
-	/** @var int Optional. Thumbnail width */
-	public $thumb_width;
-	
-	/** @var int Optional. Thumbnail height */
-	public $thumb_height;
+class InlineQueryResultVenue
+{
+    /**
+     * Type of the result, must be venue
+     * @var string $type
+     */
+    public $type;
+    
+    /**
+     * Unique identifier for this result, 1-64 Bytes
+     * @var string $id
+     */
+    public $id;
+    
+    /**
+     * Latitude of the venue location in degrees
+     * @var double $latitude
+     */
+    public $latitude;
+    
+    /**
+     * Longitude of the venue location in degrees
+     * @var double $longitude
+     */
+    public $longitude;
+    
+    /**
+     * Title of the venue
+     * @var string $title
+     */
+    public $title;
+    
+    /**
+     * Address of the venue
+     * @var string $address
+     */
+    public $address;
+    
+    /**
+     * Optional. Foursquare identifier of the venue if known
+     * @var string $foursquare_id
+     */
+    public $foursquare_id;
+    
+    /**
+     * $foursquare_type Optional. Foursquare type of the venue. (For example, “arts_entertainment/default”, “arts_entertainment/aquarium” or “food/icecream”.)
+     * @var string $foursquare_type
+     */
+    public $foursquare_type;
+    
+    /**
+     * Optional.
+     * {@see https://core.telegram.org/bots#inline-keyboards-and-on-the-fly-updating Inline keyboard}
+     * attached to the message
+     * @var InlineKeyboardMarkup $reply_markup
+     */
+    public $reply_markup;
+    
+    /**
+     * Optional. Content of the message to be sent instead of the venue
+     * @var InputTextMessageContent|InputLocationMessageContent|InputVenueMessageContent|InputContactMessageContent $input_message_content
+     */
+    public $input_message_content;
+    
+    /**
+     * Optional. Url of the thumbnail for the result
+     * @var string $thumb_url
+     */
+    public $thumb_url;
+    
+    /**
+     * Optional. Thumbnail width
+     * @var int $thumb_width
+     */
+    public $thumb_width;
+    
+    /**
+     * Optional. Thumbnail height
+     * @var int $thumb_height
+     */
+    public $thumb_height;
 }

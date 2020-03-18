@@ -1,7 +1,7 @@
 # TelegramBot-PHP
 
-[![API](https://img.shields.io/badge/Telegram%20Bot%20API-4.4%20--%20July%2029%2C%202019-blue.svg)](https://core.telegram.org/bots/api)
-![PHP](https://img.shields.io/badge/php-%3E%3D5.6-8892bf.svg)
+[![API](https://img.shields.io/badge/Telegram%20Bot%20API-4.6%20--%20January%2023%2C%202020-blue.svg)](https://core.telegram.org/bots/api)
+![PHP](https://img.shields.io/badge/php-%3E%3D7.2-8892bf.svg)
 ![CURL](https://img.shields.io/badge/cURL-required-green.svg)
 
 [![Latest Stable Version](https://poser.pugx.org/lukasss93/telegrambot-php/v/stable)](https://packagist.org/packages/lukasss93/telegrambot-php)
@@ -13,7 +13,7 @@
 Requirements
 ---------
 
-* PHP >= 5.6
+* PHP >= 7.2
 * Curl for PHP must be enabled.
 * Telegram API Key, you can get one simply with [@BotFather](https://core.telegram.org/bots#botfather) with simple commands right after creating your bot.
 
@@ -210,34 +210,34 @@ buildForceReply($selective=true)
 Show a Reply interface to the user.  
 Check [ForceReply](https://core.telegram.org/bots/api#forcereply) for more info.
 
-Emoticons
-------------
-For a list of emoticons to use in your bot messages, please refer to the column Bytes of this table:
-http://apps.timwhitlock.info/emoji/tables/unicode
-
 Contact me
 ------------
 You can contact me [via Telegram](https://telegram.me/Lukasss93) but if you have an issue 
 please [open](https://github.com/Lukasss93/telegrambot-php/issues) one.
 
 To-Do list
-------------
-![in progress](https://img.shields.io/badge/Status-In%20progress-green.svg)
+----------
+* Optional predictive parameters in methods
 * Optimize keyboards
-
-![not started](https://img.shields.io/badge/Status-Not%20started-red.svg)
-
 * Chat conversations
 * Commands listener with callback + events
-
-![new version](https://img.shields.io/badge/Status-New%20version%20(2.0)%20--%20WIP-blue.svg)
-* Optional predictive parameters in methods
 
 Changelog
 ------------
 All notable changes to this project will be documented [here](https://github.com/Lukasss93/telegrambot-php/blob/master/CHANGELOG.md).
 
 ### Recent changes
-## [1.6.14]
+## [1.7] - 2020-03-18
 ### Changed
-- Updated to Telegram Bot API 4.4
+- Added support for **PHP 7.2+**
+- Updated to Telegram Bot API 4.5 + 4.6
+- Improved PHPDocs
+- Updated code indentation to PSR-12 standard
+- Updated LICENSE file
+- Updated CHANGELOG file using [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
+
+### Fixed
+- Missing fields in some types
+
+### Removed
+- Dropped support for **PHP 5.6**

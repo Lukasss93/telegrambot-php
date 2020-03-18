@@ -2,7 +2,8 @@
 
 namespace TelegramBot\Constants;
 
-class ParseModes {
-	const MARKDOWN = 'markdown';
-	const HTML = 'html';
+class ParseModes
+{
+    public const MARKDOWN = 'markdown';
+    public const HTML = 'html';
 }

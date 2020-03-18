@@ -2,17 +2,33 @@
 
 namespace TelegramBot\Types;
 
-/** This object contains information about an incoming shipping query. */
-class ShippingQuery {
-	/** @var string Unique query identifier */
-	public $id;
-	
-	/** @var User    User who sent the query */
-	public $from;
-	
-	/** @var string Bot specified invoice payload */
-	public $invoice_payload;
-	
-	/** @var ShippingAddress User specified shipping address */
-	public $shipping_address;
+/**
+ * This object contains information about an incoming shipping query.
+ * @see https://core.telegram.org/bots/api#shippingquery
+ */
+class ShippingQuery
+{
+    /**
+     * Unique query identifier
+     * @var string $id
+     */
+    public $id;
+    
+    /**
+     * User who sent the query
+     * @var User $from
+     */
+    public $from;
+    
+    /**
+     * Bot specified invoice payload
+     * @var string $invoice_payload
+     */
+    public $invoice_payload;
+    
+    /**
+     * User specified shipping address
+     * @var ShippingAddress $shipping_address
+     */
+    public $shipping_address;
 }

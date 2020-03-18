@@ -2,14 +2,27 @@
 
 namespace TelegramBot\Types;
 
-/** This object represents one shipping option. */
-class ShippingOption {
-	/** @var string Shipping option identifier */
-	public $id;
-	
-	/** @var string Option title */
-	public $title;
-	
-	/** @var LabeledPrice[] List of price portions */
-	public $prices;
+/**
+ * This object represents one shipping option.
+ * @see https://core.telegram.org/bots/api#shippingoption
+ */
+class ShippingOption
+{
+    /**
+     * Shipping option identifier
+     * @var string $id
+     */
+    public $id;
+    
+    /**
+     * Option title
+     * @var string $title
+     */
+    public $title;
+    
+    /**
+     * List of price portions
+     * @var LabeledPrice[] $prices
+     */
+    public $prices;
 }

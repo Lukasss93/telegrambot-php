@@ -4,12 +4,19 @@ namespace TelegramBot\Types;
 
 /**
  * This object contains information about one answer option in a poll.
- * @package TelegramBot\Types
+ * @see https://core.telegram.org/bots/api#polloption
  */
-class PollOption {
-	/** @var string Option text, 1-100 characters */
-	public $text;
-	
-	/** @var int Number of users that voted for this option */
-	public $voter_count;
+class PollOption
+{
+    /**
+     * Option text, 1-100 characters
+     * @var string $text
+     */
+    public $text;
+    
+    /**
+     * Number of users that voted for this option
+     * @var int $voter_count
+     */
+    public $voter_count;
 }

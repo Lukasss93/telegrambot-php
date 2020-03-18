@@ -2,11 +2,21 @@
 
 namespace TelegramBot\Types;
 
-/** This object represent a user's profile pictures. */
-class UserProfilePhotos {
-	/** @var int Total number of profile pictures the target user has */
-	public $total_count;
-	
-	/** @var PhotoSize[][] Requested profile pictures (in up to 4 sizes each) */
-	public $photos;
+/**
+ * This object represent a user's profile pictures.
+ * @see https://core.telegram.org/bots/api#userprofilephotos
+ */
+class UserProfilePhotos
+{
+    /**
+     * Total number of profile pictures the target user has
+     * @var int $total_count
+     */
+    public $total_count;
+    
+    /**
+     * Requested profile pictures (in up to 4 sizes each)
+     * @var PhotoSize[][] $photos
+     */
+    public $photos;
 }

@@ -2,38 +2,77 @@
 
 namespace TelegramBot\Types;
 
-/** Represents a link to an article or web page. */
-class InlineQueryResultArticle {
-	/** @var string Type of the result, must be article */
-	public $type;
-	
-	/** @var string Unique identifier for this result, 1-64 Bytes */
-	public $id;
-	
-	/** @var string Title of the result */
-	public $title;
-	
-	/** @var InputTextMessageContent|InputLocationMessageContent|InputVenueMessageContent|InputContactMessageContent Content of the message to be sent */
-	public $input_message_content;
-	
-	/** @var InlineKeyboardMarkup Optional. Inline keyboard attached to the message */
-	public $reply_markup;
-	
-	/** @var string Optional. URL of the result */
-	public $url;
-	
-	/** @var bool Optional. Pass True, if you don't want the URL to be shown in the message */
-	public $hide_url;
-	
-	/** @var string Optional. Short description of the result */
-	public $description;
-	
-	/** @var string Optional. Url of the thumbnail for the result */
-	public $thumb_url;
-	
-	/** @var int Optional. Thumbnail width */
-	public $thumb_width;
-	
-	/** @var int Optional. Thumbnail height */
-	public $thumb_height;
+/**
+ * Represents a link to an article or web page.
+ * @see https://core.telegram.org/bots/api#inlinequeryresultarticle
+ */
+class InlineQueryResultArticle
+{
+    /**
+     * Type of the result, must be article
+     * @var string $type
+     */
+    public $type;
+    
+    /**
+     * Unique identifier for this result, 1-64 Bytes
+     * @var string $id
+     */
+    public $id;
+    
+    /**
+     * Title of the result
+     * @var string $title
+     */
+    public $title;
+    
+    /**
+     * Content of the message to be sent
+     * @var InputTextMessageContent|InputLocationMessageContent|InputVenueMessageContent|InputContactMessageContent $input_message_content
+     */
+    public $input_message_content;
+    
+    /**
+     * Optional.
+     * {@see https://core.telegram.org/bots#inline-keyboards-and-on-the-fly-updating Inline keyboard}
+     * attached to the message
+     * @var InlineKeyboardMarkup $reply_markup
+     */
+    public $reply_markup;
+    
+    /**
+     * Optional. URL of the result
+     * @var string $url
+     */
+    public $url;
+    
+    /**
+     * Optional. Pass True, if you don't want the URL to be shown in the message
+     * @var bool $hide_url
+     */
+    public $hide_url;
+    
+    /**
+     * Optional. Short description of the result
+     * @var string $description
+     */
+    public $description;
+    
+    /**
+     * Optional. Url of the thumbnail for the result
+     * @var string $thumb_url
+     */
+    public $thumb_url;
+    
+    /**
+     * Optional. Thumbnail width
+     * @var int $thumb_width
+     */
+    public $thumb_width;
+    
+    /**
+     * Optional. Thumbnail height
+     * @var int $thumb_height
+     */
+    public $thumb_height;
 }

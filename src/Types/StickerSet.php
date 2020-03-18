@@ -2,20 +2,39 @@
 
 namespace TelegramBot\Types;
 
-/** This object represents a sticker. */
-class StickerSet {
-	/** @var string Sticker set name */
-	public $name;
-	
-	/** @var string Sticker set title */
-	public $title;
-	
-	/** @var bool True, if the sticker is animated */
-	public $is_animated;
-	
-	/** @var bool True, if the sticker set contains masks */
-	public $is_masks;
-	
-	/** @var Sticker[] List of all set stickers */
-	public $stickers;
+/**
+ * This object represents a sticker.
+ * @see https://core.telegram.org/bots/api#stickerset
+ */
+class StickerSet
+{
+    /**
+     * Sticker set name
+     * @var string $name
+     */
+    public $name;
+    
+    /**
+     * Sticker set title
+     * @var string $title
+     */
+    public $title;
+    
+    /**
+     * True, if the sticker is animated
+     * @var bool $is_animated
+     */
+    public $is_animated;
+    
+    /**
+     * True, if the sticker set contains masks
+     * @var bool $contains_masks
+     */
+    public $contains_masks;
+    
+    /**
+     * List of all set stickers
+     * @var Sticker[] $stickers
+     */
+    public $stickers;
 }

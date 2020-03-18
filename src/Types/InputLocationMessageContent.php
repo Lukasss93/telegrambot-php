@@ -3,13 +3,27 @@
 namespace TelegramBot\Types;
 
 /**
- * Represents the content of a location message to be sent as the result of an inline query.
- * Note: This will only work in Telegram versions released after 9 April, 2016. Older clients will ignore them.
+ * Represents the {@see https://core.telegram.org/bots/api#inputmessagecontent content}
+ * of a location message to be sent as the result of an inline query.
+ * @see https://core.telegram.org/bots/api#inputlocationmessagecontent
  */
-class InputLocationMessageContent {
-	/** @var double Latitude of the location in degrees */
-	public $latitude;
-	
-	/** @var double Longitude of the location in degrees */
-	public $longitude;
+class InputLocationMessageContent
+{
+    /**
+     * Latitude of the location in degrees
+     * @var double $latitude
+     */
+    public $latitude;
+    
+    /**
+     * Longitude of the location in degrees
+     * @var double $longitude
+     */
+    public $longitude;
+    
+    /**
+     * Optional. Period in seconds for which the location can be updated, should be between 60 and 86400.
+     * @var int $live_period
+     */
+    public $live_period;
 }

@@ -3,11 +3,19 @@
 namespace TelegramBot\Types;
 
 /**
- * This object represents an inline keyboard that appears right next to the message it belongs to.
- * Note: This will only work in Telegram versions released after 9 April, 2016. Older clients will display unsupported
- * message.
+ * This object represents an
+ * {@see https://core.telegram.org/bots#inline-keyboards-and-on-the-fly-updating inline keyboard}
+ * that appears right next to the message it belongs to.
+ *
+ * Note: This will only work in Telegram versions released after 9 April, 2016. Older clients will display unsupported message.
+ * @see https://core.telegram.org/bots/api#inlinekeyboardmarkup
  */
-class InlineKeyboardMarkup {
-	/** @var InlineKeyboardButton[][] Array of button rows, each represented by an Array of InlineKeyboardButton objects */
-	public $inline_keyboard;
+class InlineKeyboardMarkup
+{
+    /**
+     * Array of button rows, each represented by an Array of
+     * {@see https://core.telegram.org/bots/api#inlinekeyboardbutton InlineKeyboardButton} objects
+     * @var InlineKeyboardButton[][] $inline_keyboard
+     */
+    public $inline_keyboard;
 }

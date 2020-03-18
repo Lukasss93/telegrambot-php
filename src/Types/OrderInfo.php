@@ -2,17 +2,33 @@
 
 namespace TelegramBot\Types;
 
-/** This object represents information about an order. */
-class OrderInfo {
-	/** @var string Optional. User name */
-	public $name;
-	
-	/** @var string Optional. User's phone number */
-	public $phone_number;
-	
-	/** @var string Optional. User email */
-	public $email;
-	
-	/** @var ShippingAddress Optional. User shipping address */
-	public $shipping_address;
+/**
+ * This object represents information about an order.
+ * @see https://core.telegram.org/bots/api#orderinfo
+ */
+class OrderInfo
+{
+    /**
+     * Optional. User name
+     * @var string $name
+     */
+    public $name;
+    
+    /**
+     * Optional. User's phone number
+     * @var string $phone_number
+     */
+    public $phone_number;
+    
+    /**
+     * Optional. User email
+     * @var string $email
+     */
+    public $email;
+    
+    /**
+     * Optional. User shipping address
+     * @var ShippingAddress $shipping_address
+     */
+    public $shipping_address;
 }
