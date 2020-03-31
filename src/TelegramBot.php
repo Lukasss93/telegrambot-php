@@ -6,6 +6,7 @@ use JsonMapper;
 use JsonMapper_Exception;
 use ReflectionClass;
 use ReflectionException;
+use TelegramBot\Types\BotCommand;
 use TelegramBot\Types\Chat;
 use TelegramBot\Types\ChatMember;
 use TelegramBot\Types\ChatPermissions;
@@ -60,223 +61,6 @@ class TelegramBot
     //region GETTING UPDATES
     
     /**
-     * Incoming update from webhook
-     * @return Update|null
-     * @throws JsonMapper_Exception
-     */
-    public function getWebhookUpdate(): ?Update
-    {
-        $current = null;
-        
-        if ($this->webhookData === null) {
-            $rawData = file_get_contents('php://input');
-            $current = json_decode($rawData, false);
-            
-            $current = $current === null ? null : $this->mapper->map($current, new Update());
-        } else {
-            $current = $this->webhookData;
-        }
-        
-        /** @var Update|null $current */
-        return $current;
-    }
-    
-    /**
-     * Get Package version
-     * @return string
-     * @throws ReflectionException
-     */
-    public static function getFrameworkVersion(): string
-    {
-        $reflector = new ReflectionClass(__CLASS__);
-        $vendorPath = preg_replace('/^(.*)\/composer\/ClassLoader\.php$/', '$1', $reflector->getFileName());
-        $vendorPath = dirname($vendorPath, 2) . DIRECTORY_SEPARATOR;
-        $content = file_get_contents($vendorPath . 'composer.json');
-        $content = json_decode($content, true);
-        return $content['version'];
-    }
-    
-    /**
-     * Use this method to specify a url and receive incoming updates via an outgoing webhook.
-     * Whenever there is an update for the bot, we will send an HTTPS POST request to the specified url,
-     * containing a JSON-serialized Update.
-     * In case of an unsuccessful request, we will give up after a reasonable amount of attempts.
-     * Returns true.If you'd like to make sure that the Webhook request comes from Telegram,
-     * we recommend using a secret path in the URL, e.g. https://www.example.com/<token>.
-     * Since nobody else knows your bot‘s token, you can be pretty sure it’s us.
-     *
-     * Notes
-     * 1. You will not be able to receive updates using getUpdates for as long as an outgoing webhook is set up.
-     * 2. To use a self-signed certificate, you need to upload your public key certificate using certificate parameter.
-     * Please upload as InputFile, sending a String will not work.
-     * 3. Ports currently supported for Webhooks: 443, 80, 88, 8443.
-     * NEW! If you're having any trouble setting up webhooks,
-     * please check out this amazing guide to Webhooks: https://core.telegram.org/bots/webhooks.
-     *
-     * @param array $parameters
-     * @return bool
-     * @throws TelegramException
-     */
-    public function setWebhook($parameters): bool
-    {
-        if (isset($parameters['certificate'])) {
-            $parameters['certificate'] = $this->encodeFile($parameters['certificate']);
-        }
-        
-        $data = $this->endpoint('setWebhook', $parameters);
-        $object = $data->result;
-        
-        /** @var bool $object */
-        return $object;
-    }
-    
-    /**
-     * Encode file
-     * @param string $file
-     * @return resource
-     * @throws TelegramException
-     */
-    private function encodeFile($file)
-    {
-        $fp = fopen($file, 'rb');
-        if ($fp === false) {
-            throw new TelegramException('Cannot open "' . $file . '" for reading');
-        }
-        return $fp;
-    }
-    
-    /**
-     * Endpoint request
-     * @param string $api API
-     * @param array $parameters Parameters to send
-     * @param bool $isPost Request method
-     * @return Response
-     * @throws TelegramException
-     */
-    public function endpoint($api, $parameters, $isPost = true): Response
-    {
-        $response = $this->sendRequest(
-            'https://api.telegram.org/bot' . $this->token . '/' . $api,
-            $parameters,
-            $isPost
-        );
-        $result = $response['result'];
-        $body = $response['body'];
-        //$info = $response['info'];
-        $error = $response['error'];
-        
-        if (!$result && $error !== false) {
-            throw new TelegramException("CURL request failed.\n" . $error);
-        }
-        
-        if (!is_json($body)) {
-            throw new TelegramException('The response cannot be parsed to json.');
-        }
-        
-        try {
-            /** @var Response $data */
-            $data = $this->mapper->map(json_decode($body, false), new Response());
-        } catch (JsonMapper_Exception $e) {
-            throw new TelegramException('The json cannot be mapped to object.');
-        }
-        
-        if (!$data->ok) {
-            throw new TelegramException($data->description, $data->error_code);
-        }
-        
-        if ($data === null || $data->result === null) {
-            throw new TelegramException('Response or Response result is null!');
-        }
-        
-        return $data;
-    }
-    
-    /**
-     * Send a API request to Telegram
-     * @param string $url Endpoint API
-     * @param array $parameters Parameters to send
-     * @param bool $isPost Request method. Allowed: GET, POST
-     * @return array
-     */
-    private function sendRequest($url, $parameters, $isPost): array
-    {
-        $request = curl_init();
-        
-        if (!$isPost) {
-            if ($query = http_build_query($parameters)) {
-                $url .= '?' . $query;
-            }
-        } else {
-            curl_setopt($request, CURLOPT_POST, true);
-            curl_setopt($request, CURLOPT_POSTFIELDS, $parameters);
-        }
-        
-        curl_setopt($request, CURLOPT_URL, $url);
-        curl_setopt($request, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($request, CURLOPT_SSL_VERIFYPEER, true);
-        
-        $body = curl_exec($request);
-        $info = curl_getinfo($request);
-        $error = curl_error($request);
-        
-        curl_close($request);
-        
-        return [
-            'result' => $body !== false,
-            'body' => $body,
-            'info' => $info,
-            'error' => empty($error) ? false : $error
-        ];
-    }
-    
-    //endregion
-    
-    //region AVAILABLE METHODS
-    
-    /**
-     * Use this method to remove webhook integration if you decide to switch back to getUpdates.
-     * Returns True on success. Requires no parameters.
-     * @return bool
-     * @throws TelegramException
-     */
-    public function deleteWebhook(): bool
-    {
-        $data = $this->endpoint('deleteWebhook', []);
-        $object = $data->result;
-        
-        /** @var bool $object */
-        return $object;
-    }
-    
-    /**
-     * Use this method to get current webhook status.
-     * Requires no parameters.
-     * On success, returns a WebhookInfo object.
-     * If the bot is using getUpdates, will return an object with the url field empty.
-     * @return WebhookInfo
-     * @throws TelegramException
-     * @throws JsonMapper_Exception
-     */
-    public function getWebhookInfo(): WebhookInfo
-    {
-        $data = $this->endpoint('getWebhookInfo', [], false);
-        $object = $this->mapper->map($data->result, new WebhookInfo());
-        
-        /** @var WebhookInfo $object */
-        return $object;
-    }
-    
-    /**
-     * Clear all updates stored on Telegram Server.
-     * This method is an alias for "$this->getUpdates(-1);"
-     * @throws TelegramException
-     */
-    public function clearUpdates(): void
-    {
-        $this->getUpdates(-1);
-    }
-    
-    /**
      * Use this method to receive incoming updates using long polling (wiki). An Array of Update objects is returned.
      * Note: This method will not work if an outgoing webhook is set up.
      * @param int $offset Identifier of the first update to be returned. Must be greater by one than the highest
@@ -321,6 +105,109 @@ class TelegramBot
         
         return $this->updatesData;
     }
+    
+    /**
+     * Use this method to specify a url and receive incoming updates via an outgoing webhook.
+     * Whenever there is an update for the bot, we will send an HTTPS POST request to the specified url,
+     * containing a JSON-serialized Update.
+     * In case of an unsuccessful request, we will give up after a reasonable amount of attempts.
+     * Returns true.If you'd like to make sure that the Webhook request comes from Telegram,
+     * we recommend using a secret path in the URL, e.g. https://www.example.com/<token>.
+     * Since nobody else knows your bot‘s token, you can be pretty sure it’s us.
+     *
+     * Notes
+     * 1. You will not be able to receive updates using getUpdates for as long as an outgoing webhook is set up.
+     * 2. To use a self-signed certificate, you need to upload your public key certificate using certificate parameter.
+     * Please upload as InputFile, sending a String will not work.
+     * 3. Ports currently supported for Webhooks: 443, 80, 88, 8443.
+     * NEW! If you're having any trouble setting up webhooks,
+     * please check out this amazing guide to Webhooks: https://core.telegram.org/bots/webhooks.
+     *
+     * @param array $parameters
+     * @return bool
+     * @throws TelegramException
+     */
+    public function setWebhook($parameters): bool
+    {
+        if (isset($parameters['certificate'])) {
+            $parameters['certificate'] = $this->encodeFile($parameters['certificate']);
+        }
+        
+        $data = $this->endpoint('setWebhook', $parameters);
+        $object = $data->result;
+        
+        /** @var bool $object */
+        return $object;
+    }
+    
+    /**
+     * Use this method to remove webhook integration if you decide to switch back to getUpdates.
+     * Returns True on success. Requires no parameters.
+     * @return bool
+     * @throws TelegramException
+     */
+    public function deleteWebhook(): bool
+    {
+        $data = $this->endpoint('deleteWebhook', []);
+        $object = $data->result;
+        
+        /** @var bool $object */
+        return $object;
+    }
+    
+    /**
+     * Use this method to get current webhook status.
+     * Requires no parameters.
+     * On success, returns a WebhookInfo object.
+     * If the bot is using getUpdates, will return an object with the url field empty.
+     * @return WebhookInfo
+     * @throws TelegramException
+     * @throws JsonMapper_Exception
+     */
+    public function getWebhookInfo(): WebhookInfo
+    {
+        $data = $this->endpoint('getWebhookInfo', [], false);
+        $object = $this->mapper->map($data->result, new WebhookInfo());
+        
+        /** @var WebhookInfo $object */
+        return $object;
+    }
+    
+    /**
+     * Incoming update from webhook
+     * @return Update|null
+     * @throws JsonMapper_Exception
+     */
+    public function getWebhookUpdate(): ?Update
+    {
+        $current = null;
+        
+        if ($this->webhookData === null) {
+            $rawData = file_get_contents('php://input');
+            $current = json_decode($rawData, false);
+            
+            $current = $current === null ? null : $this->mapper->map($current, new Update());
+        } else {
+            $current = $this->webhookData;
+        }
+        
+        /** @var Update|null $current */
+        return $current;
+    }
+    
+    /**
+     * Clear all updates stored on Telegram Server.
+     * This method is an alias for "$this->getUpdates(-1);"
+     * @throws TelegramException
+     */
+    public function clearUpdates(): void
+    {
+        $this->getUpdates(-1);
+    }
+    
+    //endregion
+    
+    //region AVAILABLE METHODS
     
     /**
      * A simple method for testing your bot's auth token.
@@ -642,6 +529,26 @@ class TelegramBot
     public function sendPoll($parameters): Message
     {
         $response = $this->endpoint('sendPoll', $parameters);
+        
+        /** @var Message $object */
+        $object = $this->mapper->map($response->result, new Message());
+        return $object;
+    }
+    
+    /**
+     * Use this method to send a dice, which will have a random value from 1 to 6. On success, the sent Message is returned.
+     * (Yes, we're aware of the “proper” singular of die. But it's awkward, and we decided to help it change. One dice at a time!)
+     * @see https://core.telegram.org/bots/api#senddice
+     *
+     * @param array $parameters
+     *
+     * @return Message
+     * @throws TelegramException
+     * @throws JsonMapper_Exception
+     */
+    public function sendDice($parameters): Message
+    {
+        $response = $this->endpoint('sendDice', $parameters);
         
         /** @var Message $object */
         $object = $this->mapper->map($response->result, new Message());
@@ -1076,10 +983,6 @@ class TelegramBot
         return $object;
     }
     
-    //endregion
-    
-    //region UPDATING MESSAGES
-    
     /**
      * Use this method to get a list of administrators in a chat.
      * On success, returns an Array of ChatMember objects that contains
@@ -1143,6 +1046,48 @@ class TelegramBot
     }
     
     /**
+     * Use this method to set a new group sticker set for a supergroup.
+     * The bot must be an administrator in the chat for this to work and must have the appropriate admin rights.
+     * Use the field can_set_sticker_set optionally returned in getChat requests to check if the bot can use this
+     * method. Returns True on success.
+     * @param int|string $chat_id Unique identifier for the target chat or username of the target supergroup (in the
+     *     format [at]supergroupusername)
+     * @param string $sticker_set_name Name of the sticker set to be set as the group sticker set
+     * @return bool
+     * @throws TelegramException
+     */
+    public function setChatStickerSet($chat_id, $sticker_set_name): bool
+    {
+        $response = $this->endpoint(
+            'setChatStickerSet',
+            ['chat_id' => $chat_id, 'sticker_set_name' => $sticker_set_name]
+        );
+        
+        /** @var bool $object */
+        $object = $response->result;
+        return $object;
+    }
+    
+    /**
+     * Use this method to delete a group sticker set from a supergroup.
+     * The bot must be an administrator in the chat for this to work and must have the appropriate admin rights.
+     * Use the field can_set_sticker_set optionally returned in getChat requests to check if the bot can use this
+     * method. Returns True on success.
+     * @param int|string $chat_id Unique identifier for the target chat or username of the target supergroup (in the
+     *     format [at]supergroupusername)
+     * @return bool
+     * @throws TelegramException
+     */
+    public function deleteChatStickerSet($chat_id): bool
+    {
+        $response = $this->endpoint('deleteChatStickerSet', ['chat_id' => $chat_id]);
+        
+        /** @var bool $object */
+        $object = $response->result;
+        return $object;
+    }
+    
+    /**
      * Use this method to send answers to callback queries sent from inline keyboards.
      * The answer will be displayed to the user as a notification at the top of the chat screen or as an alert.
      * On success, True is returned.
@@ -1162,6 +1107,45 @@ class TelegramBot
         
         return $object;
     }
+    
+    /**
+     * Use this method to change the list of the bot's commands. Returns True on success.
+     * @see https://core.telegram.org/bots/api#setmycommands
+     * @param BotCommand[] $commands A JSON-serialized list of bot commands to be set as the list of the bot's commands. At most 100 commands can be specified.
+     * @return bool
+     * @throws TelegramException
+     */
+    public function setMyCommands($commands): bool
+    {
+        $response = $this->endpoint('setMyCommands', ['commands' => json_encode($commands, true)]);
+        
+        /** @var bool $object */
+        $object = $response->result;
+        return $object;
+    }
+    
+    /**
+     * UUse this method to get the current list of the bot's commands. Requires no parameters. Returns Array of BotCommand on success.
+     * @see https://core.telegram.org/bots/api#getmycommands
+     * @return BotCommand[]
+     * @throws TelegramException
+     */
+    public function getMyCommands(): array
+    {
+        $response = $this->endpoint('getMyCommands');
+    
+        /** @var array $resultArray */
+        $resultArray = $response->result;
+    
+        /** @var BotCommand[] $object */
+        $object = $this->mapper->mapArray($resultArray, [], BotCommand::class);
+        
+        return $object;
+    }
+    
+    //endregion
+    
+    //region UPDATING MESSAGES
     
     /**
      * Use this method to edit text and game messages sent by the bot or via the bot (for inline bots).
@@ -1208,10 +1192,6 @@ class TelegramBot
         $object = $this->mapper->map($response->result, new Message());
         return $object;
     }
-    
-    //endregion
-    
-    //region STICKERS
     
     /**
      * Use this method to edit animation, audio, document, photo, or video messages.
@@ -1320,6 +1300,10 @@ class TelegramBot
         return $object;
     }
     
+    //endregion
+    
+    //region STICKERS
+    
     /**
      * Use this method to send .webp stickers. On success, the sent Message is returned.
      * @param array $parameters
@@ -1402,10 +1386,6 @@ class TelegramBot
         return $object;
     }
     
-    //endregion
-    
-    //region INLINE MODE
-    
     /**
      * Use this method to move a sticker in a set created by the bot to a specific position . Returns True on success.
      * @param string $sticker File identifier of the sticker
@@ -1421,17 +1401,6 @@ class TelegramBot
         $object = $response->result;
         return $object;
     }
-    
-    //endregion
-    
-    //region PAYMENTS
-    /**
-     * Your bot can accept payments from Telegram users.
-     * Please see the introduction to payments for more details
-     * on the process and how to set up payments for your bot.
-     * Please note that users will need Telegram v.4.0 or
-     * higher to use payments (released on May 18, 2017).
-     */
     
     /**
      * Use this method to delete a sticker from a set created by the bot. Returns True on success.
@@ -1449,41 +1418,17 @@ class TelegramBot
     }
     
     /**
-     * Use this method to set a new group sticker set for a supergroup.
-     * The bot must be an administrator in the chat for this to work and must have the appropriate admin rights.
-     * Use the field can_set_sticker_set optionally returned in getChat requests to check if the bot can use this
-     * method. Returns True on success.
-     * @param int|string $chat_id Unique identifier for the target chat or username of the target supergroup (in the
-     *     format [at]supergroupusername)
-     * @param string $sticker_set_name Name of the sticker set to be set as the group sticker set
+     * Use this method to set the thumbnail of a sticker set.
+     * Animated thumbnails can be set for animated sticker sets only.
+     * Returns True on success.
+     * @see https://core.telegram.org/bots/api#setstickersetthumb
+     * @param array $parameters Method parameters
      * @return bool
      * @throws TelegramException
      */
-    public function setChatStickerSet($chat_id, $sticker_set_name): bool
+    public function setStickerSetThumb($parameters): bool
     {
-        $response = $this->endpoint(
-            'setChatStickerSet',
-            ['chat_id' => $chat_id, 'sticker_set_name' => $sticker_set_name]
-        );
-        
-        /** @var bool $object */
-        $object = $response->result;
-        return $object;
-    }
-    
-    /**
-     * Use this method to delete a group sticker set from a supergroup.
-     * The bot must be an administrator in the chat for this to work and must have the appropriate admin rights.
-     * Use the field can_set_sticker_set optionally returned in getChat requests to check if the bot can use this
-     * method. Returns True on success.
-     * @param int|string $chat_id Unique identifier for the target chat or username of the target supergroup (in the
-     *     format [at]supergroupusername)
-     * @return bool
-     * @throws TelegramException
-     */
-    public function deleteChatStickerSet($chat_id): bool
-    {
-        $response = $this->endpoint('deleteChatStickerSet', ['chat_id' => $chat_id]);
+        $response = $this->endpoint('setStickerSetThumb', $parameters);
         
         /** @var bool $object */
         $object = $response->result;
@@ -1492,13 +1437,7 @@ class TelegramBot
     
     //endregion
     
-    //region TELEGRAM PASSPORT
-    /*
-     * Telegram Passport is a unified authorization method for services that require personal identification.
-     * Users can upload their documents once, then instantly share
-     * their data with services that require real-world ID (finance, ICOs, etc.).
-     * Please see the manual for details.
-     */
+    //region INLINE MODE
     
     /**
      * Use this method to send answers to an inline query. On success, True is returned.
@@ -1518,7 +1457,7 @@ class TelegramBot
     
     //endregion
     
-    //region GAMES
+    //region PAYMENTS
     
     /**
      * Use this method to send invoices.
@@ -1579,7 +1518,7 @@ class TelegramBot
     
     //endregion
     
-    //region UTILITIES
+    //region TELEGRAM PASSPORT
     
     /**
      * Informs a user that some of the Telegram Passport elements they provided contains errors. The user will not be
@@ -1601,6 +1540,10 @@ class TelegramBot
         $object = $response->result;
         return $object;
     }
+    
+    //endregion
+    
+    //region GAMES
     
     /**
      * Use this method to send a game. On success, the sent Message is returned.
@@ -1665,6 +1608,10 @@ class TelegramBot
         
         return $object;
     }
+    
+    //endregion
+    
+    //region UTILITIES
     
     /**
      * Download a file from Telegram Server
@@ -1785,10 +1732,6 @@ class TelegramBot
         ];
     }
     
-    //endregion
-    
-    //region OTHERS METHODS
-    
     /**
      * Hide a custom keyboard
      * @param bool $selective
@@ -1825,6 +1768,124 @@ class TelegramBot
     {
         http_response_code(200);
         return json_encode(['status' => 'success']);
+    }
+    
+    /**
+     * Get Package version
+     * @return string
+     * @throws ReflectionException
+     */
+    public static function getFrameworkVersion(): string
+    {
+        $reflector = new ReflectionClass(__CLASS__);
+        $vendorPath = preg_replace('/^(.*)\/composer\/ClassLoader\.php$/', '$1', $reflector->getFileName());
+        $vendorPath = dirname($vendorPath, 2) . DIRECTORY_SEPARATOR;
+        $content = file_get_contents($vendorPath . 'composer.json');
+        $content = json_decode($content, true);
+        return $content['version'];
+    }
+    
+    //endregion
+    
+    //region OTHERS METHODS
+    
+    /**
+     * Encode file
+     * @param string $file
+     * @return resource
+     * @throws TelegramException
+     */
+    private function encodeFile($file)
+    {
+        $fp = fopen($file, 'rb');
+        if ($fp === false) {
+            throw new TelegramException('Cannot open "' . $file . '" for reading');
+        }
+        return $fp;
+    }
+    
+    /**
+     * Endpoint request
+     * @param string $api API
+     * @param array $parameters Parameters to send
+     * @param bool $isPost Request method
+     * @return Response
+     * @throws TelegramException
+     */
+    public function endpoint($api, $parameters=[], $isPost = true): Response
+    {
+        $response = $this->sendRequest(
+            'https://api.telegram.org/bot' . $this->token . '/' . $api,
+            $parameters,
+            $isPost
+        );
+        $result = $response['result'];
+        $body = $response['body'];
+        //$info = $response['info'];
+        $error = $response['error'];
+        
+        if (!$result && $error !== false) {
+            throw new TelegramException("CURL request failed.\n" . $error);
+        }
+        
+        if (!is_json($body)) {
+            throw new TelegramException('The response cannot be parsed to json.');
+        }
+        
+        try {
+            /** @var Response $data */
+            $data = $this->mapper->map(json_decode($body, false), new Response());
+        } catch (JsonMapper_Exception $e) {
+            throw new TelegramException('The json cannot be mapped to object.');
+        }
+        
+        if (!$data->ok) {
+            throw new TelegramException($data->description, $data->error_code);
+        }
+        
+        if ($data === null || $data->result === null) {
+            throw new TelegramException('Response or Response result is null!');
+        }
+        
+        return $data;
+    }
+    
+    /**
+     * Send a API request to Telegram
+     * @param string $url Endpoint API
+     * @param array $parameters Parameters to send
+     * @param bool $isPost Request method. Allowed: GET, POST
+     * @return array
+     */
+    private function sendRequest($url, $parameters, $isPost): array
+    {
+        $request = curl_init();
+        
+        if (!$isPost) {
+            if ($query = http_build_query($parameters)) {
+                $url .= '?' . $query;
+            }
+        } else {
+            curl_setopt($request, CURLOPT_POST, true);
+            curl_setopt($request, CURLOPT_POSTFIELDS, $parameters);
+        }
+        
+        curl_setopt($request, CURLOPT_URL, $url);
+        curl_setopt($request, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($request, CURLOPT_SSL_VERIFYPEER, true);
+        
+        $body = curl_exec($request);
+        $info = curl_getinfo($request);
+        $error = curl_error($request);
+        
+        curl_close($request);
+        
+        return [
+            'result' => $body !== false,
+            'body' => $body,
+            'info' => $info,
+            'error' => empty($error) ? false : $error
+        ];
     }
     
     //endregion

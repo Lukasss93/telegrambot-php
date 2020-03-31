@@ -205,6 +205,12 @@ class Message
     public $poll;
     
     /**
+     * Optional. Message is a dice with random value from 1 to 6
+     * @var Dice $dice
+     */
+    public $dice;
+    
+    /**
      * Optional. New members that were added to the group or supergroup
      * and information about them (the bot itself may be one of these members)
      * @var User[] $new_chat_members
