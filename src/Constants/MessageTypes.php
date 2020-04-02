@@ -18,6 +18,7 @@ class MessageTypes
     public const LOCATION = 'location';
     public const VENUE = 'venue';
     public const POLL = 'poll';
+    public const DICE = 'dice';
     public const NEW_CHAT_MEMBERS = 'new_chat_members';
     public const LEFT_CHAT_MEMBER = 'left_chat_member';
     public const NEW_CHAT_TITLE = 'new_chat_title';

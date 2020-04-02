@@ -457,6 +457,10 @@ class Message
         if ($this->poll !== null) {
             return MessageTypes::POLL;
         }
+    
+        if ($this->dice !== null) {
+            return MessageTypes::DICE;
+        }
         
         if ($this->new_chat_members !== null) {
             return MessageTypes::NEW_CHAT_MEMBERS;
