@@ -52,6 +52,9 @@ class TelegramBot
         //json mapper
         $this->mapper = new JsonMapper();
         $this->mapper->bStrictNullTypes = false;
+        $this->mapper->undefinedPropertyHandler = static function($object, $propName, $jsonValue){
+            $object->{$propName} = $jsonValue;
+        };
         
         //telegram datas
         $this->token = $token;
