@@ -63,4 +63,29 @@ class Poll
      * @var int $correct_option_id
      */
     public $correct_option_id;
+    
+    /**
+     * Optional. Text that is shown when a user chooses an incorrect answer or taps
+     * on the lamp icon in a quiz-style poll, 0-200 characters
+     * @var string $explanation
+     */
+    public $explanation;
+    
+    /**
+     * Optional. Special entities like usernames, URLs, bot commands, etc. that appear in the explanation
+     * @var MessageEntity[] $explanation_entities
+     */
+    public $explanation_entities;
+    
+    /**
+     * Optional. Amount of time in seconds the poll will be active after creation
+     * @var int $open_period
+     */
+    public $open_period;
+    
+    /**
+     * Optional. Point in time (Unix timestamp) when the poll will be automatically closed
+     * @var int $close_date
+     */
+    public $close_date;
 }

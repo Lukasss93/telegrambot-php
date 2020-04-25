@@ -16,7 +16,7 @@
         "ext-curl": "*",
         "ext-fileinfo": "*",
         "ext-json": "*",
-        "netresearch/jsonmapper": "v1.4.*"
+        "netresearch/jsonmapper": "v2.1.*"
     },
     "autoload": {
         "psr-4": {

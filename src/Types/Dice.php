@@ -3,7 +3,7 @@
 namespace TelegramBot\Types;
 
 /**
- * This object represents a dice with random value from 1 to 6.
+ * This object represents a dice with a random value from 1 to 6 for currently supported base emoji.
  * (Yes, we're aware of the “proper” singular of die.
  * But it's awkward, and we decided to help it change. One dice at a time!)
  * @see https://core.telegram.org/bots/api#dice
@@ -11,7 +11,13 @@ namespace TelegramBot\Types;
 class Dice
 {
     /**
-     * Value of the dice, 1-6
+     * Emoji on which the dice throw animation is based
+     * @var string $emoji
+     */
+    public $emoji;
+    
+    /**
+     * Value of the dice, 1-6 for currently supported base emoji
      * @var int $value
      */
     public $value;
