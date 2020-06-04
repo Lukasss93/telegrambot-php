@@ -54,6 +54,13 @@ class InlineQueryResultGif
     public $thumb_url;
     
     /**
+     * Optional. MIME type of the thumbnail, must be one of “image/jpeg”, “image/gif”, or “video/mp4”.
+     * Defaults to “image/jpeg”
+     * @var string $thumb_mime_type
+     */
+    public $thumb_mime_type;
+    
+    /**
      * Optional. Title for the result
      * @var string $title
      */

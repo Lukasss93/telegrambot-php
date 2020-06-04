@@ -6,4 +6,5 @@ class Emojis
 {
     public const DICE = '🎲';
     public const DART = '🎯';
+    public const BASKETBALL = '🏀';
 }

@@ -17,7 +17,7 @@ class Dice
     public $emoji;
     
     /**
-     * Value of the dice, 1-6 for currently supported base emoji
+     * Value of the dice, 1-6 for “🎲” and “🎯” base emoji, 1-5 for “🏀” base emoji
      * @var int $value
      */
     public $value;
