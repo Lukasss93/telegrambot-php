@@ -4,10 +4,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.9] - 2020-06-05
+### Changed
+- Updated to Telegram Bot API 4.9
+
 ## [1.8] - 2020-04-26
 ### Added
 - Added the ability to get an inexistent property from an object
+- Added the ability to get an inexistent property from an object
 
+### Changed
+- Updated to Telegram Bot API 4.8
+
+### Fixed
+- Fixed `mb_str_split` method warning in PHP 7.4
 ### Changed
 - Updated to Telegram Bot API 4.8
 

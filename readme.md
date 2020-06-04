@@ -1,6 +1,6 @@
 # TelegramBot-PHP
 
-[![API](https://img.shields.io/badge/Telegram%20Bot%20API-4.8%20--%20April%2024%2C%202020-blue.svg)](https://core.telegram.org/bots/api)
+[![API](https://img.shields.io/badge/Telegram%20Bot%20API-4.9%20--%20June%204%2C%202020-blue.svg)](https://core.telegram.org/bots/api)
 ![PHP](https://img.shields.io/badge/php-%3E%3D7.2-8892bf.svg)
 ![CURL](https://img.shields.io/badge/cURL-required-green.svg)
 
@@ -227,12 +227,6 @@ Changelog
 All notable changes to this project will be documented [here](https://github.com/Lukasss93/telegrambot-php/blob/master/CHANGELOG.md).
 
 ### Recent changes
-## [1.8] - 2020-04-26
-### Added
-- Added the ability to get an inexistent property from an object
-
+## [1.9] - 2020-06-05
 ### Changed
-- Updated to Telegram Bot API 4.8
-
-### Fixed
-- Fixed `mb_str_split` method warning in PHP 7.4
+- Updated to Telegram Bot API 4.9
