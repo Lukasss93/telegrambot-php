@@ -227,6 +227,6 @@ Changelog
 All notable changes to this project will be documented [here](https://github.com/Lukasss93/telegrambot-php/blob/master/CHANGELOG.md).
 
 ### Recent changes
-## [1.9] - 2020-06-05
-### Changed
-- Updated to Telegram Bot API 4.9
+## v1.10 - 2020-07-21
+### Added
+- Added `getFrom()` method to Update object to get the sender
