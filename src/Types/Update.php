@@ -100,50 +100,99 @@ class Update
      */
     public function getType()
     {
-        if ($this->message !== null) {
+        if($this->message !== null) {
             return UpdateTypes::MESSAGE;
         }
         
-        if ($this->edited_message !== null) {
+        if($this->edited_message !== null) {
             return UpdateTypes::EDITED_MESSAGE;
         }
         
-        if ($this->channel_post !== null) {
+        if($this->channel_post !== null) {
             return UpdateTypes::CHANNEL_POST;
         }
         
-        if ($this->edited_channel_post !== null) {
+        if($this->edited_channel_post !== null) {
             return UpdateTypes::EDITED_CHANNEL_POST;
         }
         
-        if ($this->inline_query !== null) {
+        if($this->inline_query !== null) {
             return UpdateTypes::INLINE_QUERY;
         }
         
-        if ($this->chosen_inline_result !== null) {
+        if($this->chosen_inline_result !== null) {
             return UpdateTypes::CHOSEN_INLINE_RESULT;
         }
         
-        if ($this->callback_query !== null) {
+        if($this->callback_query !== null) {
             return UpdateTypes::CALLBACK_QUERY;
         }
         
-        if ($this->shipping_query !== null) {
+        if($this->shipping_query !== null) {
             return UpdateTypes::SHIPPING_QUERY;
         }
         
-        if ($this->pre_checkout_query !== null) {
+        if($this->pre_checkout_query !== null) {
             return UpdateTypes::PRE_CHECKOUT_QUERY;
         }
         
-        if ($this->poll !== null) {
+        if($this->poll !== null) {
             return UpdateTypes::POLL;
         }
         
-        if ($this->poll_answer !== null) {
+        if($this->poll_answer !== null) {
             return UpdateTypes::POLL_ANSWER;
         }
         
         return false;
+    }
+    
+    /**
+     * Get the sender User
+     * @return User|null
+     */
+    public function getFrom()
+    {
+        if($this->message!==null){
+            return $this->message->from??null;
+        }
+    
+        if($this->edited_message!==null){
+            return $this->edited_message->from??null;
+        }
+    
+        if($this->channel_post!==null){
+            return $this->channel_post->from??null;
+        }
+    
+        if($this->edited_channel_post!==null){
+            return $this->edited_channel_post->from??null;
+        }
+        
+        if($this->inline_query!==null){
+            return $this->inline_query->from;
+        }
+    
+        if($this->chosen_inline_result!==null){
+            return $this->chosen_inline_result->from;
+        }
+    
+        if($this->callback_query!==null){
+            return $this->callback_query->from;
+        }
+    
+        if($this->shipping_query!==null){
+            return $this->shipping_query->from;
+        }
+    
+        if($this->pre_checkout_query!==null){
+            return $this->pre_checkout_query->from;
+        }
+    
+        if($this->poll_answer!==null){
+            return $this->poll_answer->user;
+        }
+        
+        return null;
     }
 }
