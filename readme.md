@@ -227,6 +227,6 @@ Changelog
 All notable changes to this project will be documented [here](https://github.com/Lukasss93/telegrambot-php/blob/master/CHANGELOG.md).
 
 ### Recent changes
-## v1.10 - 2020-07-21
-### Added
-- Added `getFrom()` method to Update object to get the sender
+## v1.10.1 - 2020-07-29
+### Fixed
+- Scalar return values not supported when mapping objects
