@@ -52,7 +52,7 @@ class TelegramBot
         //json mapper
         $this->mapper = new JsonMapper();
         $this->mapper->bStrictNullTypes = false;
-        $this->mapper->undefinedPropertyHandler = static function($object, $propName, $jsonValue){
+        $this->mapper->undefinedPropertyHandler = static function($object, $propName, $jsonValue) {
             $object->{$propName} = $jsonValue;
         };
         
@@ -89,7 +89,7 @@ class TelegramBot
     public function getUpdates($offset = 0, $limit = 100, $timeout = 0, $allowed_updates = []): array
     {
         $parameters = ['offset' => $offset, 'limit' => $limit, 'timeout' => $timeout];
-        if (count($allowed_updates) > 0) {
+        if(count($allowed_updates) > 0) {
             $parameters['allowed_updates'] = $allowed_updates;
         }
         
@@ -100,7 +100,7 @@ class TelegramBot
         
         $this->updatesData = $this->mapper->mapArray($updates, [], Update::class);
         
-        if (count($this->updatesData) >= 1) {
+        if(count($this->updatesData) >= 1) {
             $last_element_id = $this->updatesData[count($this->updatesData) - 1]->update_id + 1;
             $parameters = ['offset' => $last_element_id, 'limit' => 1, 'timeout' => 100];
             $this->endpoint('getUpdates', $parameters);
@@ -132,14 +132,15 @@ class TelegramBot
      */
     public function setWebhook($parameters): bool
     {
-        if (isset($parameters['certificate'])) {
+        if(isset($parameters['certificate'])) {
             $parameters['certificate'] = $this->encodeFile($parameters['certificate']);
         }
         
-        $data = $this->endpoint('setWebhook', $parameters);
-        $object = $data->result;
+        $response = $this->endpoint('setWebhook', $parameters);
         
         /** @var bool $object */
+        $object = property_exists($response->result, 'scalar') ? $response->result->scalar : $response->result;
+        
         return $object;
     }
     
@@ -152,9 +153,10 @@ class TelegramBot
     public function deleteWebhook(): bool
     {
         $data = $this->endpoint('deleteWebhook', []);
-        $object = $data->result;
         
         /** @var bool $object */
+        $object = property_exists($data->result, 'scalar') ? $data->result->scalar : $data->result;
+        
         return $object;
     }
     
@@ -170,9 +172,10 @@ class TelegramBot
     public function getWebhookInfo(): WebhookInfo
     {
         $data = $this->endpoint('getWebhookInfo', [], false);
-        $object = $this->mapper->map($data->result, new WebhookInfo());
         
         /** @var WebhookInfo $object */
+        $object = $this->mapper->map($data->result, new WebhookInfo());
+        
         return $object;
     }
     
@@ -185,7 +188,7 @@ class TelegramBot
     {
         $current = null;
         
-        if ($this->webhookData === null) {
+        if($this->webhookData === null) {
             $rawData = file_get_contents('php://input');
             $current = json_decode($rawData, false);
             
@@ -239,8 +242,8 @@ class TelegramBot
      */
     public function sendMessage($parameters)
     {
-        if ($this->splitLongMessage) {
-            if (!isset($parameters['text'])) {
+        if($this->splitLongMessage) {
+            if(!isset($parameters['text'])) {
                 throw new TelegramException('text parameter not set.');
             }
             
@@ -248,7 +251,7 @@ class TelegramBot
             $messages = [];
             $amessages = mb_str_split($parameters['text'], 4096);
             
-            foreach ($amessages as $amessage) {
+            foreach($amessages as $amessage) {
                 $parameters['text'] = $amessage;
                 $data = $this->endpoint('sendMessage', $parameters);
                 
@@ -455,7 +458,7 @@ class TelegramBot
     {
         $response = $this->endpoint('editMessageLiveLocation', $parameters);
         
-        if (is_bool($response->result)) {
+        if(is_bool($response->result)) {
             $object = $response->result;
         } else {
             $object = $this->mapper->map($response->result, new Message());
@@ -478,7 +481,7 @@ class TelegramBot
     {
         $response = $this->endpoint('stopMessageLiveLocation', $parameters);
         
-        if (is_bool($response->result)) {
+        if(is_bool($response->result)) {
             $object = $response->result;
         } else {
             $object = $this->mapper->map($response->result, new Message());
@@ -575,7 +578,8 @@ class TelegramBot
         $response = $this->endpoint('sendChatAction', ['chat_id' => $chat_id, 'action' => $action]);
         
         /** @var bool $object */
-        $object = $response->result;
+        $object = property_exists($response->result, 'scalar') ? $response->result->scalar : $response->result;
+        
         return $object;
     }
     
@@ -595,7 +599,7 @@ class TelegramBot
             'limit' => $limit
         ];
         
-        if ($offset !== null) {
+        if($offset !== null) {
             $parameters['offset'] = $offset;
         }
         
@@ -652,14 +656,15 @@ class TelegramBot
             'user_id' => $user_id
         ];
         
-        if ($until_date !== null) {
+        if($until_date !== null) {
             $options['until_date'] = $until_date;
         }
         
         $response = $this->endpoint('kickChatMember', $options);
         
         /** @var bool $object */
-        $object = $response->result;
+        $object = property_exists($response->result, 'scalar') ? $response->result->scalar : $response->result;
+        
         return $object;
     }
     
@@ -685,7 +690,8 @@ class TelegramBot
         );
         
         /** @var bool $object */
-        $object = $response->result;
+        $object = property_exists($response->result, 'scalar') ? $response->result->scalar : $response->result;
+        
         return $object;
     }
     
@@ -702,7 +708,8 @@ class TelegramBot
         $response = $this->endpoint('restrictChatMember', $parameters);
         
         /** @var bool $object */
-        $object = $response->result;
+        $object = property_exists($response->result, 'scalar') ? $response->result->scalar : $response->result;
+        
         return $object;
     }
     
@@ -720,7 +727,8 @@ class TelegramBot
         $response = $this->endpoint('promoteChatMember', $parameters);
         
         /** @var bool $object */
-        $object = $response->result;
+        $object = property_exists($response->result, 'scalar') ? $response->result->scalar : $response->result;
+        
         return $object;
     }
     
@@ -745,7 +753,8 @@ class TelegramBot
         );
         
         /** @var bool $object */
-        $object = $response->result;
+        $object = property_exists($response->result, 'scalar') ? $response->result->scalar : $response->result;
+        
         return $object;
     }
     
@@ -769,7 +778,8 @@ class TelegramBot
         );
         
         /** @var bool $object */
-        $object = $response->result;
+        $object = property_exists($response->result, 'scalar') ? $response->result->scalar : $response->result;
+        
         return $object;
     }
     
@@ -819,7 +829,8 @@ class TelegramBot
         );
         
         /** @var bool $object */
-        $object = $response->result;
+        $object = property_exists($response->result, 'scalar') ? $response->result->scalar : $response->result;
+        
         return $object;
     }
     
@@ -844,7 +855,8 @@ class TelegramBot
         );
         
         /** @var bool $object */
-        $object = $response->result;
+        $object = property_exists($response->result, 'scalar') ? $response->result->scalar : $response->result;
+        
         return $object;
     }
     
@@ -872,7 +884,8 @@ class TelegramBot
         );
         
         /** @var bool $object */
-        $object = $response->result;
+        $object = property_exists($response->result, 'scalar') ? $response->result->scalar : $response->result;
+        
         return $object;
     }
     
@@ -891,14 +904,15 @@ class TelegramBot
     {
         $options = ['chat_id' => $chat_id];
         
-        if ($description !== null) {
+        if($description !== null) {
             $options['description'] = $description;
         }
         
         $response = $this->endpoint('setChatDescription', $options);
         
         /** @var bool $object */
-        $object = $response->result;
+        $object = property_exists($response->result, 'scalar') ? $response->result->scalar : $response->result;
+        
         return $object;
     }
     
@@ -923,14 +937,15 @@ class TelegramBot
             'message_id' => $message_id
         ];
         
-        if ($disable_notification) {
+        if($disable_notification) {
             $options['disable_notification'] = true;
         }
         
         $response = $this->endpoint('pinChatMessage', $options);
         
         /** @var bool $object */
-        $object = $response->result;
+        $object = property_exists($response->result, 'scalar') ? $response->result->scalar : $response->result;
+        
         return $object;
     }
     
@@ -949,7 +964,8 @@ class TelegramBot
         $response = $this->endpoint('unpinChatMessage', ['chat_id' => $chat_id,]);
         
         /** @var bool $object */
-        $object = $response->result;
+        $object = property_exists($response->result, 'scalar') ? $response->result->scalar : $response->result;
+        
         return $object;
     }
     
@@ -964,7 +980,8 @@ class TelegramBot
         $response = $this->endpoint('leaveChat', ['chat_id' => $chat_id]);
         
         /** @var bool $object */
-        $object = $response->result;
+        $object = property_exists($response->result, 'scalar') ? $response->result->scalar : $response->result;
+        
         return $object;
     }
     
@@ -1067,7 +1084,8 @@ class TelegramBot
         );
         
         /** @var bool $object */
-        $object = $response->result;
+        $object = property_exists($response->result, 'scalar') ? $response->result->scalar : $response->result;
+        
         return $object;
     }
     
@@ -1086,7 +1104,8 @@ class TelegramBot
         $response = $this->endpoint('deleteChatStickerSet', ['chat_id' => $chat_id]);
         
         /** @var bool $object */
-        $object = $response->result;
+        $object = property_exists($response->result, 'scalar') ? $response->result->scalar : $response->result;
+        
         return $object;
     }
     
@@ -1103,10 +1122,10 @@ class TelegramBot
      */
     public function answerCallbackQuery($parameters): bool
     {
-        $data = $this->endpoint('answerCallbackQuery', $parameters);
+        $response = $this->endpoint('answerCallbackQuery', $parameters);
         
         /** @var bool $object */
-        $object = $data->result;
+        $object = property_exists($response->result, 'scalar') ? $response->result->scalar : $response->result;
         
         return $object;
     }
@@ -1123,7 +1142,8 @@ class TelegramBot
         $response = $this->endpoint('setMyCommands', ['commands' => json_encode($commands, true)]);
         
         /** @var bool $object */
-        $object = $response->result;
+        $object = property_exists($response->result, 'scalar') ? $response->result->scalar : $response->result;
+        
         return $object;
     }
     
@@ -1136,10 +1156,10 @@ class TelegramBot
     public function getMyCommands(): array
     {
         $response = $this->endpoint('getMyCommands');
-    
+        
         /** @var array $resultArray */
         $resultArray = $response->result;
-    
+        
         /** @var BotCommand[] $object */
         $object = $this->mapper->mapArray($resultArray, [], BotCommand::class);
         
@@ -1162,7 +1182,7 @@ class TelegramBot
     {
         $response = $this->endpoint('editMessageText', $parameters);
         
-        if (is_bool($response->result)) {
+        if(is_bool($response->result)) {
             /** @var bool $object */
             $object = $response->result;
             return $object;
@@ -1185,7 +1205,7 @@ class TelegramBot
     {
         $response = $this->endpoint('editMessageCaption', $parameters);
         
-        if (is_bool($response->result)) {
+        if(is_bool($response->result)) {
             /** @var bool $object */
             $object = $response->result;
             return $object;
@@ -1213,7 +1233,7 @@ class TelegramBot
     {
         $response = $this->endpoint('editMessageMedia', $parameters);
         
-        if (is_bool($response->result)) {
+        if(is_bool($response->result)) {
             /** @var bool $object */
             $object = $response->result;
             return $object;
@@ -1236,7 +1256,7 @@ class TelegramBot
     {
         $response = $this->endpoint('editMessageReplyMarkup', $parameters);
         
-        if (is_bool($response->result)) {
+        if(is_bool($response->result)) {
             /** @var bool $object */
             $object = $response->result;
             return $object;
@@ -1261,7 +1281,7 @@ class TelegramBot
     {
         $response = $this->endpoint('stopPoll', $parameters);
         
-        if (is_bool($response->result)) {
+        if(is_bool($response->result)) {
             /** @var bool $object */
             $object = $response->result;
             return $object;
@@ -1299,7 +1319,8 @@ class TelegramBot
         );
         
         /** @var bool $object */
-        $object = $response->result;
+        $object = property_exists($response->result, 'scalar') ? $response->result->scalar : $response->result;
+        
         return $object;
     }
     
@@ -1370,7 +1391,8 @@ class TelegramBot
         $response = $this->endpoint('createNewStickerSet', $parameters);
         
         /** @var bool $object */
-        $object = $response->result;
+        $object = property_exists($response->result, 'scalar') ? $response->result->scalar : $response->result;
+        
         return $object;
     }
     
@@ -1385,7 +1407,8 @@ class TelegramBot
         $response = $this->endpoint('addStickerToSet', $parameters);
         
         /** @var bool $object */
-        $object = $response->result;
+        $object = property_exists($response->result, 'scalar') ? $response->result->scalar : $response->result;
+        
         return $object;
     }
     
@@ -1401,7 +1424,8 @@ class TelegramBot
         $response = $this->endpoint('setStickerPositionInSet', ['sticker' => $sticker, 'position' => $position]);
         
         /** @var bool $object */
-        $object = $response->result;
+        $object = property_exists($response->result, 'scalar') ? $response->result->scalar : $response->result;
+        
         return $object;
     }
     
@@ -1416,7 +1440,8 @@ class TelegramBot
         $response = $this->endpoint('deleteStickerFromSet', ['sticker' => $sticker]);
         
         /** @var bool $object */
-        $object = $response->result;
+        $object = property_exists($response->result, 'scalar') ? $response->result->scalar : $response->result;
+        
         return $object;
     }
     
@@ -1434,7 +1459,8 @@ class TelegramBot
         $response = $this->endpoint('setStickerSetThumb', $parameters);
         
         /** @var bool $object */
-        $object = $response->result;
+        $object = property_exists($response->result, 'scalar') ? $response->result->scalar : $response->result;
+        
         return $object;
     }
     
@@ -1454,7 +1480,8 @@ class TelegramBot
         $response = $this->endpoint('answerInlineQuery', $parameters);
         
         /** @var bool $object */
-        $object = $response->result;
+        $object = property_exists($response->result, 'scalar') ? $response->result->scalar : $response->result;
+        
         return $object;
     }
     
@@ -1494,7 +1521,8 @@ class TelegramBot
         $response = $this->endpoint('answerShippingQuery', $parameters);
         
         /** @var bool $object */
-        $object = $response->result;
+        $object = property_exists($response->result, 'scalar') ? $response->result->scalar : $response->result;
+        
         return $object;
     }
     
@@ -1515,7 +1543,8 @@ class TelegramBot
         $response = $this->endpoint('answerPreCheckoutQuery', $parameters);
         
         /** @var bool $object */
-        $object = $response->result;
+        $object = property_exists($response->result, 'scalar') ? $response->result->scalar : $response->result;
+        
         return $object;
     }
     
@@ -1540,7 +1569,8 @@ class TelegramBot
         $response = $this->endpoint('setPassportDataErrors', $parameters);
         
         /** @var bool $object */
-        $object = $response->result;
+        $object = property_exists($response->result, 'scalar') ? $response->result->scalar : $response->result;
+        
         return $object;
     }
     
@@ -1577,7 +1607,7 @@ class TelegramBot
     {
         $response = $this->endpoint('setGameScore', $parameters);
         
-        if (is_bool($response->result)) {
+        if(is_bool($response->result)) {
             /** @var bool $object */
             $object = $response->result;
             return $object;
@@ -1627,7 +1657,7 @@ class TelegramBot
         $in = fopen($file_url, 'rb');
         $out = fopen($local_file_path, 'wb');
         
-        while ($chunk = fread($in, 8192)) {
+        while($chunk = fread($in, 8192)) {
             fwrite($out, $chunk, 8192);
         }
         fclose($in);
@@ -1691,27 +1721,27 @@ class TelegramBot
             'text' => $text
         ];
         
-        if ($url !== '') {
+        if($url !== '') {
             $replyMarkup['url'] = $url;
             return $replyMarkup;
         }
-        if ($callback_data !== '') {
+        if($callback_data !== '') {
             $replyMarkup['callback_data'] = $callback_data;
             return $replyMarkup;
         }
-        if ($switch_inline_query !== '') {
+        if($switch_inline_query !== '') {
             $replyMarkup['switch_inline_query'] = $switch_inline_query;
             return $replyMarkup;
         }
-        if ($switch_inline_query_current_chat !== '') {
+        if($switch_inline_query_current_chat !== '') {
             $replyMarkup['switch_inline_query_current_chat'] = $switch_inline_query_current_chat;
             return $replyMarkup;
         }
-        if ($callback_game !== '') {
+        if($callback_game !== '') {
             $replyMarkup['callback_game'] = $callback_game;
             return $replyMarkup;
         }
-        if ($pay) {
+        if($pay) {
             $replyMarkup['pay'] = true;
             return $replyMarkup;
         }
@@ -1801,7 +1831,7 @@ class TelegramBot
     private function encodeFile($file)
     {
         $fp = fopen($file, 'rb');
-        if ($fp === false) {
+        if($fp === false) {
             throw new TelegramException('Cannot open "' . $file . '" for reading');
         }
         return $fp;
@@ -1815,7 +1845,7 @@ class TelegramBot
      * @return Response
      * @throws TelegramException
      */
-    public function endpoint($api, $parameters=[], $isPost = true): Response
+    public function endpoint($api, $parameters = [], $isPost = true): Response
     {
         $response = $this->sendRequest(
             'https://api.telegram.org/bot' . $this->token . '/' . $api,
@@ -1827,26 +1857,26 @@ class TelegramBot
         //$info = $response['info'];
         $error = $response['error'];
         
-        if (!$result && $error !== false) {
+        if(!$result && $error !== false) {
             throw new TelegramException("CURL request failed.\n" . $error);
         }
         
-        if (!is_json($body)) {
+        if(!is_json($body)) {
             throw new TelegramException('The response cannot be parsed to json.');
         }
         
         try {
             /** @var Response $data */
             $data = $this->mapper->map(json_decode($body, false), new Response());
-        } catch (JsonMapper_Exception $e) {
+        } catch(JsonMapper_Exception $e) {
             throw new TelegramException('The json cannot be mapped to object.');
         }
         
-        if (!$data->ok) {
+        if(!$data->ok) {
             throw new TelegramException($data->description, $data->error_code);
         }
         
-        if ($data === null || $data->result === null) {
+        if($data === null || $data->result === null) {
             throw new TelegramException('Response or Response result is null!');
         }
         
@@ -1864,8 +1894,8 @@ class TelegramBot
     {
         $request = curl_init();
         
-        if (!$isPost) {
-            if ($query = http_build_query($parameters)) {
+        if(!$isPost) {
+            if($query = http_build_query($parameters)) {
                 $url .= '?' . $query;
             }
         } else {
