@@ -1,6 +1,6 @@
 # TelegramBot-PHP
 
-[![API](https://img.shields.io/badge/Telegram%20Bot%20API-4.9%20--%20June%204%2C%202020-blue.svg)](https://core.telegram.org/bots/api)
+[![API](https://img.shields.io/badge/Telegram%20Bot%20API-5.0%20--%20November%204%2C%202020-blue.svg)](https://core.telegram.org/bots/api)
 ![PHP](https://img.shields.io/badge/php-%3E%3D7.2-8892bf.svg)
 ![CURL](https://img.shields.io/badge/cURL-required-green.svg)
 
@@ -125,22 +125,22 @@ For instance you can arrange a ReplyKeyboard using this code:
 $buttons = [ 
     //First row
     [
-        $telegram->buildKeyboardButton("Button 1"),
-        $telegram->buildKeyboardButton("Button 2")
+        $bot->buildKeyboardButton("Button 1"),
+        $bot->buildKeyboardButton("Button 2")
     ], 
     //Second row 
     [
-        $telegram->buildKeyboardButton("Button 3"),
-        $telegram->buildKeyboardButton("Button 4"),
-        $telegram->buildKeyboardButton("Button 5")], 
+        $bot->buildKeyboardButton("Button 3"),
+        $bot->buildKeyboardButton("Button 4"),
+        $bot->buildKeyboardButton("Button 5")], 
     //Third row
     [
-        $telegram->buildKeyboardButton("Button 6")]
+        $bot->buildKeyboardButton("Button 6")]
     ];
     
-$telegram->sendMessage([
+$bot->sendMessage([
     'chat_id' => $chat_id, 
-    'reply_markup' => $telegram->buildKeyBoard($buttons), 
+    'reply_markup' => $bot->buildKeyBoard($buttons), 
     'text' => 'This is a Keyboard Test'
 ]);
 ```
@@ -150,62 +150,62 @@ For an InlineKeyboard it's pretty much the same (but you need to provide a valid
 $buttons = [ 
     //First row
     [
-        $telegram->buildInlineKeyBoardButton("Button 1", $url="http://link1.com"), 
-        $telegram->buildInlineKeyBoardButton("Button 2", $url="http://link2.com")
+        $bot->buildInlineKeyBoardButton("Button 1", $url="http://link1.com"), 
+        $bot->buildInlineKeyBoardButton("Button 2", $url="http://link2.com")
     ], 
     //Second row 
     [
-        $telegram->buildInlineKeyBoardButton("Button 3", $url="http://link3.com"),
-        $telegram->buildInlineKeyBoardButton("Button 4", $url="http://link4.com"),
-        $telegram->buildInlineKeyBoardButton("Button 5", $url="http://link5.com")
+        $bot->buildInlineKeyBoardButton("Button 3", $url="http://link3.com"),
+        $bot->buildInlineKeyBoardButton("Button 4", $url="http://link4.com"),
+        $bot->buildInlineKeyBoardButton("Button 5", $url="http://link5.com")
     ], 
     //Third row
     [
-        $telegram->buildInlineKeyBoardButton("Button 6", $url="http://link6.com")
+        $bot->buildInlineKeyBoardButton("Button 6", $url="http://link6.com")
     ]
 ];
 
-$telegram->sendMessage([
+$bot->sendMessage([
     'chat_id' => $chat_id, 
-    'reply_markup' => $telegram->buildInlineKeyBoard($buttons), 
+    'reply_markup' => $bot->buildInlineKeyBoard($buttons), 
     'text' => 'This is a Keyboard Test'
 ]);
 ```
 
 This is the list of all the helper functions to make keyboards easily:
 ```php
-buildKeyBoard(array $options, $onetime=true, $resize=true, $selective=true)
+$bot->buildKeyBoard(array $options, $onetime=true, $resize=true, $selective=true)
 ```
 Send a custom keyboard. $option is an array of array KeyboardButton.  
 Check [ReplyKeyBoardMarkUp](https://core.telegram.org/bots/api#replykeyboardmarkup) for more info.    
 
 ```php
-buildInlineKeyBoard(array $inline_keyboard)
+$bot->buildInlineKeyBoard(array $inline_keyboard)
 ```
 Send a custom keyboard. $inline_keyboard is an array of array InlineKeyboardButton.  
 Check [InlineKeyboardMarkup](https://core.telegram.org/bots/api#inlinekeyboardmarkup) for more info.    
 
 ```php
-buildInlineKeyBoardButton($text, $url, $callback_data, $switch_inline_query)
+$bot->buildInlineKeyBoardButton($text, $url, $callback_data, $switch_inline_query)
 ```
 Create an InlineKeyboardButton.    
 Check [InlineKeyBoardButton](https://core.telegram.org/bots/api#inlinekeyboardbutton) for more info.    
 
 ```php
-buildKeyBoardButton($text, $url, $request_contact, $request_location)
+$bot->buildKeyBoardButton($text, $url, $request_contact, $request_location)
 ```
 Create a KeyboardButton.    
 Check [KeyBoardButton](https://core.telegram.org/bots/api#keyboardbutton) for more info.    
 
 
 ```php
-buildKeyBoardHide($selective=true)
+$bot->buildKeyBoardHide($selective=true)
 ```
 Hide a custom keyboard.  
 Check [ReplyKeyBoarHide](https://core.telegram.org/bots/api#replykeyboardhide) for more info.    
 
 ```php
-buildForceReply($selective=true)
+$bot->buildForceReply($selective=true)
 ```
 Show a Reply interface to the user.  
 Check [ForceReply](https://core.telegram.org/bots/api#forcereply) for more info.
@@ -227,6 +227,6 @@ Changelog
 All notable changes to this project will be documented [here](https://github.com/Lukasss93/telegrambot-php/blob/master/CHANGELOG.md).
 
 ### Recent changes
-## v1.10.1 - 2020-07-29
-### Fixed
-- Scalar return values not supported when mapping objects
+## v1.11 - 2020-11-10
+### Changed
+- Updated to Telegram Bot API 5.0
