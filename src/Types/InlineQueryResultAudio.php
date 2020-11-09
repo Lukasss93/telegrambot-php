@@ -16,31 +16,31 @@ class InlineQueryResultAudio
      * @var string $type
      */
     public $type;
-    
+
     /**
      * Unique identifier for this result, 1-64 bytes
      * @var string $id
      */
     public $id;
-    
+
     /**
      * A valid URL for the audio file
      * @var string $audio_url
      */
     public $audio_url;
-    
+
     /**
      * Title
      * @var string $title
      */
     public $title;
-    
+
     /**
      * Optional. Caption, 0-1024 characters
      * @var string $caption
      */
     public $caption;
-    
+
     /**
      * Optional. Send {@see https://core.telegram.org/bots/api#markdown-style Markdown} or
      * {@see https://core.telegram.org/bots/api#html-style HTML},
@@ -50,19 +50,25 @@ class InlineQueryResultAudio
      * @var string $parse_mode
      */
     public $parse_mode;
-    
+
+    /**
+     * Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
+     * @var MessageEntity[] $caption_entities
+     */
+    public $caption_entities;
+
     /**
      * Optional. Performer
      * @var string $performer
      */
     public $performer;
-    
+
     /**
      * Optional. Audio duration in seconds
      * @var int $audio_duration
      */
     public $audio_duration;
-    
+
     /**
      * Optional.
      * {@see https://core.telegram.org/bots#inline-keyboards-and-on-the-fly-updating Inline keyboard}
@@ -70,7 +76,7 @@ class InlineQueryResultAudio
      * @var InlineKeyboardMarkup $reply_markup
      */
     public $reply_markup;
-    
+
     /**
      *Optional. Content of the message to be sent instead of the audio
      * @var InputTextMessageContent|InputLocationMessageContent|InputVenueMessageContent|InputContactMessageContent $input_message_content

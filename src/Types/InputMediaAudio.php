@@ -13,7 +13,7 @@ class InputMediaAudio
      * @var string $type
      */
     public $type;
-    
+
     /**
      * File to send. Pass a file_id to send a file that exists on the Telegram servers (recommended),
      * pass an HTTP URL for Telegram to get a file from the Internet, or pass “attach://<file_attach_name>”
@@ -22,7 +22,7 @@ class InputMediaAudio
      * @var string $media
      */
     public $media;
-    
+
     /**
      * Optional. Thumbnail of the file sent;
      * can be ignored if thumbnail generation for the file is supported server-side.
@@ -35,13 +35,13 @@ class InputMediaAudio
      * @var mixed $thumb
      */
     public $thumb;
-    
+
     /**
      * Optional. Caption of the photo to be sent, 0-1024 characters after entities parsing
      * @var string $caption
      */
     public $caption;
-    
+
     /**
      * Optional. Send Markdown or HTML, if you want Telegram apps to show
      * bold, italic, fixed-width text or inline URLs in the media caption.
@@ -51,19 +51,25 @@ class InputMediaAudio
      * @var string $parse_mode
      */
     public $parse_mode;
-    
+
+    /**
+     * Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
+     * @var MessageEntity[] $caption_entities
+     */
+    public $caption_entities;
+
     /**
      * Optional. Duration of the audio in seconds
      * @var int $duration
      */
     public $duration;
-    
+
     /**
      * Optional. Performer of the audio
      * @var string $performer
      */
     public $performer;
-    
+
     /**
      * Optional. Title of the audio
      * @var string $title

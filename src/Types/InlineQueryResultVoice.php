@@ -18,31 +18,31 @@ class InlineQueryResultVoice
      * @var string $type
      */
     public $type;
-    
+
     /**
      * Unique identifier for this result, 1-64 bytes
      * @var string $id
      */
     public $id;
-    
+
     /**
      * A valid URL for the voice recording
      * @var string $voice_url
      */
     public $voice_url;
-    
+
     /**
      * Recording title
      * @var string $title
      */
     public $title;
-    
+
     /**
      * Optional. Caption, 0-1024 characters
      * @var string $caption
      */
     public $caption;
-    
+
     /**
      * Optional. Send {@see https://core.telegram.org/bots/api#markdown-style Markdown} or
      * {@see https://core.telegram.org/bots/api#html-style HTML},
@@ -52,13 +52,19 @@ class InlineQueryResultVoice
      * @var string $parse_mode
      */
     public $parse_mode;
-    
+
+    /**
+     * Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
+     * @var MessageEntity[] $caption_entities
+     */
+    public $caption_entities;
+
     /**
      * Optional. Recording duration in seconds
      * @var int $voice_duration
      */
     public $voice_duration;
-    
+
     /**
      * Optional.
      * {@see https://core.telegram.org/bots#inline-keyboards-and-on-the-fly-updating Inline keyboard}
@@ -66,7 +72,7 @@ class InlineQueryResultVoice
      * @var InlineKeyboardMarkup $reply_markup
      */
     public $reply_markup;
-    
+
     /**
      *Optional. Content of the message to be sent instead of the voice recording
      * @var InputTextMessageContent|InputLocationMessageContent|InputVenueMessageContent|InputContactMessageContent $input_message_content

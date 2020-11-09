@@ -25,6 +25,12 @@ class WebhookInfo
      * @var int $pending_update_count
      */
     public $pending_update_count;
+
+    /**
+     * Optional. Currently used webhook IP address
+     * @var string $ip_address
+     */
+    public $ip_address;
     
     /**
      * Optional. Unix time for the most recent error that happened when trying to deliver an update via webhook
@@ -33,7 +39,8 @@ class WebhookInfo
     public $last_error_date;
     
     /**
-     * Optional. Error message in human-readable format for the most recent error that happened when trying to deliver an update via webhook
+     * Optional. Error message in human-readable format for the most recent error that happened
+     * when trying to deliver an update via webhook
      * @var string $last_error_message
      */
     public $last_error_message;

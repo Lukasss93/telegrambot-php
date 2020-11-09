@@ -24,6 +24,12 @@ class InputTextMessageContent
      * @var string $parse_mode
      */
     public $parse_mode;
+
+    /**
+     * Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
+     * @var MessageEntity[] $caption_entities
+     */
+    public $entities;
     
     /**
      * Optional. Disables link previews for links in the sent message

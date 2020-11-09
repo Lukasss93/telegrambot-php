@@ -19,43 +19,43 @@ class InlineQueryResultVideo
      * @var string $type
      */
     public $type;
-    
+
     /**
      * Unique identifier for this result, 1-64 bytes
      * @var string $id
      */
     public $id;
-    
+
     /**
      * A valid URL for the embedded video player or video file
      * @var string $video_url
      */
     public $video_url;
-    
+
     /**
      * Mime type of the content of video url, “text/html” or “video/mp4”
      * @var string $mime_type
      */
     public $mime_type;
-    
+
     /**
      * URL of the thumbnail (jpeg only) for the video
      * @var string $thumb_url
      */
     public $thumb_url;
-    
+
     /**
      * Title for the result
      * @var string $title
      */
     public $title;
-    
+
     /**
      * Optional. Caption of the video to be sent, 0-1024 characters
      * @var string $caption
      */
     public $caption;
-    
+
     /**
      * Optional. Send {@see https://core.telegram.org/bots/api#markdown-style Markdown} or
      * {@see https://core.telegram.org/bots/api#html-style HTML},
@@ -65,31 +65,37 @@ class InlineQueryResultVideo
      * @var string $parse_mode
      */
     public $parse_mode;
-    
+
+    /**
+     * Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
+     * @var MessageEntity[] $caption_entities
+     */
+    public $caption_entities;
+
     /**
      * Optional. Video width
      * @var int $video_width
      */
     public $video_width;
-    
+
     /**
      * Optional. Video height
      * @var int $video_height
      */
     public $video_height;
-    
+
     /**
      * Optional. Video duration in seconds
      * @var int $video_duration
      */
     public $video_duration;
-    
+
     /**
      * Optional. Short description of the result
      * @var string $description
      */
     public $description;
-    
+
     /**
      * Optional.
      * {@see https://core.telegram.org/bots#inline-keyboards-and-on-the-fly-updating Inline keyboard}
@@ -97,7 +103,7 @@ class InlineQueryResultVideo
      * @var InlineKeyboardMarkup $reply_markup
      */
     public $reply_markup;
-    
+
     /**
      * Optional. Content of the message to be sent instead of the video.
      * This field is required if InlineQueryResultVideo is used to send

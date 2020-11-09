@@ -13,7 +13,7 @@ class InputMediaPhoto
      * @var string $type
      */
     public $type;
-    
+
     /**
      * File to send. Pass a file_id to send a file that exists on the Telegram servers (recommended),
      * pass an HTTP URL for Telegram to get a file from the Internet, or pass “attach://<file_attach_name>”
@@ -22,13 +22,13 @@ class InputMediaPhoto
      * @var string $media
      */
     public $media;
-    
+
     /**
      * Optional. Caption of the photo to be sent, 0-1024 characters after entities parsing
      * @var string $caption
      */
     public $caption;
-    
+
     /**
      * Optional. Send Markdown or HTML, if you want Telegram apps to show
      * bold, italic, fixed-width text or inline URLs in the media caption.
@@ -38,4 +38,10 @@ class InputMediaPhoto
      * @var string $parse_mode
      */
     public $parse_mode;
+
+    /**
+     * Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
+     * @var MessageEntity[] $caption_entities
+     */
+    public $caption_entities;
 }

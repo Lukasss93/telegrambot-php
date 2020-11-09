@@ -38,4 +38,17 @@ class Venue
      * @var string $foursquare_type
      */
     public $foursquare_type;
+
+    /**
+     * Optional. Google Places identifier of the venue
+     * @var string $google_place_id
+     */
+    public $google_place_id;
+
+    /**
+     * Optional. Google Places type of the venue.
+     * (See {@see https://developers.google.com/places/web-service/supported_types supported types}.)
+     * @var string $google_place_type
+     */
+    public $google_place_type;
 }
