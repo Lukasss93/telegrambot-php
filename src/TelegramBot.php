@@ -7,6 +7,7 @@ use JsonMapper_Exception;
 use ReflectionClass;
 use TelegramBot\Types\BotCommand;
 use TelegramBot\Types\Chat;
+use TelegramBot\Types\ChatInviteLink;
 use TelegramBot\Types\ChatMember;
 use TelegramBot\Types\ChatPermissions;
 use TelegramBot\Types\File;
@@ -654,7 +655,7 @@ class TelegramBot
         $object = $this->mapper->map($response->result, new File());
         return $object;
     }
-
+    
     /**
      * Use this method to kick a user from a group or a supergroup.
      * In the case of supergroups, the user will not be able to return to the group
@@ -664,13 +665,17 @@ class TelegramBot
      * Otherwise members may only be removed by the group's creator or by the member that added them.
      * @param int|string $chat_id
      * @param int $user_id
-     * @param ?int $until_date Date when the user will be unbanned, unix time.
+     * @param ?int $until_date Optional. Date when the user will be unbanned, unix time.
      *                               If user is banned for more than 366 days or less than 30 seconds
      *                               from the current time they are considered to be banned forever
+     * @param bool|null $revoke_messages Optional. Pass True to delete all messages from the chat 
+     *                                  for the user that is being removed. 
+     *                                  If False, the user will be able to see messages in the group that were 
+     *                                  sent before the user was removed. Always True for supergroups and channels.
      * @return bool
      * @throws TelegramException
      */
-    public function kickChatMember($chat_id, int $user_id, $until_date = null): bool
+    public function kickChatMember($chat_id, int $user_id, int $until_date = null, bool $revoke_messages=null): bool
     {
         $options = [
             'chat_id' => $chat_id,
@@ -679,6 +684,10 @@ class TelegramBot
 
         if ($until_date !== null) {
             $options['until_date'] = $until_date;
+        }
+    
+        if ($revoke_messages !== null) {
+            $options['revoke_messages'] = $revoke_messages;
         }
 
         $response = $this->endpoint('kickChatMember', $options);
@@ -826,6 +835,106 @@ class TelegramBot
 
         /** @var string $object */
         $object = $response->result;
+        return $object;
+    }
+    
+    /**
+     * Use this method to create an additional invite link for a chat.
+     * The bot must be an administrator in the chat for this to work and must have the appropriate admin rights.
+     * The link can be revoked using the method
+     * {@see https://core.telegram.org/bots/api#revokechatinvitelink revokeChatInviteLink}.
+     * Returns the new invite link as {@see https://core.telegram.org/bots/api#chatinvitelink ChatInviteLink} object.
+     * @param int|string $chat_id Unique identifier for the target chat or username of the target channel (in the
+     *                            format @channelusername)
+     * @param int|null $expire_date Optional. Point in time (Unix timestamp) when the link will expire
+     * @param int|null $member_limit Optional. Maximum number of users that can be members of the chat simultaneously
+     * after joining the chat via this invite link; 1-99999
+     * @return ChatInviteLink
+     * @throws TelegramException
+     * @see https://core.telegram.org/bots/api#createchatinvitelink
+     */
+    public function createChatInviteLink($chat_id, int $expire_date=null, int $member_limit=null): ChatInviteLink
+    {
+        $options=[
+            'chat_id' => $chat_id,
+        ];
+        
+        if($expire_date!==null){
+            $options['expire_date']=$expire_date;
+        }
+    
+        if($member_limit!==null){
+            $options['member_limit']=$expire_date;
+        }
+        
+        $response = $this->endpoint('createChatInviteLink', $options);
+        
+        /** @var ChatInviteLink $object */
+        $object = $this->mapper->map($response->result, new ChatInviteLink());
+        return $object;
+    }
+    
+    /**
+     * Use this method to edit a non-primary invite link created by the bot.
+     * The bot must be an administrator in the chat for this to work and must have the appropriate admin rights.
+     * Returns the edited invite link as a
+     * {@see https://core.telegram.org/bots/api#chatinvitelink ChatInviteLink} object.
+     * @param int|string $chat_id Unique identifier for the target chat or username of the target channel (in the
+     *                            format @channelusername)
+     * @param string $invite_link The invite link to edit
+     * @param int|null $expire_date Optional. Point in time (Unix timestamp) when the link will expire
+     * @param int|null $member_limit Optional. Maximum number of users that can be members of the chat simultaneously
+     * after joining the chat via this invite link; 1-99999
+     * @return ChatInviteLink
+     * @throws JsonMapper_Exception
+     * @throws TelegramException
+     * @see https://core.telegram.org/bots/api#editchatinvitelink
+     */
+    public function editChatInviteLink($chat_id, string $invite_link, int $expire_date=null, int $member_limit=null): ChatInviteLink
+    {
+        $options=[
+            'chat_id' => $chat_id,
+            'invite_link'=>$invite_link,
+        ];
+        
+        if($expire_date!==null){
+            $options['expire_date']=$expire_date;
+        }
+        
+        if($member_limit!==null){
+            $options['member_limit']=$expire_date;
+        }
+        
+        $response = $this->endpoint('editChatInviteLink', $options);
+        
+        /** @var ChatInviteLink $object */
+        $object = $this->mapper->map($response->result, new ChatInviteLink());
+        return $object;
+    }
+    
+    /**
+     * Use this method to revoke an invite link created by the bot. If the primary link is revoked, 
+     * a new link is automatically generated. 
+     * The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. 
+     * Returns the revoked invite link as 
+     * {@see https://core.telegram.org/bots/api#chatinvitelink ChatInviteLink} object.
+     * @param int|string $chat_id Unique identifier for the target chat or username of the target channel (in the
+     *                            format @channelusername)
+     * @param string $invite_link The invite link to edit
+     * @return ChatInviteLink
+     * @throws JsonMapper_Exception
+     * @throws TelegramException
+     * @see https://core.telegram.org/bots/api#revokechatinvitelink
+     */
+    public function revokeChatInviteLink($chat_id, string $invite_link): ChatInviteLink
+    {
+        $response = $this->endpoint('revokeChatInviteLink', [
+            'chat_id' => $chat_id,
+            'invite_link'=>$invite_link,
+        ]);
+        
+        /** @var ChatInviteLink $object */
+        $object = $this->mapper->map($response->result, new ChatInviteLink());
         return $object;
     }
 

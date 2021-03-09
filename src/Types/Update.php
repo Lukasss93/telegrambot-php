@@ -95,6 +95,20 @@ class Update
     public $poll_answer;
     
     /**
+     * Optional. The bot's chat member status was updated in a chat. 
+     * For private chats, this update is received only when the bot is blocked or unblocked by the user.
+     * @var ChatMemberUpdated $my_chat_member
+     */
+    public $my_chat_member;
+    
+    /**
+     * Optional. A chat member's status was updated in a chat. The bot must be an administrator in the chat and must 
+     * explicitly specify “chat_member” in the list of allowed_updates to receive these updates.
+     * @var ChatMemberUpdated $chat_member
+     */
+    public $chat_member;
+    
+    /**
      * Return the current update type
      * @return bool|string
      */

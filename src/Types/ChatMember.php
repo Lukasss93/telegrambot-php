@@ -37,6 +37,15 @@ class ChatMember
      * @var bool $can_be_edited
      */
     public $can_be_edited;
+    
+    /**
+     * Optional. Administrators only. 
+     * True, if the administrator can access the chat event log, chat statistics, message statistics in channels, 
+     * see channel members, see anonymous administrators in supergroups and ignore slow mode. 
+     * Implied by any other administrator privilege
+     * @var bool $can_manage_chat
+     */
+    public $can_manage_chat;
 
     /**
      * Optional. Administrators only. True, if the administrator can post in the channel, channels only
@@ -55,6 +64,12 @@ class ChatMember
      * @var bool $can_delete_messages
      */
     public $can_delete_messages;
+    
+    /**
+     * Optional. Administrators only. True, if the administrator can manage voice chats
+     * @var bool $can_manage_voice_chats
+     */
+    public $can_manage_voice_chats;
 
     /**
      * Optional. Administrators only. True, if the administrator can restrict, ban or unban chat members

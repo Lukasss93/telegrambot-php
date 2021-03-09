@@ -227,6 +227,6 @@ Changelog
 All notable changes to this project will be documented [here](https://github.com/Lukasss93/telegrambot-php/blob/master/CHANGELOG.md).
 
 ### Recent changes
-## v1.11 - 2020-11-10
+## v1.12 - 2021-03-10
 ### Changed
-- Updated to Telegram Bot API 5.0
+- Updated to Telegram Bot API 5.1
