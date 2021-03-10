@@ -1,6 +1,6 @@
 # TelegramBot-PHP
 
-[![API](https://img.shields.io/badge/Telegram%20Bot%20API-5.0%20--%20November%204%2C%202020-blue.svg)](https://core.telegram.org/bots/api)
+[![API](https://img.shields.io/badge/Telegram%20Bot%20API-5.1%09--%20March%204%2C%202021-blue.svg)](https://core.telegram.org/bots/api)
 ![PHP](https://img.shields.io/badge/php-%3E%3D7.2-8892bf.svg)
 ![CURL](https://img.shields.io/badge/cURL-required-green.svg)
 
