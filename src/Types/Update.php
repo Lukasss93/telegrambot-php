@@ -157,6 +157,14 @@ class Update
         if($this->poll_answer !== null) {
             return UpdateTypes::POLL_ANSWER;
         }
+    
+        if($this->my_chat_member !== null) {
+            return UpdateTypes::MY_CHAT_MEMBER;
+        }
+    
+        if($this->chat_member !== null) {
+            return UpdateTypes::CHAT_MEMBER;
+        }
         
         return false;
     }

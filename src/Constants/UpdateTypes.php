@@ -15,4 +15,6 @@ class UpdateTypes
     public const PRE_CHECKOUT_QUERY = 'pre_checkout_query';
     public const POLL = 'poll';
     public const POLL_ANSWER = 'poll_answer';
+    public const MY_CHAT_MEMBER = 'my_chat_member';
+    public const CHAT_MEMBER = 'chat_member';
 }
