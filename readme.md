@@ -1,7 +1,7 @@
 # TelegramBot-PHP
 
-[![API](https://img.shields.io/badge/Telegram%20Bot%20API-5.1%09--%20March%204%2C%202021-blue.svg)](https://core.telegram.org/bots/api)
-![PHP](https://img.shields.io/badge/php-%3E%3D7.2-8892bf.svg)
+[![API](https://img.shields.io/badge/Telegram%20Bot%20API-5.2%09--%20April%2026%2C%202021-blue.svg)](https://core.telegram.org/bots/api)
+![PHP](https://img.shields.io/badge/php-≥%207.2-8892bf.svg)
 ![CURL](https://img.shields.io/badge/cURL-required-green.svg)
 
 [![Latest Stable Version](https://poser.pugx.org/lukasss93/telegrambot-php/v/stable)](https://packagist.org/packages/lukasss93/telegrambot-php)
@@ -13,7 +13,7 @@
 Requirements
 ---------
 
-* PHP >= 7.2
+* PHP ≥ 7.2
 * Curl for PHP must be enabled.
 * Telegram API Key, you can get one simply with [@BotFather](https://core.telegram.org/bots#botfather) with simple commands right after creating your bot.
 
@@ -224,9 +224,4 @@ To-Do list
 
 Changelog
 ------------
-All notable changes to this project will be documented [here](https://github.com/Lukasss93/telegrambot-php/blob/master/CHANGELOG.md).
-
-### Recent changes
-## v1.12 - 2021-03-10
-### Changed
-- Updated to Telegram Bot API 5.1
+All notable changes to this project will be documented [here](CHANGELOG.md).
