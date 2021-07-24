@@ -261,6 +261,7 @@ class TelegramBot
                 $object = $this->mapper->map($data->result, new Message());
                 $messagesResponse[] = $object;
             }
+
             return $messagesResponse;
         }
 
@@ -268,6 +269,7 @@ class TelegramBot
 
         /** @var Message $object */
         $object = $this->mapper->map($data->result, new Message());
+
         return $object;
     }
 
@@ -284,6 +286,7 @@ class TelegramBot
 
         /** @var Message $object */
         $object = $this->mapper->map($response->result, new Message());
+
         return $object;
     }
 
@@ -303,6 +306,7 @@ class TelegramBot
 
         /** @var MessageId $object */
         $object = $this->mapper->map($response->result, new MessageId());
+
         return $object;
     }
 
@@ -319,6 +323,7 @@ class TelegramBot
 
         /** @var Message $object */
         $object = $this->mapper->map($response->result, new Message());
+
         return $object;
     }
 
@@ -338,6 +343,7 @@ class TelegramBot
 
         /** @var Message $object */
         $object = $this->mapper->map($response->result, new Message());
+
         return $object;
     }
 
@@ -356,6 +362,7 @@ class TelegramBot
 
         /** @var Message $object */
         $object = $this->mapper->map($response->result, new Message());
+
         return $object;
     }
 
@@ -374,6 +381,7 @@ class TelegramBot
 
         /** @var Message $object */
         $object = $this->mapper->map($response->result, new Message());
+
         return $object;
     }
 
@@ -393,6 +401,7 @@ class TelegramBot
 
         /** @var Message $object */
         $object = $this->mapper->map($response->result, new Message());
+
         return $object;
     }
 
@@ -412,6 +421,7 @@ class TelegramBot
 
         /** @var Message $object */
         $object = $this->mapper->map($response->result, new Message());
+
         return $object;
     }
 
@@ -429,6 +439,7 @@ class TelegramBot
 
         /** @var Message $object */
         $object = $this->mapper->map($response->result, new Message());
+
         return $object;
     }
 
@@ -447,6 +458,7 @@ class TelegramBot
 
         /** @var Message $object */
         $object = $this->mapper->map($response->result, new Message());
+
         return $object;
     }
 
@@ -463,6 +475,7 @@ class TelegramBot
 
         /** @var Message $object */
         $object = $this->mapper->map($response->result, new Message());
+
         return $object;
     }
 
@@ -526,6 +539,7 @@ class TelegramBot
 
         /** @var Message $object */
         $object = $this->mapper->map($response->result, new Message());
+
         return $object;
     }
 
@@ -542,6 +556,7 @@ class TelegramBot
 
         /** @var Message $object */
         $object = $this->mapper->map($response->result, new Message());
+
         return $object;
     }
 
@@ -560,6 +575,7 @@ class TelegramBot
 
         /** @var Message $object */
         $object = $this->mapper->map($response->result, new Message());
+
         return $object;
     }
 
@@ -580,6 +596,7 @@ class TelegramBot
 
         /** @var Message $object */
         $object = $this->mapper->map($response->result, new Message());
+
         return $object;
     }
 
@@ -629,6 +646,7 @@ class TelegramBot
 
         /** @var UserProfilePhotos $object */
         $object = $this->mapper->map($response->result, new UserProfilePhotos());
+
         return $object;
     }
 
@@ -653,9 +671,10 @@ class TelegramBot
 
         /** @var File $object */
         $object = $this->mapper->map($response->result, new File());
+
         return $object;
     }
-    
+
     /**
      * Use this method to kick a user from a group or a supergroup.
      * In the case of supergroups, the user will not be able to return to the group
@@ -668,14 +687,14 @@ class TelegramBot
      * @param ?int $until_date Optional. Date when the user will be unbanned, unix time.
      *                               If user is banned for more than 366 days or less than 30 seconds
      *                               from the current time they are considered to be banned forever
-     * @param bool|null $revoke_messages Optional. Pass True to delete all messages from the chat 
-     *                                  for the user that is being removed. 
-     *                                  If False, the user will be able to see messages in the group that were 
+     * @param bool|null $revoke_messages Optional. Pass True to delete all messages from the chat
+     *                                  for the user that is being removed.
+     *                                  If False, the user will be able to see messages in the group that were
      *                                  sent before the user was removed. Always True for supergroups and channels.
      * @return bool
      * @throws TelegramException
      */
-    public function kickChatMember($chat_id, int $user_id, int $until_date = null, bool $revoke_messages=null): bool
+    public function kickChatMember($chat_id, int $user_id, int $until_date = null, bool $revoke_messages = null): bool
     {
         $options = [
             'chat_id' => $chat_id,
@@ -685,7 +704,7 @@ class TelegramBot
         if ($until_date !== null) {
             $options['until_date'] = $until_date;
         }
-    
+
         if ($revoke_messages !== null) {
             $options['revoke_messages'] = $revoke_messages;
         }
@@ -835,9 +854,10 @@ class TelegramBot
 
         /** @var string $object */
         $object = $response->result;
+
         return $object;
     }
-    
+
     /**
      * Use this method to create an additional invite link for a chat.
      * The bot must be an administrator in the chat for this to work and must have the appropriate admin rights.
@@ -853,27 +873,28 @@ class TelegramBot
      * @throws TelegramException
      * @see https://core.telegram.org/bots/api#createchatinvitelink
      */
-    public function createChatInviteLink($chat_id, int $expire_date=null, int $member_limit=null): ChatInviteLink
+    public function createChatInviteLink($chat_id, int $expire_date = null, int $member_limit = null): ChatInviteLink
     {
-        $options=[
+        $options = [
             'chat_id' => $chat_id,
         ];
-        
-        if($expire_date!==null){
-            $options['expire_date']=$expire_date;
+
+        if ($expire_date !== null) {
+            $options['expire_date'] = $expire_date;
         }
-    
-        if($member_limit!==null){
-            $options['member_limit']=$expire_date;
+
+        if ($member_limit !== null) {
+            $options['member_limit'] = $expire_date;
         }
-        
+
         $response = $this->endpoint('createChatInviteLink', $options);
-        
+
         /** @var ChatInviteLink $object */
         $object = $this->mapper->map($response->result, new ChatInviteLink());
+
         return $object;
     }
-    
+
     /**
      * Use this method to edit a non-primary invite link created by the bot.
      * The bot must be an administrator in the chat for this to work and must have the appropriate admin rights.
@@ -890,33 +911,38 @@ class TelegramBot
      * @throws TelegramException
      * @see https://core.telegram.org/bots/api#editchatinvitelink
      */
-    public function editChatInviteLink($chat_id, string $invite_link, int $expire_date=null, int $member_limit=null): ChatInviteLink
-    {
-        $options=[
+    public function editChatInviteLink(
+        $chat_id,
+        string $invite_link,
+        int $expire_date = null,
+        int $member_limit = null
+    ): ChatInviteLink {
+        $options = [
             'chat_id' => $chat_id,
-            'invite_link'=>$invite_link,
+            'invite_link' => $invite_link,
         ];
-        
-        if($expire_date!==null){
-            $options['expire_date']=$expire_date;
+
+        if ($expire_date !== null) {
+            $options['expire_date'] = $expire_date;
         }
-        
-        if($member_limit!==null){
-            $options['member_limit']=$expire_date;
+
+        if ($member_limit !== null) {
+            $options['member_limit'] = $expire_date;
         }
-        
+
         $response = $this->endpoint('editChatInviteLink', $options);
-        
+
         /** @var ChatInviteLink $object */
         $object = $this->mapper->map($response->result, new ChatInviteLink());
+
         return $object;
     }
-    
+
     /**
-     * Use this method to revoke an invite link created by the bot. If the primary link is revoked, 
-     * a new link is automatically generated. 
-     * The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. 
-     * Returns the revoked invite link as 
+     * Use this method to revoke an invite link created by the bot. If the primary link is revoked,
+     * a new link is automatically generated.
+     * The bot must be an administrator in the chat for this to work and must have the appropriate admin rights.
+     * Returns the revoked invite link as
      * {@see https://core.telegram.org/bots/api#chatinvitelink ChatInviteLink} object.
      * @param int|string $chat_id Unique identifier for the target chat or username of the target channel (in the
      *                            format @channelusername)
@@ -930,11 +956,12 @@ class TelegramBot
     {
         $response = $this->endpoint('revokeChatInviteLink', [
             'chat_id' => $chat_id,
-            'invite_link'=>$invite_link,
+            'invite_link' => $invite_link,
         ]);
-        
+
         /** @var ChatInviteLink $object */
         $object = $this->mapper->map($response->result, new ChatInviteLink());
+
         return $object;
     }
 
@@ -1161,6 +1188,7 @@ class TelegramBot
 
         /** @var Chat $object */
         $object = $this->mapper->map($response->result, new Chat());
+
         return $object;
     }
 
@@ -1199,6 +1227,7 @@ class TelegramBot
 
         /** @var int $object */
         $object = $response->result;
+
         return $object;
     }
 
@@ -1224,6 +1253,7 @@ class TelegramBot
 
         /** @var ChatMember $object */
         $object = $this->mapper->map($response->result, new ChatMember());
+
         return $object;
     }
 
@@ -1377,8 +1407,10 @@ class TelegramBot
     //region UPDATING MESSAGES
 
     /**
-     * Use this method to edit text and game messages sent by the bot or via the bot (for inline bots).
-     * On success, if edited message is sent by the bot, the edited Message is returned, otherwise True is returned.
+     * Use this method to edit text and {@see https://core.telegram.org/bots/api#games game} messages.
+     * On success, if the edited message is not an inline message,
+     * the edited {@see https://core.telegram.org/bots/api#message Message} is returned, otherwise True is returned.
+     * @see https://core.telegram.org/bots/api#editmessagetext
      * @param array $parameters
      * @return bool|Message
      * @throws TelegramException
@@ -1391,17 +1423,21 @@ class TelegramBot
         if (is_bool($response->result)) {
             /** @var bool $object */
             $object = $response->result;
+
             return $object;
         }
 
         /** @var Message $object */
         $object = $this->mapper->map($response->result, new Message());
+
         return $object;
     }
 
     /**
-     * Use this method to edit captions of messages sent by the bot or via the bot (for inline bots).
-     * On success, if edited message is sent by the bot, the edited Message is returned, otherwise True is returned.
+     * Use this method to edit captions of messages.
+     * On success, if the edited message is not an inline message,
+     * the edited {@see https://core.telegram.org/bots/api#message Message} is returned, otherwise True is returned.
+     * @see https://core.telegram.org/bots/api#editmessagecaption
      * @param array $parameters
      * @return bool|Message
      * @throws TelegramException
@@ -1414,23 +1450,26 @@ class TelegramBot
         if (is_bool($response->result)) {
             /** @var bool $object */
             $object = $response->result;
+
             return $object;
         }
 
         /** @var Message $object */
         $object = $this->mapper->map($response->result, new Message());
+
         return $object;
     }
 
     /**
      * Use this method to edit animation, audio, document, photo, or video messages.
-     * If a message is a part of a message album, then it can be edited only to a photo or a video.
-     * Otherwise, message type can be changed arbitrarily. When inline message is edited, new file can't be uploaded.
-     * Use previously uploaded file via its file_id or specify a URL.
-     * On success, if the edited message was sent by the bot, the edited Message is returned, otherwise True is returned.
-     *
+     * If a message is part of a message album, then it can be edited only to an audio for audio albums,
+     * only to a document for document albums and to a photo or a video otherwise.
+     * When an inline message is edited, a new file can't be uploaded.
+     * Use a previously uploaded file via its file_id or specify a URL.
+     * On success, if the edited message was sent by the bot,
+     * the edited {@see https://core.telegram.org/bots/api#message Message} is returned, otherwise True is returned.
+     * @see https://core.telegram.org/bots/api#editmessagemedia
      * @param array $parameters
-     *
      * @return bool|Message
      * @throws JsonMapper_Exception
      * @throws TelegramException
@@ -1442,17 +1481,21 @@ class TelegramBot
         if (is_bool($response->result)) {
             /** @var bool $object */
             $object = $response->result;
+
             return $object;
         }
 
         /** @var Message $object */
         $object = $this->mapper->map($response->result, new Message());
+
         return $object;
     }
 
     /**
-     * Use this method to edit only the reply markup of messages sent by the bot or via the bot (for inline bots).
-     * On success, if edited message is sent by the bot, the edited Message is returned, otherwise True is returned.
+     * Use this method to edit only the reply markup of messages.
+     * On success, if the edited message is not an inline message,
+     * the edited {@see https://core.telegram.org/bots/api#message Message} is returned, otherwise True is returned.
+     * @see https://core.telegram.org/bots/api#editmessagereplymarkup
      * @param array $parameters
      * @return bool|Message
      * @throws TelegramException
@@ -1465,20 +1508,21 @@ class TelegramBot
         if (is_bool($response->result)) {
             /** @var bool $object */
             $object = $response->result;
+
             return $object;
         }
 
         /** @var Message $object */
         $object = $this->mapper->map($response->result, new Message());
+
         return $object;
     }
 
     /**
      * Use this method to stop a poll which was sent by the bot.
-     * On success, the stopped Poll with the final results is returned.
-     *
+     * On success, the stopped {@see https://core.telegram.org/bots/api#poll Poll} with the final results is returned.
+     * @see https://core.telegram.org/bots/api#stoppoll
      * @param array $parameters
-     *
      * @return bool|Message
      * @throws JsonMapper_Exception
      * @throws TelegramException
@@ -1490,17 +1534,20 @@ class TelegramBot
         if (is_bool($response->result)) {
             /** @var bool $object */
             $object = $response->result;
+
             return $object;
         }
 
         /** @var Message $object */
         $object = $this->mapper->map($response->result, new Message());
+
         return $object;
     }
 
     /**
      * Use this method to delete a message, including service messages, with the following limitations:
      * - A message can only be deleted if it was sent less than 48 hours ago.
+     * - A dice message in a private chat can only be deleted if it was sent more than 24 hours ago.
      * - Bots can delete outgoing messages in private chats, groups, and supergroups.
      * - Bots can delete incoming messages in private chats.
      * - Bots granted can_post_messages permissions can delete outgoing messages in channels.
@@ -1508,6 +1555,7 @@ class TelegramBot
      * - If the bot has can_delete_messages permission in a supergroup or a channel, it can delete any message there.
      *
      * Returns True on success.
+     * @see https://core.telegram.org/bots/api#deletemessage
      * @param $chat_id    int|string Unique identifier for the target chat or username of the target channel (in the
      *                    format @channelusername)
      * @param $message_id int Identifier of the message to delete
@@ -1535,7 +1583,10 @@ class TelegramBot
     //region STICKERS
 
     /**
-     * Use this method to send .webp stickers. On success, the sent Message is returned.
+     * Use this method to send static .WEBP or
+     * {@see https://telegram.org/blog/animated-stickers animated} .TGS stickers.
+     * On success, the sent {@see https://core.telegram.org/bots/api#message Message} is returned.
+     * @see https://core.telegram.org/bots/api#sendsticker
      * @param array $parameters
      * @return Message
      * @throws TelegramException
@@ -1547,11 +1598,14 @@ class TelegramBot
 
         /** @var Message $object */
         $object = $this->mapper->map($response->result, new Message());
+
         return $object;
     }
 
     /**
-     * Use this method to get a sticker set. On success, a StickerSet object is returned.
+     * Use this method to get a sticker set.
+     * On success, a {@see https://core.telegram.org/bots/api#stickerset StickerSet} object is returned.
+     * @see https://core.telegram.org/bots/api#getstickerset
      * @param string $name Short name of the sticker set that is used in t.me/addstickers/ URLs (e.g., animals)
      * @return StickerSet
      * @throws TelegramException
@@ -1563,12 +1617,15 @@ class TelegramBot
 
         /** @var StickerSet $object */
         $object = $this->mapper->map($response->result, new StickerSet());
+
         return $object;
     }
 
     /**
-     * Use this method to upload a .png file with a sticker for later use in createNewStickerSet
-     * and addStickerToSet methods (can be used multiple times). Returns the uploaded File on success.
+     * Use this method to upload a .PNG file with a sticker for later use in createNewStickerSet and
+     * addStickerToSet methods (can be used multiple times).
+     * Returns the uploaded {@see https://core.telegram.org/bots/api#file File} on success.
+     * @see https://core.telegram.org/bots/api#uploadstickerfile
      * @param int $user_id User identifier of sticker file owner
      * @param mixed $png_sticker [InputFile] Png image with the sticker, must be up to 512 kilobytes in size,
      *     dimensions must not exceed 512px, and either width or height must be exactly 512px.
@@ -1582,12 +1639,16 @@ class TelegramBot
 
         /** @var File $object */
         $object = $this->mapper->map($response->result, new File());
+
         return $object;
     }
 
     /**
-     * Use this method to create new sticker set owned by a user. The bot will be able to edit the created sticker set.
+     * Use this method to create a new sticker set owned by a user.
+     * The bot will be able to edit the sticker set thus created.
+     * You must use exactly one of the fields png_sticker or tgs_sticker.
      * Returns True on success.
+     * @see https://core.telegram.org/bots/api#createnewstickerset
      * @param array $parameters Parameters
      * @return bool
      * @throws TelegramException
@@ -1603,7 +1664,12 @@ class TelegramBot
     }
 
     /**
-     * Use this method to add a new sticker to a set created by the bot. Returns True on success.
+     * Use this method to add a new sticker to a set created by the bot.
+     * You must use exactly one of the fields png_sticker or tgs_sticker.
+     * Animated stickers can be added to animated sticker sets and only to them.
+     * Animated sticker sets can have up to 50 stickers.
+     * Static sticker sets can have up to 120 stickers. Returns True on success.
+     * @see https://core.telegram.org/bots/api#addstickertoset
      * @param array $parameters Parameters
      * @return bool
      * @throws TelegramException
@@ -1619,7 +1685,8 @@ class TelegramBot
     }
 
     /**
-     * Use this method to move a sticker in a set created by the bot to a specific position . Returns True on success.
+     * Use this method to move a sticker in a set created by the bot to a specific position. Returns True on success.
+     * @see https://core.telegram.org/bots/api#setstickerpositioninset
      * @param string $sticker File identifier of the sticker
      * @param int $position New sticker position in the set, zero-based
      * @return bool
@@ -1637,6 +1704,7 @@ class TelegramBot
 
     /**
      * Use this method to delete a sticker from a set created by the bot. Returns True on success.
+     * @see https://core.telegram.org/bots/api#deletestickerfromset
      * @param string $sticker File identifier of the sticker
      * @return bool
      * @throws TelegramException
@@ -1677,6 +1745,7 @@ class TelegramBot
     /**
      * Use this method to send answers to an inline query. On success, True is returned.
      * No more than 50 results per query are allowed.
+     * @see https://core.telegram.org/bots/api#answerinlinequery
      * @param array $parameters
      * @return bool
      * @throws TelegramException
@@ -1697,7 +1766,8 @@ class TelegramBot
 
     /**
      * Use this method to send invoices.
-     * On success, the sent Message is returned.
+     * On success, the sent {@see https://core.telegram.org/bots/api#message Message} is returned.
+     * @see https://core.telegram.org/bots/api#sendinvoice
      * @param array $parameters
      * @return Message
      * @throws JsonMapper_Exception
@@ -1709,15 +1779,15 @@ class TelegramBot
 
         /** @var Message $object */
         $object = $this->mapper->map($data->result, new Message());
+
         return $object;
     }
 
     /**
-     * If you sent an invoice requesting a shipping address and the parameter
-     * is_flexible was specified, the Bot API will send an Update with a
-     * shipping_query field to the bot.
-     * Use this method to reply to shipping queries.
-     * On success, True is returned.
+     * If you sent an invoice requesting a shipping address and the parameter is_flexible was specified, the Bot API
+     * will send an {@see https://core.telegram.org/bots/api#update Update} with a shipping_query field to the bot.
+     * Use this method to reply to shipping queries. On success, True is returned.
+     * @see https://core.telegram.org/bots/api#answershippingquery
      * @param object[] $parameters
      * @return bool
      * @throws TelegramException
@@ -1733,13 +1803,12 @@ class TelegramBot
     }
 
     /**
-     * Once the user has confirmed their payment and shipping details,
-     * the Bot API sends the final confirmation in the form of an Update
-     * with the field pre_checkout_query.
+     * Once the user has confirmed their payment and shipping details, the Bot API sends the final confirmation
+     * in the form of an {@see https://core.telegram.org/bots/api#update Update} with the field pre_checkout_query.
      * Use this method to respond to such pre-checkout queries.
      * On success, True is returned.
-     * Note: The Bot API must receive an answer within 10 seconds
-     * after the pre-checkout query was sent.
+     * Note: The Bot API must receive an answer within 10 seconds after the pre-checkout query was sent.
+     * @see https://core.telegram.org/bots/api#answerprecheckoutquery
      * @param object[] $parameters
      * @return bool
      * @throws TelegramException
@@ -1759,13 +1828,15 @@ class TelegramBot
     //region TELEGRAM PASSPORT
 
     /**
-     * Informs a user that some of the Telegram Passport elements they provided contains errors. The user will not be
-     * able to re-submit their Passport to you until the errors are fixed (the contents of the field for which you
-     * returned the error must change). Returns True on success.
+     * Informs a user that some of the Telegram Passport elements they provided contains errors.
+     * The user will not be able to re-submit their Passport to you until the errors are fixed
+     * (the contents of the field for which you returned the error must change). Returns True on success.
      *
      * Use this if the data submitted by the user doesn't satisfy the standards your service requires for any reason.
-     * For example, if a birthday date seems invalid, a submitted document is blurry, a scan shows evidence of
-     * tampering, etc. Supply some details in the error message to make sure the user knows how to correct the issues.
+     * For example, if a birthday date seems invalid, a submitted document is blurry,
+     * a scan shows evidence of tampering, etc.
+     * Supply some details in the error message to make sure the user knows how to correct the issues.
+     * @see https://core.telegram.org/bots/api#setpassportdataerrors
      * @param $parameters
      * @return bool
      * @throws TelegramException
@@ -1785,7 +1856,9 @@ class TelegramBot
     //region GAMES
 
     /**
-     * Use this method to send a game. On success, the sent Message is returned.
+     * Use this method to send a game.
+     * On success, the sent {@see https://core.telegram.org/bots/api#message Message} is returned.
+     * @see https://core.telegram.org/bots/api#sendgame
      * @param array $parameters
      * @return Message
      * @throws JsonMapper_Exception
@@ -1797,13 +1870,16 @@ class TelegramBot
 
         /** @var Message $object */
         $object = $this->mapper->map($response->result, new Message());
+
         return $object;
     }
 
     /**
      * Use this method to set the score of the specified user in a game.
-     * On success, if the message was sent by the bot, returns the edited Message, otherwise returns True.
+     * On success, if the message was sent by the bot,
+     * returns the edited {@see https://core.telegram.org/bots/api#message Message}, otherwise returns True.
      * Returns an error, if the new score is not greater than the user's current score in the chat and force is False.
+     * @see https://core.telegram.org/bots/api#setgamescore
      * @param $parameters
      * @return bool|Message
      * @throws JsonMapper_Exception
@@ -1816,21 +1892,21 @@ class TelegramBot
         if (is_bool($response->result)) {
             /** @var bool $object */
             $object = $response->result;
+
             return $object;
         }
 
         /** @var Message $object */
         $object = $this->mapper->map($response->result, new Message());
+
         return $object;
     }
 
     /**
      * Use this method to get data for high score tables.
-     * Will return the score of the specified user and several of his neighbors in a game.
-     * On success, returns an Array of GameHighScore objects.
-     * This method will currently return scores for the target user, plus two of his closest neighbors on each side.
-     * Will also return the top three users if the user and his neighbors are not among them.
-     * Please note that this behavior is subject to change.
+     * Will return the score of the specified user and several of their neighbors in a game.
+     * On success, returns an Array of {@see https://core.telegram.org/bots/api#gamehighscore GameHighScore} objects.
+     * @see https://core.telegram.org/bots/api#getgamehighscores
      * @param array $parameters
      * @return GameHighScore[]
      * @throws TelegramException
@@ -1860,7 +1936,7 @@ class TelegramBot
      */
     public function downloadFile(string $telegram_file_path, string $local_file_path): void
     {
-        $file_url = 'https://api.telegram.org/file/bot' . $this->token . '/' . $telegram_file_path;
+        $file_url = 'https://api.telegram.org/file/bot'.$this->token.'/'.$telegram_file_path;
         $in = fopen($file_url, 'rb');
         $out = fopen($local_file_path, 'wb');
 
@@ -1887,6 +1963,7 @@ class TelegramBot
             'resize_keyboard' => $resize,
             'selective' => $selective,
         ];
+
         return json_encode($replyMarkup, true);
     }
 
@@ -1900,6 +1977,7 @@ class TelegramBot
         $replyMarkup = [
             'inline_keyboard' => $options,
         ];
+
         return json_encode($replyMarkup, true);
     }
 
@@ -1930,26 +2008,32 @@ class TelegramBot
 
         if ($url !== '') {
             $replyMarkup['url'] = $url;
+
             return $replyMarkup;
         }
         if ($callback_data !== '') {
             $replyMarkup['callback_data'] = $callback_data;
+
             return $replyMarkup;
         }
         if ($switch_inline_query !== '') {
             $replyMarkup['switch_inline_query'] = $switch_inline_query;
+
             return $replyMarkup;
         }
         if ($switch_inline_query_current_chat !== '') {
             $replyMarkup['switch_inline_query_current_chat'] = $switch_inline_query_current_chat;
+
             return $replyMarkup;
         }
         if ($callback_game !== '') {
             $replyMarkup['callback_game'] = $callback_game;
+
             return $replyMarkup;
         }
         if ($pay) {
             $replyMarkup['pay'] = true;
+
             return $replyMarkup;
         }
 
@@ -1983,6 +2067,7 @@ class TelegramBot
             'remove_keyboard' => true,
             'selective' => $selective,
         ];
+
         return json_encode($replyMarkup, true);
     }
 
@@ -1997,6 +2082,7 @@ class TelegramBot
             'force_reply' => true,
             'selective' => $selective,
         ];
+
         return json_encode($replyMarkup, true);
     }
 
@@ -2007,6 +2093,7 @@ class TelegramBot
     public function respondSuccess(): string
     {
         http_response_code(200);
+
         return json_encode(['status' => 'success']);
     }
 
@@ -2018,9 +2105,10 @@ class TelegramBot
     {
         $reflector = new ReflectionClass(__CLASS__);
         $vendorPath = preg_replace('/^(.*)\/composer\/ClassLoader\.php$/', '$1', $reflector->getFileName());
-        $vendorPath = dirname($vendorPath, 2) . DIRECTORY_SEPARATOR;
-        $content = file_get_contents($vendorPath . 'composer.json');
+        $vendorPath = dirname($vendorPath, 2).DIRECTORY_SEPARATOR;
+        $content = file_get_contents($vendorPath.'composer.json');
         $content = json_decode($content, true);
+
         return $content['version'];
     }
 
@@ -2038,8 +2126,9 @@ class TelegramBot
     {
         $fp = fopen($file, 'rb');
         if ($fp === false) {
-            throw new TelegramException('Cannot open "' . $file . '" for reading');
+            throw new TelegramException('Cannot open "'.$file.'" for reading');
         }
+
         return $fp;
     }
 
@@ -2054,7 +2143,7 @@ class TelegramBot
     public function endpoint(string $api, $parameters = [], $isPost = true): Response
     {
         $response = $this->sendRequest(
-            'https://api.telegram.org/bot' . $this->token . '/' . $api,
+            'https://api.telegram.org/bot'.$this->token.'/'.$api,
             $parameters,
             $isPost
         );
@@ -2064,7 +2153,7 @@ class TelegramBot
         $error = $response['error'];
 
         if (!$result && $error !== false) {
-            throw new TelegramException("CURL request failed.\n" . $error);
+            throw new TelegramException("CURL request failed.\n".$error);
         }
 
         if (!is_json($body)) {
@@ -2102,7 +2191,7 @@ class TelegramBot
 
         if (!$isPost) {
             if ($query = http_build_query($parameters)) {
-                $url .= '?' . $query;
+                $url .= '?'.$query;
             }
         } else {
             curl_setopt($request, CURLOPT_POST, true);
