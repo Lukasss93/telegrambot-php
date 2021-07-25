@@ -693,8 +693,33 @@ class TelegramBot
      *                                  sent before the user was removed. Always True for supergroups and channels.
      * @return bool
      * @throws TelegramException
+     * @deprecated Use {@see banChatMember} method instead.
      */
     public function kickChatMember($chat_id, int $user_id, int $until_date = null, bool $revoke_messages = null): bool
+    {
+        return $this->banChatMember($chat_id, $user_id, $until_date, $revoke_messages);
+    }
+
+    /**
+     * Use this method to kick a user from a group or a supergroup.
+     * In the case of supergroups, the user will not be able to return to the group
+     * on their own using invite links, etc., unless unbanned first.
+     * The bot must be an administrator in the group for this to work. Returns True on success.
+     * Note: This will method only work if the ‘All Members Are Admins’ setting is off in the target group.
+     * Otherwise members may only be removed by the group's creator or by the member that added them.
+     * @param int|string $chat_id
+     * @param int $user_id
+     * @param ?int $until_date Optional. Date when the user will be unbanned, unix time.
+     *                               If user is banned for more than 366 days or less than 30 seconds
+     *                               from the current time they are considered to be banned forever
+     * @param bool|null $revoke_messages Optional. Pass True to delete all messages from the chat
+     *                                  for the user that is being removed.
+     *                                  If False, the user will be able to see messages in the group that were
+     *                                  sent before the user was removed. Always True for supergroups and channels.
+     * @return bool
+     * @throws TelegramException
+     */
+    public function banChatMember($chat_id, int $user_id, int $until_date = null, bool $revoke_messages = null): bool
     {
         $options = [
             'chat_id' => $chat_id,
@@ -709,7 +734,7 @@ class TelegramBot
             $options['revoke_messages'] = $revoke_messages;
         }
 
-        $response = $this->endpoint('kickChatMember', $options);
+        $response = $this->endpoint('banChatMember', $options);
 
         /** @var bool $object */
         $object = property_exists($response->result, 'scalar') ? $response->result->scalar : $response->result;
@@ -1220,10 +1245,22 @@ class TelegramBot
      * @param int|string $chat_id
      * @return int
      * @throws TelegramException
+     * @deprecated Use {@see getChatMemberCount} method instead
      */
     public function getChatMembersCount($chat_id): int
     {
-        $response = $this->endpoint('getChatMembersCount', ['chat_id' => $chat_id], false);
+        return $this->getChatMemberCount($chat_id);
+    }
+
+    /**
+     * Use this method to get the number of members in a chat. Returns Int on success.
+     * @param int|string $chat_id
+     * @return int
+     * @throws TelegramException
+     */
+    public function getChatMemberCount($chat_id): int
+    {
+        $response = $this->endpoint('getChatMemberCount', ['chat_id' => $chat_id], false);
 
         /** @var int $object */
         $object = $response->result;
@@ -1340,15 +1377,34 @@ class TelegramBot
     }
 
     /**
+     * Use this method to delete the list of the bot's commands for the given scope and user language.
+     * After deletion, {@see https://core.telegram.org/bots/api#determining-list-of-commands higher level commands}
+     * will be shown to affected users. Returns True on success.
+     * @see https://core.telegram.org/bots/api#deletemycommands
+     * @param array $commands
+     * @return bool
+     * @throws TelegramException
+     */
+    public function deleteMyCommands(array $commands): bool
+    {
+        $response = $this->endpoint('setMyCommands', ['commands' => json_encode($commands, true)]);
+
+        /** @var bool $object */
+        $object = property_exists($response->result, 'scalar') ? $response->result->scalar : $response->result;
+
+        return $object;
+    }
+
+    /**
      * UUse this method to get the current list of the bot's commands. Requires no parameters. Returns Array of BotCommand on success.
      * @see https://core.telegram.org/bots/api#getmycommands
      * @return BotCommand[]
      * @throws TelegramException
      * @throws JsonMapper_Exception
      */
-    public function getMyCommands(): array
+    public function getMyCommands(array $parameters=[]): array
     {
-        $response = $this->endpoint('getMyCommands');
+        $response = $this->endpoint('getMyCommands', $parameters);
 
         /** @var array $resultArray */
         $resultArray = $response->result;
