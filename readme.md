@@ -1,6 +1,6 @@
 # TelegramBot-PHP
 
-[![API](https://img.shields.io/badge/Telegram%20Bot%20API-5.2%09--%20April%2026%2C%202021-blue.svg)](https://core.telegram.org/bots/api)
+[![API](https://img.shields.io/badge/Telegram%20Bot%20API-5.3%09--%20June%2025%2C%202021-blue.svg)](https://core.telegram.org/bots/api)
 ![PHP](https://img.shields.io/badge/php-≥%207.2-8892bf.svg)
 ![CURL](https://img.shields.io/badge/cURL-required-green.svg)
 
@@ -174,38 +174,38 @@ $bot->sendMessage([
 
 This is the list of all the helper functions to make keyboards easily:
 ```php
-$bot->buildKeyBoard(array $options, $onetime=true, $resize=true, $selective=true)
+$bot->buildKeyBoard(array $options, $onetime=true, $resize=true, $selective=true);
 ```
 Send a custom keyboard. $option is an array of array KeyboardButton.  
 Check [ReplyKeyBoardMarkUp](https://core.telegram.org/bots/api#replykeyboardmarkup) for more info.    
 
 ```php
-$bot->buildInlineKeyBoard(array $inline_keyboard)
+$bot->buildInlineKeyBoard(array $inline_keyboard);
 ```
 Send a custom keyboard. $inline_keyboard is an array of array InlineKeyboardButton.  
 Check [InlineKeyboardMarkup](https://core.telegram.org/bots/api#inlinekeyboardmarkup) for more info.    
 
 ```php
-$bot->buildInlineKeyBoardButton($text, $url, $callback_data, $switch_inline_query)
+$bot->buildInlineKeyBoardButton($text, $url, $callback_data, $switch_inline_query);
 ```
 Create an InlineKeyboardButton.    
 Check [InlineKeyBoardButton](https://core.telegram.org/bots/api#inlinekeyboardbutton) for more info.    
 
 ```php
-$bot->buildKeyBoardButton($text, $url, $request_contact, $request_location)
+$bot->buildKeyBoardButton($text, $url, $request_contact, $request_location);
 ```
 Create a KeyboardButton.    
 Check [KeyBoardButton](https://core.telegram.org/bots/api#keyboardbutton) for more info.    
 
 
 ```php
-$bot->buildKeyBoardHide($selective=true)
+$bot->buildKeyBoardHide($selective=true);
 ```
 Hide a custom keyboard.  
 Check [ReplyKeyBoarHide](https://core.telegram.org/bots/api#replykeyboardhide) for more info.    
 
 ```php
-$bot->buildForceReply($selective=true)
+$bot->buildForceReply($selective=true);
 ```
 Show a Reply interface to the user.  
 Check [ForceReply](https://core.telegram.org/bots/api#forcereply) for more info.
