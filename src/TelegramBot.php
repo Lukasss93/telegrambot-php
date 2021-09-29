@@ -43,12 +43,13 @@ class TelegramBot
     /** @var JsonMapper */
     private $mapper;
 
-    /** @var string Bot server url */
+    /** @var string Bot API server url */
     private $botServerUrl;
 
     /**
      * TelegramBot constructor
      * @param string $token Bot token
+     * @param string $botServerUrl Bot API server url
      * @throws JsonMapper_Exception
      */
     public function __construct(string $token, string $botServerUrl = '')
@@ -1996,7 +1997,8 @@ class TelegramBot
      */
     public function downloadFile(string $telegram_file_path, string $local_file_path): void
     {
-        $file_url = 'https://api.telegram.org/file/bot'.$this->token.'/'.$telegram_file_path;
+        $telegramBotUrl = empty($this->botServerUrl) ? 'https://api.telegram.org/' : $this->botServerUrl;
+        $file_url = "$telegramBotUrl/file/bot" .$this->token.'/'.$telegram_file_path;
         $in = fopen($file_url, 'rb');
         $out = fopen($local_file_path, 'wb');
 
