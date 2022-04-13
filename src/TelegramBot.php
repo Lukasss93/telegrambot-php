@@ -43,12 +43,16 @@ class TelegramBot
     /** @var JsonMapper */
     private $mapper;
 
+    /** @var string Bot API server url */
+    private $botServerUrl;
+
     /**
      * TelegramBot constructor
      * @param string $token Bot token
+     * @param string $botServerUrl Bot API server url
      * @throws JsonMapper_Exception
      */
-    public function __construct(string $token)
+    public function __construct(string $token, string $botServerUrl = '')
     {
         //json mapper
         $this->mapper = new JsonMapper();
@@ -59,6 +63,7 @@ class TelegramBot
 
         //telegram data
         $this->token = $token;
+        $this->botServerUrl = $botServerUrl;
         $this->webhookData = $this->getWebhookUpdate();
     }
 
@@ -1992,7 +1997,8 @@ class TelegramBot
      */
     public function downloadFile(string $telegram_file_path, string $local_file_path): void
     {
-        $file_url = 'https://api.telegram.org/file/bot'.$this->token.'/'.$telegram_file_path;
+        $telegramBotUrl = empty($this->botServerUrl) ? 'https://api.telegram.org/' : $this->botServerUrl;
+        $file_url = "$telegramBotUrl/file/bot" .$this->token.'/'.$telegram_file_path;
         $in = fopen($file_url, 'rb');
         $out = fopen($local_file_path, 'wb');
 
@@ -2198,8 +2204,9 @@ class TelegramBot
      */
     public function endpoint(string $api, $parameters = [], $isPost = true): Response
     {
+        $telegramBotUrl = empty($this->botServerUrl) ? 'https://api.telegram.org/' : $this->botServerUrl; 
         $response = $this->sendRequest(
-            'https://api.telegram.org/bot'.$this->token.'/'.$api,
+            "$telegramBotUrl/bot" .$this->token.'/'.$api,
             $parameters,
             $isPost
         );
