@@ -1997,8 +1997,8 @@ class TelegramBot
      */
     public function downloadFile(string $telegram_file_path, string $local_file_path): void
     {
-        $telegramBotUrl = empty($this->botServerUrl) ? 'https://api.telegram.org/' : $this->botServerUrl;
-        $file_url = "$telegramBotUrl/file/bot" .$this->token.'/'.$telegram_file_path;
+        $telegramBotUrl = empty($this->botServerUrl) ? 'https://api.telegram.org' : $this->botServerUrl;
+        $file_url = "$telegramBotUrl/file/bot".$this->token.'/'.$telegram_file_path;
         $in = fopen($file_url, 'rb');
         $out = fopen($local_file_path, 'wb');
 
@@ -2204,9 +2204,9 @@ class TelegramBot
      */
     public function endpoint(string $api, $parameters = [], $isPost = true): Response
     {
-        $telegramBotUrl = empty($this->botServerUrl) ? 'https://api.telegram.org/' : $this->botServerUrl; 
+        $telegramBotUrl = empty($this->botServerUrl) ? 'https://api.telegram.org' : $this->botServerUrl;
         $response = $this->sendRequest(
-            "$telegramBotUrl/bot" .$this->token.'/'.$api,
+            "$telegramBotUrl/bot".$this->token.'/'.$api,
             $parameters,
             $isPost
         );
