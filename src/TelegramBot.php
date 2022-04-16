@@ -1367,13 +1367,22 @@ class TelegramBot
     /**
      * Use this method to change the list of the bot's commands. Returns True on success.
      * @see https://core.telegram.org/bots/api#setmycommands
-     * @param BotCommand[] $commands A JSON-serialized list of bot commands to be set as the list of the bot's commands. At most 100 commands can be specified.
+     * @param BotCommand[] $commands A list of bot commands to be set as the list of the bot's commands. At most 100 commands can be specified.
+     * @param array $opt Optional parameters
      * @return bool
      * @throws TelegramException
      */
-    public function setMyCommands(array $commands): bool
+    public function setMyCommands(array $commands, array $opt = []): bool
     {
-        $response = $this->endpoint('setMyCommands', ['commands' => json_encode($commands, true)]);
+        $options = array_merge([
+            'commands' => json_encode($commands, true),
+        ], $opt);
+
+        if (isset($options['scope'])) {
+            $options['scope'] = json_encode($options['scope'], true);
+        }
+
+        $response = $this->endpoint('setMyCommands', $options);
 
         /** @var bool $object */
         $object = property_exists($response->result, 'scalar') ? $response->result->scalar : $response->result;
@@ -1386,13 +1395,17 @@ class TelegramBot
      * After deletion, {@see https://core.telegram.org/bots/api#determining-list-of-commands higher level commands}
      * will be shown to affected users. Returns True on success.
      * @see https://core.telegram.org/bots/api#deletemycommands
-     * @param array $commands
+     * @param array $opt Optional parameters
      * @return bool
      * @throws TelegramException
      */
-    public function deleteMyCommands(array $commands): bool
+    public function deleteMyCommands(array $opt = []): bool
     {
-        $response = $this->endpoint('setMyCommands', ['commands' => json_encode($commands, true)]);
+        if (isset($opt['scope'])) {
+            $opt['scope'] = json_encode($opt['scope'], true);
+        }
+
+        $response = $this->endpoint('setMyCommands', $opt);
 
         /** @var bool $object */
         $object = property_exists($response->result, 'scalar') ? $response->result->scalar : $response->result;
@@ -1409,7 +1422,11 @@ class TelegramBot
      */
     public function getMyCommands(array $parameters=[]): array
     {
-        $response = $this->endpoint('getMyCommands', $parameters);
+        if (isset($opt['scope'])) {
+            $opt['scope'] = json_encode($opt['scope'], true);
+        }
+
+        $response = $this->endpoint('getMyCommands', $opt);
 
         /** @var array $resultArray */
         $resultArray = $response->result;
