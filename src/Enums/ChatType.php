@@ -2,7 +2,7 @@
 
 namespace TelegramBot\Enums;
 
-class ChatType
+class ChatType extends Enum
 {
     public const PRIVATE = 'private';
     public const GROUP = 'group';

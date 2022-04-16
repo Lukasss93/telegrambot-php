@@ -2,7 +2,7 @@
 
 namespace TelegramBot\Enums;
 
-class UpdateTypes
+class UpdateTypes extends Enum
 {
     public const MESSAGE = 'message';
     public const EDITED_MESSAGE = 'edited_message';

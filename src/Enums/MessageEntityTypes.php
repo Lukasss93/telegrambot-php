@@ -2,8 +2,7 @@
 
 namespace TelegramBot\Enums;
 
-
-class MessageEntityTypes
+class MessageEntityTypes extends Enum
 {
     public const MENTION = 'mention';
     public const HASHTAG = 'hashtag';

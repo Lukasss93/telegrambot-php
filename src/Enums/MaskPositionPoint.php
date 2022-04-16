@@ -2,7 +2,7 @@
 
 namespace TelegramBot\Enums;
 
-class MaskPositionPoint
+class MaskPositionPoint extends Enum
 {
     public const FOREHEAD = 'forehead';
     public const EYES = 'eyes';

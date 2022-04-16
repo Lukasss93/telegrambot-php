@@ -2,7 +2,7 @@
 
 namespace TelegramBot\Enums;
 
-class ChatMemberStatus
+class ChatMemberStatus extends Enum
 {
     public const CREATOR = 'creator';
     public const ADMINISTRATOR = 'administrator';

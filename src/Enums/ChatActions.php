@@ -2,7 +2,7 @@
 
 namespace TelegramBot\Enums;
 
-class ChatActions
+class ChatActions extends Enum
 {
     public const TYPING = 'typing';
     public const UPLOAD_PHOTO = 'upload_photo';

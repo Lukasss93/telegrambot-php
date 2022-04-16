@@ -2,7 +2,7 @@
 
 namespace TelegramBot\Enums;
 
-class MessageTypes
+class MessageTypes extends Enum
 {
     public const TEXT = 'text';
     public const AUDIO = 'audio';

@@ -3,7 +3,7 @@
 namespace TelegramBot\Enums;
 
 
-class TelegramLimits
+class TelegramLimits extends Enum
 {
     /**
      * Download file limit in Byte. (20 MB)

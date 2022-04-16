@@ -2,8 +2,7 @@
 
 namespace TelegramBot\Enums;
 
-
-class PassportTypes
+class PassportTypes extends Enum
 {
     public const PERSONAL_DETAILS = 'personal_details';
     public const PASSPORT = 'passport';
