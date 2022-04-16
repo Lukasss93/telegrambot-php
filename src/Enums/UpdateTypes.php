@@ -17,4 +17,5 @@ class UpdateTypes extends Enum
     public const POLL_ANSWER = 'poll_answer';
     public const MY_CHAT_MEMBER = 'my_chat_member';
     public const CHAT_MEMBER = 'chat_member';
+    public const CHAT_JOIN_REQUEST = 'chat_join_request';
 }
