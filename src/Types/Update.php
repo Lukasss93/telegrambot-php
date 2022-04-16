@@ -2,7 +2,7 @@
 
 namespace TelegramBot\Types;
 
-use TelegramBot\Constants\UpdateTypes;
+use TelegramBot\Enums\UpdateTypes;
 
 /**
  * This {@see https://core.telegram.org/bots/api#available-types object} represents an incoming update.

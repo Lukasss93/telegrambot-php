@@ -1,6 +1,6 @@
 <?php
 
-namespace TelegramBot\Constants;
+namespace TelegramBot\Enums;
 
 class MaskPositionPoint
 {

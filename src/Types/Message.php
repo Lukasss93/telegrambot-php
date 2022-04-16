@@ -2,7 +2,7 @@
 
 namespace TelegramBot\Types;
 
-use TelegramBot\Constants\MessageTypes;
+use TelegramBot\Enums\MessageTypes;
 
 /**
  * This object represents a message.
