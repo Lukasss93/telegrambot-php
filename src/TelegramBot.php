@@ -608,12 +608,25 @@ class TelegramBot
     /**
      * Use this method when you need to tell the user that something is happening on the bot's side.
      * The status is set for 5 seconds or less (when a message arrives from your bot, Telegram clients clear its typing
-     * status). Returns True on success. Example: The ImageBot needs some time to process a request and upload the
-     * image. Instead of sending a text message along the lines of “Retrieving image, please wait…”, the bot may use
-     * sendChatAction with action = upload_photo. The user will see a “sending photo” status for the bot. We only
-     * recommend using this method when a response from the bot will take a noticeable amount of time to arrive.
-     * @param int|string $chat_id
-     * @param string $action
+     * status). Returns True on success.
+     *
+     * > Example: The {@see https://t.me/imagebot ImageBot} needs some time to process a request and upload the
+     * > image. Instead of sending a text message along the lines of “Retrieving image, please wait…”, the bot may use
+     * > {@see https://core.telegram.org/bots/api#sendchataction sendChatAction} with action = upload_photo.
+     * > The user will see a “sending photo” status for the bot.
+     *
+     * We only recommend using this method when a response from the bot will take a noticeable amount of time to arrive.
+     * @param int|string $chat_id Unique identifier for the target chat or username of the target channel (in the format &#64;channelusername)
+     * @param string $action Type of action to broadcast.
+     * Choose one, depending on what the user is about to receive:
+     * typing for {@see https://core.telegram.org/bots/api#sendmessage text messages},
+     * upload_photo for {@see https://core.telegram.org/bots/api#sendphoto photos},
+     * record_video or upload_video for {@see https://core.telegram.org/bots/api#sendvideo videos},
+     * record_voice or upload_voice for {@see https://core.telegram.org/bots/api#sendvoice voice notes},
+     * upload_document for {@see https://core.telegram.org/bots/api#senddocument general files},
+     * choose_sticker for {@see https://core.telegram.org/bots/api#sendsticker stickers},
+     * find_location for {@see https://core.telegram.org/bots/api#sendlocation location data},
+     * record_video_note or upload_video_note for {@see https://core.telegram.org/bots/api#sendvideonote video notes}.
      * @return bool
      * @throws TelegramException
      */
@@ -896,26 +909,17 @@ class TelegramBot
      * Returns the new invite link as {@see https://core.telegram.org/bots/api#chatinvitelink ChatInviteLink} object.
      * @param int|string $chat_id Unique identifier for the target chat or username of the target channel (in the
      *                            format @channelusername)
-     * @param int|null $expire_date Optional. Point in time (Unix timestamp) when the link will expire
-     * @param int|null $member_limit Optional. Maximum number of users that can be members of the chat simultaneously
-     * after joining the chat via this invite link; 1-99999
+     * @param array $opt Optional parameters
      * @return ChatInviteLink
+     * @throws JsonMapper_Exception
      * @throws TelegramException
      * @see https://core.telegram.org/bots/api#createchatinvitelink
      */
-    public function createChatInviteLink($chat_id, int $expire_date = null, int $member_limit = null): ChatInviteLink
+    public function createChatInviteLink($chat_id, array $opt = []): ChatInviteLink
     {
-        $options = [
+        $options = array_merge([
             'chat_id' => $chat_id,
-        ];
-
-        if ($expire_date !== null) {
-            $options['expire_date'] = $expire_date;
-        }
-
-        if ($member_limit !== null) {
-            $options['member_limit'] = $expire_date;
-        }
+        ], $opt);
 
         $response = $this->endpoint('createChatInviteLink', $options);
 
@@ -933,32 +937,18 @@ class TelegramBot
      * @param int|string $chat_id Unique identifier for the target chat or username of the target channel (in the
      *                            format @channelusername)
      * @param string $invite_link The invite link to edit
-     * @param int|null $expire_date Optional. Point in time (Unix timestamp) when the link will expire
-     * @param int|null $member_limit Optional. Maximum number of users that can be members of the chat simultaneously
-     * after joining the chat via this invite link; 1-99999
+     * @param array $opt Optional parameters
      * @return ChatInviteLink
      * @throws JsonMapper_Exception
      * @throws TelegramException
      * @see https://core.telegram.org/bots/api#editchatinvitelink
      */
-    public function editChatInviteLink(
-        $chat_id,
-        string $invite_link,
-        int $expire_date = null,
-        int $member_limit = null
-    ): ChatInviteLink {
-        $options = [
+    public function editChatInviteLink($chat_id, string $invite_link, array $opt = []): ChatInviteLink
+    {
+        $options = array_merge([
             'chat_id' => $chat_id,
             'invite_link' => $invite_link,
-        ];
-
-        if ($expire_date !== null) {
-            $options['expire_date'] = $expire_date;
-        }
-
-        if ($member_limit !== null) {
-            $options['member_limit'] = $expire_date;
-        }
+        ], $opt);
 
         $response = $this->endpoint('editChatInviteLink', $options);
 
@@ -991,6 +981,56 @@ class TelegramBot
 
         /** @var ChatInviteLink $object */
         $object = $this->mapper->map($response->result, new ChatInviteLink());
+
+        return $object;
+    }
+
+    /**
+     * Use this method to approve a chat join request.
+     * The bot must be an administrator in the chat for this to work and
+     * must have the can_invite_users administrator right.
+     * Returns True on success.
+     * @param int|string $chat_id Unique identifier for the target chat or username of the target channel (in the format [at]channelusername)
+     * @param int $user_id Unique identifier of the target user
+     * @return bool
+     * @throws TelegramException
+     * @see https://core.telegram.org/bots/api#approvechatjoinrequest
+     */
+    public function approveChatJoinRequest($chat_id, int $user_id): bool
+    {
+        $options = [
+            'chat_id' => $chat_id,
+            'user_id' => $user_id,
+        ];
+
+        $response = $this->endpoint('approveChatJoinRequest', $options);
+
+        /** @var bool $object */
+        $object = property_exists($response->result, 'scalar') ? $response->result->scalar : $response->result;
+
+        return $object;
+    }
+
+    /**
+     * Use this method to decline a chat join request.
+     * The bot must be an administrator in the chat for this to work and
+     * must have the can_invite_users administrator right. Returns True on success.
+     * @param int|string $chat_id Unique identifier for the target chat or username of the target channel (in the format [at]channelusername)
+     * @param int $user_id Unique identifier of the target user
+     * @return bool
+     * @throws TelegramException
+     */
+    public function declineChatJoinRequest($chat_id, int $user_id): bool
+    {
+        $options = [
+            'chat_id' => $chat_id,
+            'user_id' => $user_id,
+        ];
+
+        $response = $this->endpoint('declineChatJoinRequest', $options);
+
+        /** @var bool $object */
+        $object = property_exists($response->result, 'scalar') ? $response->result->scalar : $response->result;
 
         return $object;
     }
@@ -1416,11 +1456,12 @@ class TelegramBot
     /**
      * UUse this method to get the current list of the bot's commands. Requires no parameters. Returns Array of BotCommand on success.
      * @see https://core.telegram.org/bots/api#getmycommands
+     * @param array $opt Optional parameters
      * @return BotCommand[]
-     * @throws TelegramException
      * @throws JsonMapper_Exception
+     * @throws TelegramException
      */
-    public function getMyCommands(array $parameters=[]): array
+    public function getMyCommands(array $opt = []): array
     {
         if (isset($opt['scope'])) {
             $opt['scope'] = json_encode($opt['scope'], true);
