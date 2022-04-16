@@ -63,6 +63,14 @@ class Chat
     public $bio;
 
     /**
+     * Optional. True, if privacy settings of the other party in the private chat allows
+     * to use tg://user?id=<user_id> links only in chats with the user.
+     * Returned only in {@see https://core.telegram.org/bots/api#getchat getChat}.
+     * @var bool $has_private_forwards
+     */
+    public $has_private_forwards;
+
+    /**
      * Optional. Description, for groups, supergroups and channel chats.
      * Returned only in {@see https://core.telegram.org/bots/api#getchat getChat}.
      * @var string $description
@@ -99,6 +107,20 @@ class Chat
      * @var int $slow_mode_delay
      */
     public $slow_mode_delay;
+
+    /**
+     * Optional. The time after which all messages sent to the chat will be automatically deleted; in seconds.
+     * Returned only in {@see https://core.telegram.org/bots/api#getchat getChat}.
+     * @var int $message_auto_delete_time
+     */
+    public $message_auto_delete_time;
+
+    /**
+     * Optional. True, if messages from the chat can't be forwarded to other chats.
+     * Returned only in {@see https://core.telegram.org/bots/api#getchat getChat}.
+     * @var bool $has_protected_content
+     */
+    public $has_protected_content;
 
     /**
      * Optional. For supergroups, name of Group sticker set.

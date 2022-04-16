@@ -853,6 +853,59 @@ class TelegramBot
     }
 
     /**
+     * Use this method to ban a channel chat in a supergroup or a channel.
+     * Until the chat is {@see https://core.telegram.org/bots/api#unbanchatsenderchat unbanned},
+     * the owner of the banned chat won't be able to send messages on behalf of any of their channels.
+     * The bot must be an administrator in the supergroup or channel for this
+     * to work and must have the appropriate administrator rights.
+     * Returns True on success.
+     * @param int|string $chat_id Unique identifier for the target chat or username of the target channel (in the format &#64;channelusername)
+     * @param int $sender_chat_id Unique identifier of the target sender chat
+     * @return bool
+     * @throws TelegramException
+     * @see https://core.telegram.org/bots/api#banchatsenderchat
+     */
+    public function banChatSenderChat($chat_id, int $sender_chat_id): bool
+    {
+        $opt = [
+            'chat_id' => $chat_id,
+            'sender_chat_id' => $sender_chat_id,
+        ];
+
+        $response = $this->endpoint('banChatSenderChat', $opt);
+
+        /** @var bool $object */
+        $object = property_exists($response->result, 'scalar') ? $response->result->scalar : $response->result;
+
+        return $object;
+    }
+
+    /**
+     * Use this method to unban a previously banned channel chat in a supergroup or channel.
+     * The bot must be an administrator for this to work and must have the appropriate administrator rights.
+     * Returns True on success.
+     * @param int|string $chat_id Unique identifier for the target chat or username of the target channel (in the format &#64;supergroupusername)
+     * @param int $sender_chat_id Unique identifier of the target sender chat
+     * @return bool
+     * @throws TelegramException
+     * @see https://core.telegram.org/bots/api#unbanchatsenderchat
+     */
+    public function unbanChatSenderChat($chat_id, int $sender_chat_id): bool
+    {
+        $opt = [
+            'chat_id' => $chat_id,
+            'sender_chat_id' => $sender_chat_id,
+        ];
+
+        $response = $this->endpoint('unbanChatSenderChat', $opt);
+
+        /** @var bool $object */
+        $object = property_exists($response->result, 'scalar') ? $response->result->scalar : $response->result;
+
+        return $object;
+    }
+
+    /**
      * Use this method to set default chat permissions for all members.
      * The bot must be an administrator in the group or a supergroup for this to work and must have the can_restrict_members admin rights.
      * Returns True on success.
