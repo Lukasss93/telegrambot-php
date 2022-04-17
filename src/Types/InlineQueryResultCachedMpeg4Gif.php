@@ -9,7 +9,7 @@ namespace TelegramBot\Types;
  * animation.
  * @see https://core.telegram.org/bots/api#inlinequeryresultcachedmpeg4gif
  */
-class InlineQueryResultCachedMpeg4Gif
+class InlineQueryResultCachedMpeg4Gif extends InlineQueryResult
 {
     /**
      * Type of the result, must be mpeg4_gif

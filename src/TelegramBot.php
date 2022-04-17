@@ -2,19 +2,24 @@
 
 namespace TelegramBot;
 
+use JsonException;
 use JsonMapper;
 use JsonMapper_Exception;
 use ReflectionClass;
 use TelegramBot\Types\BotCommand;
 use TelegramBot\Types\Chat;
+use TelegramBot\Types\ChatAdministratorRights;
 use TelegramBot\Types\ChatInviteLink;
 use TelegramBot\Types\ChatMember;
 use TelegramBot\Types\ChatPermissions;
 use TelegramBot\Types\File;
 use TelegramBot\Types\GameHighScore;
+use TelegramBot\Types\InlineQueryResult;
+use TelegramBot\Types\MenuButton;
 use TelegramBot\Types\Message;
 use TelegramBot\Types\MessageId;
 use TelegramBot\Types\Response;
+use TelegramBot\Types\SentWebAppMessage;
 use TelegramBot\Types\StickerSet;
 use TelegramBot\Types\Update;
 use TelegramBot\Types\User;
@@ -1531,6 +1536,82 @@ class TelegramBot
         return $object;
     }
 
+    /**
+     * Use this method to change the bot's menu button in a private chat, or the default menu button.
+     * Returns True on success.
+     * @see https://core.telegram.org/bots/api#setchatmenubutton
+     * @param array $opt
+     * @return bool
+     * @throws TelegramException
+     */
+    public function setChatMenuButton(array $opt = []): bool
+    {
+        $response = $this->endpoint(__FUNCTION__, $opt);
+
+        /** @var bool $object */
+        $object = property_exists($response->result, 'scalar') ? $response->result->scalar : $response->result;
+
+        return $object;
+    }
+
+    /**
+     * Use this method to get the current value of the bot's menu button in a private chat, or the default menu button.
+     * Returns {@see https://core.telegram.org/bots/api#menubutton MenuButton} on success.
+     * @see https://core.telegram.org/bots/api#getchatmenubutton
+     * @param array|null $opt
+     * @return MenuButton|null
+     * @throws JsonMapper_Exception
+     * @throws TelegramException
+     */
+    public function getChatMenuButton(?array $opt = []): MenuButton
+    {
+        $response = $this->endpoint(__FUNCTION__, $opt);
+
+        /** @var MenuButton $object */
+        $object = $this->mapper->map($response->result, new MenuButton());
+
+        return $object;
+    }
+
+    /**
+     * Use this method to change the default administrator rights requested by the bot
+     * when it's added as an administrator to groups or channels.
+     * These rights will be suggested to users, but they are are free to modify the list before adding the bot.
+     * Returns True on success.
+     * @see https://core.telegram.org/bots/api#setmydefaultadministratorrights
+     * @param array $opt
+     * @return bool
+     * @throws TelegramException
+     */
+    public function setMyDefaultAdministratorRights(array $opt = []): bool
+    {
+        $response = $this->endpoint(__FUNCTION__, $opt);
+
+        /** @var bool $object */
+        $object = property_exists($response->result, 'scalar') ? $response->result->scalar : $response->result;
+
+        return $object;
+    }
+
+    /**
+     * Use this method to get the current default administrator rights of the bot.
+     * Returns {@see https://core.telegram.org/bots/api#chatadministratorrights ChatAdministratorRights} on success.
+     * @see https://core.telegram.org/bots/api#getmydefaultadministratorrights
+     * @param array $opt
+     * @return ChatAdministratorRights
+     * @throws TelegramException
+     * @throws JsonMapper_Exception
+     */
+    public function getMyDefaultAdministratorRights(array $opt = []): ChatAdministratorRights
+    {
+        $response = $this->endpoint(__FUNCTION__, $opt);
+
+        /** @var ChatAdministratorRights $object */
+        $object = $this->mapper->map($response->result, new ChatAdministratorRights());
+
+        return $object;
+    }
+
     //endregion
 
     //region METHODS FOR THIRD-PARTY BOT API SERVER
@@ -1928,6 +2009,30 @@ class TelegramBot
 
         /** @var bool $object */
         $object = property_exists($response->result, 'scalar') ? $response->result->scalar : $response->result;
+
+        return $object;
+    }
+
+    /**
+     * Use this method to set the result of an interaction with a Web App and send a corresponding message
+     * on behalf of the user to the chat from which the query originated.
+     * On success, a {@see https://core.telegram.org/bots/api#sentwebappmessage SentWebAppMessage} object is returned.
+     * @param string $web_app_query_id Unique identifier for the query to be answered
+     * @param InlineQueryResult $result A JSON-serialized object describing the message to be sent
+     * @return SentWebAppMessage
+     * @throws TelegramException
+     * @throws JsonMapper_Exception
+     * @throws JsonException
+     */
+    public function answerWebAppQuery(string $web_app_query_id, InlineQueryResult $result): SentWebAppMessage
+    {
+        $data = $this->endpoint('sendInvoice', [
+            'web_app_query_id' => $web_app_query_id,
+            'result' => json_encode($result, JSON_THROW_ON_ERROR),
+        ]);
+
+        /** @var SentWebAppMessage $object */
+        $object = $this->mapper->map($data->result, new SentWebAppMessage());
 
         return $object;
     }

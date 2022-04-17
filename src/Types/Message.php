@@ -365,27 +365,32 @@ class Message
 
     /**
      * Optional. Service message: voice chat scheduled
-     * @var VoiceChatScheduled $voice_chat_scheduled
+     * @var VideoChatScheduled $video_chat_scheduled
      */
-    public $voice_chat_scheduled;
+    public $video_chat_scheduled;
 
     /**
      * Optional. Service message: voice chat started
-     * @var VoiceChatStarted $voice_chat_started
+     * @var VideoChatStarted $video_chat_started
      */
-    public $voice_chat_started;
+    public $video_chat_started;
 
     /**
      * Optional. Service message: voice chat ended
-     * @var VoiceChatEnded $voice_chat_ended
+     * @var VideoChatEnded $video_chat_ended
      */
-    public $voice_chat_ended;
+    public $video_chat_ended;
 
     /**
      * Optional. Service message: new participants invited to a voice chat
-     * @var VoiceChatParticipantsInvited $voice_chat_participants_invited
+     * @var VideoChatParticipantsInvited $video_chat_participants_invited
      */
-    public $voice_chat_participants_invited;
+    public $video_chat_participants_invited;
+
+    /**
+     * Optional. Service message: data sent by a Web App
+     */
+    public ?WebAppData $web_app_data = null;
 
     /**
      * Optional. Optional. Inline keyboard attached to the message.

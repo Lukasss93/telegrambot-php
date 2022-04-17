@@ -42,10 +42,10 @@ class ChatMemberAdministrator extends ChatMember
     public $can_delete_messages;
 
     /**
-     * Optional. Administrators only. True, if the administrator can manage voice chats
-     * @var bool $can_manage_voice_chats
+     * Optional. Administrators only. True, if the administrator can manage video chats
+     * @var bool $can_manage_video_chats
      */
-    public $can_manage_voice_chats;
+    public $can_manage_video_chats;
 
     /**
      * Optional. Administrators only. True, if the administrator can restrict, ban or unban chat members

@@ -8,44 +8,44 @@ namespace TelegramBot\Types;
  * Alternatively, you can use input_message_content to send a message with the specified content instead of the video.
  * @see https://core.telegram.org/bots/api#inlinequeryresultcachedvideo
  */
-class InlineQueryResultCachedVideo
+class InlineQueryResultCachedVideo extends InlineQueryResult
 {
     /**
      * Type of the result, must be video
      * @var string $type
      */
     public $type;
-    
+
     /**
      * Unique identifier for this result, 1-64 bytes
      * @var string $id
      */
     public $id;
-    
+
     /**
      * A valid file identifier for the video file
      * @var string $video_file_id
      */
     public $video_file_id;
-    
+
     /**
      * Title for the result
      * @var string $title
      */
     public $title;
-    
+
     /**
      * Optional. Short description of the result
      * @var string $description
      */
     public $description;
-    
+
     /**
      * Optional. Caption of the video to be sent, 0-1024 characters
      * @var string $caption
      */
     public $caption;
-    
+
     /**
      * Optional. Send {@see https://core.telegram.org/bots/api#markdown-style Markdown} or
      * {@see https://core.telegram.org/bots/api#html-style HTML},
@@ -61,7 +61,7 @@ class InlineQueryResultCachedVideo
      * @var MessageEntity[] $caption_entities
      */
     public $caption_entities;
-    
+
     /**
      * Optional.
      * {@see https://core.telegram.org/bots#inline-keyboards-and-on-the-fly-updating Inline keyboard}
@@ -69,7 +69,7 @@ class InlineQueryResultCachedVideo
      * @var InlineKeyboardMarkup $reply_markup
      */
     public $reply_markup;
-    
+
     /**
      * Optional. Content of the message to be sent instead of the video
      * @var InputTextMessageContent|InputLocationMessageContent|InputVenueMessageContent|InputContactMessageContent $input_message_content

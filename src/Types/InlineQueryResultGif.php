@@ -9,7 +9,7 @@ namespace TelegramBot\Types;
  * the specified content instead of the animation.
  * @see https://core.telegram.org/bots/api#inlinequeryresultgif
  */
-class InlineQueryResultGif
+class InlineQueryResultGif extends InlineQueryResult
 {
     /**
      * Type of the result, must be gif

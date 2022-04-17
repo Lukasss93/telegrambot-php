@@ -9,26 +9,26 @@ namespace TelegramBot\Types;
  * Note: This will only work in Telegram versions released after 9 April, 2016. Older clients will ignore them.
  * @see https://core.telegram.org/bots/api#inlinequeryresultcachedsticker
  */
-class InlineQueryResultCachedSticker
+class InlineQueryResultCachedSticker extends InlineQueryResult
 {
     /**
      * Type of the result, must be sticker
      * @var string $type
      */
     public $type;
-    
+
     /**
      * Unique identifier for this result, 1-64 bytes
      * @var string $id
      */
     public $id;
-    
+
     /**
      * A valid file identifier of the sticker
      * @var string $sticker_file_id
      */
     public $sticker_file_id;
-    
+
     /**
      * Optional.
      * {@see https://core.telegram.org/bots#inline-keyboards-and-on-the-fly-updating Inline keyboard}
@@ -36,7 +36,7 @@ class InlineQueryResultCachedSticker
      * @var InlineKeyboardMarkup $reply_markup
      */
     public $reply_markup;
-    
+
     /**
      * Optional. Content of the message to be sent instead of the sticker
      * @var InputTextMessageContent|InputLocationMessageContent|InputVenueMessageContent|InputContactMessageContent $input_message_content
