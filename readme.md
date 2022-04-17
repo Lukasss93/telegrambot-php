@@ -1,19 +1,17 @@
 # TelegramBot-PHP
 
-[![API](https://img.shields.io/badge/Telegram%20Bot%20API-5.3%09--%20June%2025%2C%202021-blue.svg)](https://core.telegram.org/bots/api)
-![PHP](https://img.shields.io/badge/php-≥%207.2-8892bf.svg)
-![CURL](https://img.shields.io/badge/cURL-required-green.svg)
-
 [![Latest Stable Version](https://poser.pugx.org/lukasss93/telegrambot-php/v/stable)](https://packagist.org/packages/lukasss93/telegrambot-php)
 [![Total Downloads](https://poser.pugx.org/lukasss93/telegrambot-php/downloads)](https://packagist.org/packages/lukasss93/telegrambot-php)
+[![API](https://img.shields.io/badge/Telegram%20Bot%20API-6.0%09--%20April%2016%2C%202022-blue.svg)](https://core.telegram.org/bots/api)
 [![License](https://poser.pugx.org/lukasss93/telegrambot-php/license)](https://packagist.org/packages/lukasss93/telegrambot-php)
 
-> A very simple PHP [Telegram Bot API](https://core.telegram.org/bots/api) for sending messages. 
+> A very simple Telegram Bot Framework
 
-Requirements
----------
+This simple framework is object-based, all methods return a Telegram Object contained in TelegramBot/Types namespace.
 
-* PHP ≥ 7.2
+## Requirements
+
+* PHP ≥ 8.0
 * Curl for PHP must be enabled.
 * Telegram API Key, you can get one simply with [@BotFather](https://core.telegram.org/bots#botfather) with simple commands right after creating your bot.
 
@@ -24,8 +22,8 @@ Since the August 29 update you can use a self-signed ssl certificate.
 For the GetUpdates:
 * Some way to execute the script in order to serve messages (for example cronjob)
 
-Installation
----------
+## Installation
+
 You can install this library with composer:
 
  `composer require lukasss93/telegrambot-php`
@@ -37,10 +35,6 @@ Navigate to
 https://api.telegram.org/bot(TOKEN)/setWebhook?url=https://yoursite.com/your_update.php
 Or use the Telegram class setWebhook method.
 
-Informations
----------
-
-This simple framework is object-based, all methods return a Telegram Object contained in TelegramBot/Types namespace. 
 
 Examples
 ---------
@@ -210,11 +204,6 @@ $bot->buildForceReply($selective=true);
 Show a Reply interface to the user.  
 Check [ForceReply](https://core.telegram.org/bots/api#forcereply) for more info.
 
-Contact me
-------------
-You can contact me [via Telegram](https://telegram.me/Lukasss93) but if you have an issue 
-please [open](https://github.com/Lukasss93/telegrambot-php/issues) one.
-
 To-Do list
 ----------
 * Optional predictive parameters in methods
@@ -222,6 +211,16 @@ To-Do list
 * Chat conversations
 * Commands listener with callback + events
 
-Changelog
-------------
-All notable changes to this project will be documented [here](CHANGELOG.md).
+## Changelog
+
+Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed recently.
+
+## Credits
+
+- [Luca Patera](https://github.com/Lukasss93)
+- [All Contributors](../../contributors)
+
+## License
+
+The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
+
