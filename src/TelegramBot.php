@@ -5,12 +5,6 @@ namespace TelegramBot;
 use JsonMapper;
 use JsonMapper_Exception;
 use ReflectionClass;
-use TelegramBot\Endpoints\Games;
-use TelegramBot\Endpoints\InlineMode;
-use TelegramBot\Endpoints\Passport;
-use TelegramBot\Endpoints\Payments;
-use TelegramBot\Endpoints\Stickers;
-use TelegramBot\Endpoints\UpdatesMessages;
 use TelegramBot\Types\Response;
 use TelegramBot\Types\Update;
 use TelegramBot\Types\WebhookInfo;
@@ -22,7 +16,7 @@ use TelegramBot\Types\WebhookInfo;
  */
 class TelegramBot
 {
-    use InlineMode, Payments, UpdatesMessages, Stickers, Passport, Games;
+    use Client;
 
     /** @var bool Automatic split message */
     public $splitLongMessage = false;
