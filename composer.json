@@ -17,7 +17,8 @@
         "ext-fileinfo": "*",
         "ext-json": "*",
         "netresearch/jsonmapper": "^v4.0",
-        "illuminate/macroable": "^v9.0"
+        "illuminate/macroable": "^v9.0",
+        "guzzlehttp/guzzle": "^7.4"
     },
     "autoload": {
         "psr-4": {

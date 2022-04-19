@@ -2,8 +2,10 @@
 
 namespace TelegramBot;
 
+use GuzzleHttp\Client as Guzzle;
 use JsonMapper as JsonMapperLegacy;
 use JsonMapper_Exception;
+use Psr\Http\Client\ClientInterface;
 use ReflectionClass;
 use TelegramBot\Hydrator\Hydrator;
 use TelegramBot\Hydrator\JsonMapper;
@@ -20,6 +22,8 @@ class TelegramBot
 {
     use Client;
 
+    protected const DEFAULT_API_URL = 'https://api.telegram.org';
+
     /** @var Update Webhook update */
     public $webhookData;
 
@@ -33,6 +37,7 @@ class TelegramBot
     private $mapper;
 
     protected Hydrator $hydrator;
+    protected ClientInterface $http;
 
     /** @var string Bot API server url */
     private $botServerUrl;
@@ -40,11 +45,13 @@ class TelegramBot
     /**
      * TelegramBot constructor
      * @param string $token Bot token
-     * @param string $botServerUrl Bot API server url
+     * @param string|null $botServerUrl Bot API server url
      * @throws JsonMapper_Exception
      */
-    public function __construct(string $token, string $botServerUrl = '')
+    public function __construct(string $token, ?string $botServerUrl = null)
     {
+        $baseUri = $botServerUrl ?? self::DEFAULT_API_URL;
+
         //json mapper
         $this->mapper = new JsonMapperLegacy();
         $this->mapper->bStrictNullTypes = false;
@@ -52,10 +59,14 @@ class TelegramBot
             $object->{$propName} = $jsonValue;
         };
         $this->hydrator = new JsonMapper();
+        $this->http = new Guzzle([
+            'base_uri' => "$baseUri/bot$token/",
+            'timeout' => 5,
+        ]);
 
         //telegram data
         $this->token = $token;
-        $this->botServerUrl = $botServerUrl;
+        $this->botServerUrl = $baseUri;
         $this->webhookData = $this->getWebhookUpdate();
     }
 
