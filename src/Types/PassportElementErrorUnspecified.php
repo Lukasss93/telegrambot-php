@@ -7,29 +7,25 @@ namespace TelegramBot\Types;
  * The error is considered resolved when new data is added.
  * @see https://core.telegram.org/bots/api#passportelementerrorunspecified
  */
-class PassportElementErrorUnspecified
+trait PassportElementErrorUnspecified
 {
     /**
      * Error source, must be unspecified
-     * @var string $source
      */
-    public $source;
-    
+    public string $source;
+
     /**
      * Type of element of the user's Telegram Passport which has the issue
-     * @var string $type
      */
-    public $type;
-    
+    public string $type;
+
     /**
      * Base64-encoded element hash
-     * @var string $element_hash
      */
-    public $element_hash;
-    
+    public ?string $element_hash = null;
+
     /**
      * Error message
-     * @var string $message
      */
-    public $message;
+    public string $message;
 }
