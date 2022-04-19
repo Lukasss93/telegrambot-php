@@ -2,10 +2,12 @@
 
 namespace TelegramBot\Endpoints;
 
+use JsonException;
 use JsonMapper_Exception;
 use TelegramBot\TelegramBot;
 use TelegramBot\TelegramException;
 use TelegramBot\Types\Message;
+use TelegramBot\Types\Poll;
 
 /**
  * @mixin TelegramBot
@@ -17,14 +19,17 @@ trait UpdatesMessages
      * On success, if the edited message is not an inline message,
      * the edited {@see https://core.telegram.org/bots/api#message Message} is returned, otherwise True is returned.
      * @see https://core.telegram.org/bots/api#editmessagetext
-     * @param array $parameters
+     * @param string $text New text of the message, 1-4096 characters after entities parsing
+     * @param array $opt Optional parameters
      * @return bool|Message
-     * @throws TelegramException
      * @throws JsonMapper_Exception
+     * @throws TelegramException
      */
-    public function editMessageText(array $parameters)
+    public function editMessageText(string $text, array $opt = []): Message|bool
     {
-        $response = $this->endpoint('editMessageText', $parameters);
+        $response = $this->endpoint(__FUNCTION__, array_merge([
+            'text' => $text,
+        ], $opt));
 
         if (is_bool($response->result)) {
             /** @var bool $object */
@@ -44,14 +49,14 @@ trait UpdatesMessages
      * On success, if the edited message is not an inline message,
      * the edited {@see https://core.telegram.org/bots/api#message Message} is returned, otherwise True is returned.
      * @see https://core.telegram.org/bots/api#editmessagecaption
-     * @param array $parameters
+     * @param array $opt Optional parameters
      * @return bool|Message
      * @throws TelegramException
      * @throws JsonMapper_Exception
      */
-    public function editMessageCaption(array $parameters)
+    public function editMessageCaption(array $opt = []): Message|bool
     {
-        $response = $this->endpoint('editMessageCaption', $parameters);
+        $response = $this->endpoint(__FUNCTION__, $opt);
 
         if (is_bool($response->result)) {
             /** @var bool $object */
@@ -75,14 +80,18 @@ trait UpdatesMessages
      * On success, if the edited message was sent by the bot,
      * the edited {@see https://core.telegram.org/bots/api#message Message} is returned, otherwise True is returned.
      * @see https://core.telegram.org/bots/api#editmessagemedia
-     * @param array $parameters
+     * @param mixed $media An InputMedia object for a new media content of the message
+     * @param array $opt Optional parameters
      * @return bool|Message
      * @throws JsonMapper_Exception
      * @throws TelegramException
+     * @throws JsonException
      */
-    public function editMessageMedia(array $parameters)
+    public function editMessageMedia(mixed $media, array $opt = []): Message|bool
     {
-        $response = $this->endpoint('editMessageMedia', $parameters);
+        $response = $this->endpoint(__FUNCTION__, array_merge([
+            'media' => json_encode($media, JSON_THROW_ON_ERROR),
+        ], $opt));
 
         if (is_bool($response->result)) {
             /** @var bool $object */
@@ -102,14 +111,14 @@ trait UpdatesMessages
      * On success, if the edited message is not an inline message,
      * the edited {@see https://core.telegram.org/bots/api#message Message} is returned, otherwise True is returned.
      * @see https://core.telegram.org/bots/api#editmessagereplymarkup
-     * @param array $parameters
+     * @param array $opt Optional parameters
      * @return bool|Message
      * @throws TelegramException
      * @throws JsonMapper_Exception
      */
-    public function editMessageReplyMarkup(array $parameters)
+    public function editMessageReplyMarkup(array $opt = []): Message|bool
     {
-        $response = $this->endpoint('editMessageReplyMarkup', $parameters);
+        $response = $this->endpoint(__FUNCTION__, $opt);
 
         if (is_bool($response->result)) {
             /** @var bool $object */
@@ -128,24 +137,22 @@ trait UpdatesMessages
      * Use this method to stop a poll which was sent by the bot.
      * On success, the stopped {@see https://core.telegram.org/bots/api#poll Poll} with the final results is returned.
      * @see https://core.telegram.org/bots/api#stoppoll
-     * @param array $parameters
-     * @return bool|Message
+     * @param int|string $chat_id Unique identifier for the target chat or username of the target channel (in the format &#64;channelusername)
+     * @param int $message_id Identifier of the original message with the poll
+     * @param array $opt Optional parameters
+     * @return Poll
      * @throws JsonMapper_Exception
      * @throws TelegramException
      */
-    public function stopPoll(array $parameters)
+    public function stopPoll(int|string $chat_id, int $message_id, array $opt = []): Poll
     {
-        $response = $this->endpoint('stopPoll', $parameters);
+        $response = $this->endpoint(__FUNCTION__, array_merge([
+            'chat_id' => $chat_id,
+            'message_id' => $message_id,
+        ], $opt));
 
-        if (is_bool($response->result)) {
-            /** @var bool $object */
-            $object = $response->result;
-
-            return $object;
-        }
-
-        /** @var Message $object */
-        $object = $this->mapper->map($response->result, new Message());
+        /** @var Poll $object */
+        $object = $this->mapper->map($response->result, new Poll());
 
         return $object;
     }
@@ -162,21 +169,17 @@ trait UpdatesMessages
      *
      * Returns True on success.
      * @see https://core.telegram.org/bots/api#deletemessage
-     * @param $chat_id    int|string Unique identifier for the target chat or username of the target channel (in the
-     *                    format @channelusername)
-     * @param $message_id int Identifier of the message to delete
+     * @param int|string $chat_id Unique identifier for the target chat or username of the target channel (in the format &#64;channelusername)
+     * @param int $message_id Identifier of the message to delete
      * @return bool
      * @throws TelegramException
      */
     public function deleteMessage(int|string $chat_id, int $message_id): bool
     {
-        $response = $this->endpoint(
-            'deleteMessage',
-            [
-                'chat_id' => $chat_id,
-                'message_id' => $message_id,
-            ]
-        );
+        $response = $this->endpoint(__FUNCTION__, [
+            'chat_id' => $chat_id,
+            'message_id' => $message_id,
+        ]);
 
         /** @var bool $object */
         $object = property_exists($response->result, 'scalar') ? $response->result->scalar : $response->result;

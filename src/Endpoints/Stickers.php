@@ -19,14 +19,19 @@ trait Stickers
      * {@see https://telegram.org/blog/animated-stickers animated} .TGS stickers.
      * On success, the sent {@see https://core.telegram.org/bots/api#message Message} is returned.
      * @see https://core.telegram.org/bots/api#sendsticker
-     * @param array $parameters
+     * @param int|string $chat_id Unique identifier for the target chat or username of the target channel (in the format &#64;channelusername)
+     * @param mixed $sticker Sticker to send. Pass a file_id as String to send a file that exists on the Telegram servers (recommended), pass an HTTP URL as a String for Telegram to get a .webp file from the Internet, or upload a new one using multipart/form-data. {@see https://core.telegram.org/bots/api#sending-files More info on Sending Files »}
+     * @param array $opt Optional parameters
      * @return Message
-     * @throws TelegramException
      * @throws JsonMapper_Exception
+     * @throws TelegramException
      */
-    public function sendSticker(array $parameters): Message
+    public function sendSticker(int|string $chat_id, mixed $sticker, array $opt = []): Message
     {
-        $response = $this->endpoint('sendSticker', $parameters);
+        $response = $this->endpoint(__FUNCTION__, array_merge([
+            'chat_id' => $chat_id,
+            'sticker' => $sticker,
+        ], $opt));
 
         /** @var Message $object */
         $object = $this->mapper->map($response->result, new Message());
@@ -38,14 +43,16 @@ trait Stickers
      * Use this method to get a sticker set.
      * On success, a {@see https://core.telegram.org/bots/api#stickerset StickerSet} object is returned.
      * @see https://core.telegram.org/bots/api#getstickerset
-     * @param string $name Short name of the sticker set that is used in t.me/addstickers/ URLs (e.g., animals)
+     * @param string $name Name of the sticker set
      * @return StickerSet
      * @throws TelegramException
      * @throws JsonMapper_Exception
      */
     public function getStickerSet(string $name): StickerSet
     {
-        $response = $this->endpoint('getStickerSet', ['name' => $name]);
+        $response = $this->endpoint(__FUNCTION__, [
+            'name' => $name,
+        ]);
 
         /** @var StickerSet $object */
         $object = $this->mapper->map($response->result, new StickerSet());
@@ -59,15 +66,17 @@ trait Stickers
      * Returns the uploaded {@see https://core.telegram.org/bots/api#file File} on success.
      * @see https://core.telegram.org/bots/api#uploadstickerfile
      * @param int $user_id User identifier of sticker file owner
-     * @param mixed $png_sticker [InputFile] Png image with the sticker, must be up to 512 kilobytes in size,
-     *     dimensions must not exceed 512px, and either width or height must be exactly 512px.
+     * @param mixed $png_sticker Png image with the sticker, must be up to 512 kilobytes in size, dimensions must not exceed 512px, and either width or height must be exactly 512px. {@see https://core.telegram.org/bots/api#sending-files More info on Sending Files »}
      * @return File
      * @throws TelegramException
      * @throws JsonMapper_Exception
      */
     public function uploadStickerFile(int $user_id, mixed $png_sticker): File
     {
-        $response = $this->endpoint('uploadStickerFile', ['user_id' => $user_id, 'png_sticker' => $png_sticker]);
+        $response = $this->endpoint(__FUNCTION__, [
+            'user_id' => $user_id,
+            'png_sticker' => $png_sticker,
+        ]);
 
         /** @var File $object */
         $object = $this->mapper->map($response->result, new File());
@@ -81,13 +90,27 @@ trait Stickers
      * You must use exactly one of the fields png_sticker or tgs_sticker.
      * Returns True on success.
      * @see https://core.telegram.org/bots/api#createnewstickerset
-     * @param array $parameters Parameters
+     * @param int $user_id User identifier of created sticker set owner
+     * @param string $name Short name of sticker set, to be used in t.me/addstickers/ URLs (e.g., animals). Can contain only english letters, digits and underscores. Must begin with a letter, can't contain consecutive underscores and must end in “_by_<bot username>”. <bot_username> is case insensitive. 1-64 characters.
+     * @param string $title Sticker set title, 1-64 characters
+     * @param string $emojis One or more emoji corresponding to the sticker
+     * @param array $opt Optional parameters
      * @return bool
      * @throws TelegramException
      */
-    public function createNewStickerSet(array $parameters): bool
-    {
-        $response = $this->endpoint('createNewStickerSet', $parameters);
+    public function createNewStickerSet(
+        int $user_id,
+        string $name,
+        string $title,
+        string $emojis,
+        array $opt = []
+    ): bool {
+        $response = $this->endpoint(__FUNCTION__, array_merge([
+            'user_id' => $user_id,
+            'name' => $name,
+            'title' => $title,
+            'emojis' => $emojis,
+        ], $opt));
 
         /** @var bool $object */
         $object = property_exists($response->result, 'scalar') ? $response->result->scalar : $response->result;
@@ -102,13 +125,20 @@ trait Stickers
      * Animated sticker sets can have up to 50 stickers.
      * Static sticker sets can have up to 120 stickers. Returns True on success.
      * @see https://core.telegram.org/bots/api#addstickertoset
-     * @param array $parameters Parameters
+     * @param int $user_id User identifier of sticker set owner
+     * @param string $name Sticker set name
+     * @param string $emojis One or more emoji corresponding to the sticker
+     * @param array $opt Optional parameters
      * @return bool
      * @throws TelegramException
      */
-    public function addStickerToSet(array $parameters): bool
+    public function addStickerToSet(int $user_id, string $name, string $emojis, array $opt = []): bool
     {
-        $response = $this->endpoint('addStickerToSet', $parameters);
+        $response = $this->endpoint(__FUNCTION__, array_merge([
+            'user_id' => $user_id,
+            'name' => $name,
+            'emojis' => $emojis,
+        ], $opt));
 
         /** @var bool $object */
         $object = property_exists($response->result, 'scalar') ? $response->result->scalar : $response->result;
@@ -126,7 +156,10 @@ trait Stickers
      */
     public function setStickerPositionInSet(string $sticker, int $position): bool
     {
-        $response = $this->endpoint('setStickerPositionInSet', ['sticker' => $sticker, 'position' => $position]);
+        $response = $this->endpoint(__FUNCTION__, [
+            'sticker' => $sticker,
+            'position' => $position,
+        ]);
 
         /** @var bool $object */
         $object = property_exists($response->result, 'scalar') ? $response->result->scalar : $response->result;
@@ -143,7 +176,9 @@ trait Stickers
      */
     public function deleteStickerFromSet(string $sticker): bool
     {
-        $response = $this->endpoint('deleteStickerFromSet', ['sticker' => $sticker]);
+        $response = $this->endpoint(__FUNCTION__, [
+            'sticker' => $sticker,
+        ]);
 
         /** @var bool $object */
         $object = property_exists($response->result, 'scalar') ? $response->result->scalar : $response->result;
@@ -156,13 +191,18 @@ trait Stickers
      * Animated thumbnails can be set for animated sticker sets only.
      * Returns True on success.
      * @see https://core.telegram.org/bots/api#setstickersetthumb
-     * @param array $parameters Method parameters
+     * @param string $name Sticker set name
+     * @param int $user_id User identifier of the sticker set owner
+     * @param array $opt Optional parameters
      * @return bool
      * @throws TelegramException
      */
-    public function setStickerSetThumb(array $parameters): bool
+    public function setStickerSetThumb(string $name, int $user_id, array $opt = []): bool
     {
-        $response = $this->endpoint('setStickerSetThumb', $parameters);
+        $response = $this->endpoint(__FUNCTION__, array_merge([
+            'name' => $name,
+            'user_id' => $user_id,
+        ], $opt));
 
         /** @var bool $object */
         $object = property_exists($response->result, 'scalar') ? $response->result->scalar : $response->result;

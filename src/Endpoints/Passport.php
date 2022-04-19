@@ -2,8 +2,10 @@
 
 namespace TelegramBot\Endpoints;
 
+use JsonException;
 use TelegramBot\TelegramBot;
 use TelegramBot\TelegramException;
+use TelegramBot\Types\PassportElementError;
 
 /**
  * @mixin TelegramBot
@@ -20,13 +22,18 @@ trait Passport
      * a scan shows evidence of tampering, etc.
      * Supply some details in the error message to make sure the user knows how to correct the issues.
      * @see https://core.telegram.org/bots/api#setpassportdataerrors
-     * @param $parameters
+     * @param int $user_id User identifier
+     * @param PassportElementError[] $errors A PassportElementError array describing the errors
      * @return bool
      * @throws TelegramException
+     * @throws JsonException
      */
-    public function setPassportDataErrors($parameters): bool
+    public function setPassportDataErrors(int $user_id, array $errors): bool
     {
-        $response = $this->endpoint('setPassportDataErrors', $parameters);
+        $response = $this->endpoint(__FUNCTION__, [
+            'user_id' => $user_id,
+            'errors' => json_encode($errors, JSON_THROW_ON_ERROR),
+        ]);
 
         /** @var bool $object */
         $object = property_exists($response->result, 'scalar') ? $response->result->scalar : $response->result;
