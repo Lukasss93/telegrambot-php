@@ -2,6 +2,7 @@
 
 namespace TelegramBot;
 
+use Illuminate\Support\Traits\Macroable;
 use TelegramBot\Endpoints\AvailableMethods;
 use TelegramBot\Endpoints\Games;
 use TelegramBot\Endpoints\InlineMode;
@@ -18,5 +19,6 @@ trait Client
         Passport,
         Payments,
         Stickers,
-        UpdatesMessages;
+        UpdatesMessages,
+        Macroable;
 }
