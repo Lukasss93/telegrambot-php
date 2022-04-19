@@ -1,16 +1,48 @@
 # Changelog
+
 All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## v2.0 - [UNRELEASED]
+
+### Added
+
+- Added support for local bot API server
+- Added support for **PHP 8.0**
+- Added `ParseMode::MARKDOWN_LEGACY`
+
+### Changed
+
+- Updated to Telegram Bot API 5.3
+- Updated to Telegram Bot API 5.4
+- Updated to Telegram Bot API 5.5
+- Updated to Telegram Bot API 5.6
+- Updated to Telegram Bot API 5.7
+- Updated to Telegram Bot API 6.0
+- All optional parameters in all endpoints methods must be inside the `array $opt = []`
+- The namespace `TelegramBot\Constants` was renamed to `TelegramBot\Enums`
+- Better PhpDoc
+- Changed `ParseMode::MARKDOWN` value to _MarkdownV2_
+- Automatic `json_encode` for mandatory parameters requiring a JSON-serialized object/array
+
+### Removed
+
+- Dropped support for **PHP 7.2**
+- Removed the `kickChatMember` method
+
 ## v1.14.1 - 2021-09-07
+
 ### Fixed
+
 - Fixed php version + updated jsonmapper version
 - Removed composer.lock from git
 
 ## v1.14 - 2021-07-25
+
 ### Changed
+
 - Updated to Telegram Bot API 5.3
 
 ## v1.13 - 2021-04-26
