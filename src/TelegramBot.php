@@ -2,9 +2,11 @@
 
 namespace TelegramBot;
 
-use JsonMapper;
+use JsonMapper as JsonMapperLegacy;
 use JsonMapper_Exception;
 use ReflectionClass;
+use TelegramBot\Hydrator\Hydrator;
+use TelegramBot\Hydrator\JsonMapper;
 use TelegramBot\Types\Response;
 use TelegramBot\Types\Update;
 use TelegramBot\Types\WebhookInfo;
@@ -30,8 +32,10 @@ class TelegramBot
     /** @var string Bot token */
     private $token;
 
-    /** @var JsonMapper */
+    /** @var JsonMapperLegacy */
     private $mapper;
+
+    protected Hydrator $hydrator;
 
     /** @var string Bot API server url */
     private $botServerUrl;
@@ -45,11 +49,12 @@ class TelegramBot
     public function __construct(string $token, string $botServerUrl = '')
     {
         //json mapper
-        $this->mapper = new JsonMapper();
+        $this->mapper = new JsonMapperLegacy();
         $this->mapper->bStrictNullTypes = false;
         $this->mapper->undefinedPropertyHandler = static function ($object, $propName, $jsonValue) {
             $object->{$propName} = $jsonValue;
         };
+        $this->hydrator = new JsonMapper();
 
         //telegram data
         $this->token = $token;
