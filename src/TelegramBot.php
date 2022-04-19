@@ -20,9 +20,6 @@ class TelegramBot
 {
     use Client;
 
-    /** @var bool Automatic split message */
-    public $splitLongMessage = false;
-
     /** @var Update Webhook update */
     public $webhookData;
 

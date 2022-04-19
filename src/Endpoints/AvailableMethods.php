@@ -90,34 +90,13 @@ trait AvailableMethods
      * @param int|string $chat_id Unique identifier for the target chat or username of the target channel (in the format &#64;channelusername)
      * @param string $text Text of the message to be sent, 1-4096 characters after entities parsing
      * @param array $opt Optional parameters
-     * @return Message|Message[]
+     * @return Message
      * @throws JsonMapper_Exception
      * @throws TelegramException
      */
-    public function sendMessage(int|string $chat_id, string $text, array $opt = []): Message|array
+    public function sendMessage(int|string $chat_id, string $text, array $opt = []): Message
     {
         $params = array_merge(['chat_id' => $chat_id, 'text' => $text], $opt);
-
-        if ($this->splitLongMessage) {
-            if (!isset($params['text'])) {
-                throw new TelegramException('text parameter not set.');
-            }
-
-            /** @var Message[] $messagesResponse */
-            $messagesResponse = [];
-            $messages = mb_str_split($params['text'], 4096);
-
-            foreach ($messages as $message) {
-                $params['text'] = $message;
-                $data = $this->endpoint(__FUNCTION__, $params);
-
-                /** @var Message $object */
-                $object = $this->mapper->map($data->result, new Message());
-                $messagesResponse[] = $object;
-            }
-
-            return $messagesResponse;
-        }
 
         $data = $this->endpoint(__FUNCTION__, $params);
 
