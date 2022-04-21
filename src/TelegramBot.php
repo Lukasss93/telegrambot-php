@@ -3,7 +3,7 @@
 namespace TelegramBot;
 
 use GuzzleHttp\Client as Guzzle;
-use JsonMapper_Exception;
+use Illuminate\Support\Str;
 use Psr\Http\Client\ClientInterface;
 use TelegramBot\Hydrator\Hydrator;
 use TelegramBot\Hydrator\JsonMapper;
@@ -20,42 +20,60 @@ class TelegramBot
 
     protected const DEFAULT_API_URL = 'https://api.telegram.org';
 
+    protected string $token;
+    protected Hydrator $hydrator;
+    protected ClientInterface $http;
+    protected array $config;
+
     /** @var Update Webhook update */
     public $webhookData;
 
     /** @var Update[] GetUpdates data */
     public $updatesData;
 
-    protected string $token;
-    protected Hydrator $hydrator;
-    protected ClientInterface $http;
-
-    /** @var string Bot API server url */
-    private $botServerUrl;
-
-    /**
-     * TelegramBot constructor
-     * @param string $token Bot token
-     * @param string|null $botServerUrl Bot API server url
-     * @throws JsonMapper_Exception
-     */
-    public function __construct(string $token, ?string $botServerUrl = null)
+    public function __construct(string $token, array $config = [])
     {
-        $baseUri = $botServerUrl ?? self::DEFAULT_API_URL;
-
-        $this->hydrator = new JsonMapper();
-        $this->http = new Guzzle([
-            'base_uri' => "$baseUri/bot$token/",
-            'timeout' => 5,
-        ]);
-
-        //telegram data
+        //set bot token
         $this->token = $token;
-        $this->botServerUrl = $baseUri;
+
+        //set bot config
+        $this->config = array_merge([
+            'api_url' => self::DEFAULT_API_URL,
+            'timeout' => 5,
+        ], $config);
+
+        //set json mapper
+        $this->hydrator = new JsonMapper();
+
+        //set http client
+        $this->http = new Guzzle(array_merge([
+            'base_uri' => $this->getApiUrl(),
+            'timeout' => $this->config['timeout'],
+        ], $this->config['client'] ?? []));
+
         $this->webhookData = $this->getWebhookUpdate();
     }
 
-    //TODO: config
+    public function getApiUrl(string $path = ''): string
+    {
+        return (string)Str::of($this->config['api_url'])
+            ->finish('/')
+            ->append('bot')
+            ->append($this->token)
+            ->finish('/')
+            ->append(Str::after($path, '/'));
+    }
+
+    public function getFileUrl(string $path = ''): string
+    {
+        return (string)Str::of($this->config['api_url'])
+            ->finish('/')
+            ->append('file/bot')
+            ->append($this->token)
+            ->finish('/')
+            ->append(Str::after($path, '/'));
+    }
+
     //region KEYBOARDS
 
     /**
@@ -69,7 +87,6 @@ class TelegramBot
         $file_url = "$telegramBotUrl/file/bot".$this->token.'/'.$telegram_file_path;
         $in = fopen($file_url, 'rb');
         $out = fopen($local_file_path, 'wb');
-
         while ($chunk = fread($in, 8192)) {
             fwrite($out, $chunk, 8192);
         }
@@ -93,7 +110,6 @@ class TelegramBot
             'resize_keyboard' => $resize,
             'selective' => $selective,
         ];
-
         return json_encode($replyMarkup, true);
     }
 
@@ -107,7 +123,6 @@ class TelegramBot
         $replyMarkup = [
             'inline_keyboard' => $options,
         ];
-
         return json_encode($replyMarkup, true);
     }
 
@@ -135,38 +150,30 @@ class TelegramBot
         $replyMarkup = [
             'text' => $text,
         ];
-
         if ($url !== '') {
             $replyMarkup['url'] = $url;
-
             return $replyMarkup;
         }
         if ($callback_data !== '') {
             $replyMarkup['callback_data'] = $callback_data;
-
             return $replyMarkup;
         }
         if ($switch_inline_query !== '') {
             $replyMarkup['switch_inline_query'] = $switch_inline_query;
-
             return $replyMarkup;
         }
         if ($switch_inline_query_current_chat !== '') {
             $replyMarkup['switch_inline_query_current_chat'] = $switch_inline_query_current_chat;
-
             return $replyMarkup;
         }
         if ($callback_game !== '') {
             $replyMarkup['callback_game'] = $callback_game;
-
             return $replyMarkup;
         }
         if ($pay) {
             $replyMarkup['pay'] = true;
-
             return $replyMarkup;
         }
-
         return $replyMarkup;
     }
 
@@ -197,7 +204,6 @@ class TelegramBot
             'remove_keyboard' => true,
             'selective' => $selective,
         ];
-
         return json_encode($replyMarkup, true);
     }
 
@@ -212,7 +218,6 @@ class TelegramBot
             'force_reply' => true,
             'selective' => $selective,
         ];
-
         return json_encode($replyMarkup, true);
     }
 
@@ -223,7 +228,6 @@ class TelegramBot
     public function respondSuccess(): string
     {
         http_response_code(200);
-
         return json_encode(['status' => 'success']);
     }
 
