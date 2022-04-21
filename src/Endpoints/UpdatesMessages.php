@@ -2,10 +2,7 @@
 
 namespace TelegramBot\Endpoints;
 
-use JsonException;
-use JsonMapper_Exception;
 use TelegramBot\TelegramBot;
-use TelegramBot\TelegramException;
 use TelegramBot\Types\Message;
 use TelegramBot\Types\Poll;
 
@@ -21,27 +18,12 @@ trait UpdatesMessages
      * @see https://core.telegram.org/bots/api#editmessagetext
      * @param string $text New text of the message, 1-4096 characters after entities parsing
      * @param array $opt Optional parameters
-     * @return bool|Message
-     * @throws JsonMapper_Exception
-     * @throws TelegramException
+     * @return Message|bool
      */
     public function editMessageText(string $text, array $opt = []): Message|bool
     {
-        $response = $this->endpoint(__FUNCTION__, array_merge([
-            'text' => $text,
-        ], $opt));
-
-        if (is_bool($response->result)) {
-            /** @var bool $object */
-            $object = $response->result;
-
-            return $object;
-        }
-
-        /** @var Message $object */
-        $object = $this->mapper->map($response->result, new Message());
-
-        return $object;
+        $required = compact('text');
+        return $this->requestJson(__FUNCTION__, array_merge($required, $opt), Message::class);
     }
 
     /**
@@ -51,24 +33,10 @@ trait UpdatesMessages
      * @see https://core.telegram.org/bots/api#editmessagecaption
      * @param array $opt Optional parameters
      * @return bool|Message
-     * @throws TelegramException
-     * @throws JsonMapper_Exception
      */
     public function editMessageCaption(array $opt = []): Message|bool
     {
-        $response = $this->endpoint(__FUNCTION__, $opt);
-
-        if (is_bool($response->result)) {
-            /** @var bool $object */
-            $object = $response->result;
-
-            return $object;
-        }
-
-        /** @var Message $object */
-        $object = $this->mapper->map($response->result, new Message());
-
-        return $object;
+        return $this->requestJson(__FUNCTION__, $opt, Message::class);
     }
 
     /**
@@ -82,28 +50,13 @@ trait UpdatesMessages
      * @see https://core.telegram.org/bots/api#editmessagemedia
      * @param mixed $media An InputMedia object for a new media content of the message
      * @param array $opt Optional parameters
-     * @return bool|Message
-     * @throws JsonMapper_Exception
-     * @throws TelegramException
-     * @throws JsonException
+     * @param array $clientOpt Client parameters
+     * @return Message|bool
      */
-    public function editMessageMedia(mixed $media, array $opt = []): Message|bool
+    public function editMessageMedia(mixed $media, array $opt = [], array $clientOpt = []): Message|bool
     {
-        $response = $this->endpoint(__FUNCTION__, array_merge([
-            'media' => json_encode($media, JSON_THROW_ON_ERROR),
-        ], $opt));
-
-        if (is_bool($response->result)) {
-            /** @var bool $object */
-            $object = $response->result;
-
-            return $object;
-        }
-
-        /** @var Message $object */
-        $object = $this->mapper->map($response->result, new Message());
-
-        return $object;
+        $required = ['media' => json_encode($media, JSON_THROW_ON_ERROR)];
+        return $this->requestMultipart(__FUNCTION__, array_merge($required, $opt), Message::class, $clientOpt);
     }
 
     /**
@@ -112,25 +65,11 @@ trait UpdatesMessages
      * the edited {@see https://core.telegram.org/bots/api#message Message} is returned, otherwise True is returned.
      * @see https://core.telegram.org/bots/api#editmessagereplymarkup
      * @param array $opt Optional parameters
-     * @return bool|Message
-     * @throws TelegramException
-     * @throws JsonMapper_Exception
+     * @return Message|bool
      */
     public function editMessageReplyMarkup(array $opt = []): Message|bool
     {
-        $response = $this->endpoint(__FUNCTION__, $opt);
-
-        if (is_bool($response->result)) {
-            /** @var bool $object */
-            $object = $response->result;
-
-            return $object;
-        }
-
-        /** @var Message $object */
-        $object = $this->mapper->map($response->result, new Message());
-
-        return $object;
+        return $this->requestJson(__FUNCTION__, $opt, Message::class);
     }
 
     /**
@@ -141,20 +80,11 @@ trait UpdatesMessages
      * @param int $message_id Identifier of the original message with the poll
      * @param array $opt Optional parameters
      * @return Poll
-     * @throws JsonMapper_Exception
-     * @throws TelegramException
      */
     public function stopPoll(int|string $chat_id, int $message_id, array $opt = []): Poll
     {
-        $response = $this->endpoint(__FUNCTION__, array_merge([
-            'chat_id' => $chat_id,
-            'message_id' => $message_id,
-        ], $opt));
-
-        /** @var Poll $object */
-        $object = $this->mapper->map($response->result, new Poll());
-
-        return $object;
+        $required = compact('chat_id', 'message_id');
+        return $this->requestJson(__FUNCTION__, array_merge($required, $opt), Poll::class);
     }
 
     /**
@@ -172,18 +102,10 @@ trait UpdatesMessages
      * @param int|string $chat_id Unique identifier for the target chat or username of the target channel (in the format &#64;channelusername)
      * @param int $message_id Identifier of the message to delete
      * @return bool
-     * @throws TelegramException
      */
     public function deleteMessage(int|string $chat_id, int $message_id): bool
     {
-        $response = $this->endpoint(__FUNCTION__, [
-            'chat_id' => $chat_id,
-            'message_id' => $message_id,
-        ]);
-
-        /** @var bool $object */
-        $object = property_exists($response->result, 'scalar') ? $response->result->scalar : $response->result;
-
-        return $object;
+        $required = compact('chat_id', 'message_id');
+        return $this->requestJson(__FUNCTION__, $required);
     }
 }

@@ -2,9 +2,7 @@
 
 namespace TelegramBot\Endpoints;
 
-use JsonMapper_Exception;
 use TelegramBot\TelegramBot;
-use TelegramBot\TelegramException;
 use TelegramBot\Types\File;
 use TelegramBot\Types\Message;
 use TelegramBot\Types\StickerSet;
@@ -22,21 +20,12 @@ trait Stickers
      * @param int|string $chat_id Unique identifier for the target chat or username of the target channel (in the format &#64;channelusername)
      * @param mixed $sticker Sticker to send. Pass a file_id as String to send a file that exists on the Telegram servers (recommended), pass an HTTP URL as a String for Telegram to get a .webp file from the Internet, or upload a new one using multipart/form-data. {@see https://core.telegram.org/bots/api#sending-files More info on Sending Files »}
      * @param array $opt Optional parameters
+     * @param array $clientOpt Client parameters
      * @return Message
-     * @throws JsonMapper_Exception
-     * @throws TelegramException
      */
-    public function sendSticker(int|string $chat_id, mixed $sticker, array $opt = []): Message
+    public function sendSticker(int|string $chat_id, mixed $sticker, array $opt = [], array $clientOpt = []): Message
     {
-        $response = $this->endpoint(__FUNCTION__, array_merge([
-            'chat_id' => $chat_id,
-            'sticker' => $sticker,
-        ], $opt));
-
-        /** @var Message $object */
-        $object = $this->mapper->map($response->result, new Message());
-
-        return $object;
+        return $this->sendAttachment($chat_id, __FUNCTION__, 'sticker', $sticker, $opt, $clientOpt);
     }
 
     /**
@@ -45,19 +34,11 @@ trait Stickers
      * @see https://core.telegram.org/bots/api#getstickerset
      * @param string $name Name of the sticker set
      * @return StickerSet
-     * @throws TelegramException
-     * @throws JsonMapper_Exception
      */
     public function getStickerSet(string $name): StickerSet
     {
-        $response = $this->endpoint(__FUNCTION__, [
-            'name' => $name,
-        ]);
-
-        /** @var StickerSet $object */
-        $object = $this->mapper->map($response->result, new StickerSet());
-
-        return $object;
+        $required = compact('name');
+        return $this->requestJson(__FUNCTION__, $required, StickerSet::class);
     }
 
     /**
@@ -67,21 +48,16 @@ trait Stickers
      * @see https://core.telegram.org/bots/api#uploadstickerfile
      * @param int $user_id User identifier of sticker file owner
      * @param mixed $png_sticker Png image with the sticker, must be up to 512 kilobytes in size, dimensions must not exceed 512px, and either width or height must be exactly 512px. {@see https://core.telegram.org/bots/api#sending-files More info on Sending Files »}
+     * @param array $clientOpt Client parameters
      * @return File
-     * @throws TelegramException
-     * @throws JsonMapper_Exception
      */
-    public function uploadStickerFile(int $user_id, mixed $png_sticker): File
+    public function uploadStickerFile(int $user_id, mixed $png_sticker, array $clientOpt = []): File
     {
-        $response = $this->endpoint(__FUNCTION__, [
-            'user_id' => $user_id,
-            'png_sticker' => $png_sticker,
-        ]);
-
-        /** @var File $object */
-        $object = $this->mapper->map($response->result, new File());
-
-        return $object;
+        $required = compact('user_id', 'png_sticker');
+        if (is_resource($png_sticker)) {
+            return $this->requestMultipart(__FUNCTION__, $required, File::class, $clientOpt);
+        }
+        return $this->requestJson(__FUNCTION__, $required, File::class);
     }
 
     /**
@@ -95,27 +71,13 @@ trait Stickers
      * @param string $title Sticker set title, 1-64 characters
      * @param string $emojis One or more emoji corresponding to the sticker
      * @param array $opt Optional parameters
+     * @param array $clientOpt Client parameters
      * @return bool
-     * @throws TelegramException
      */
-    public function createNewStickerSet(
-        int $user_id,
-        string $name,
-        string $title,
-        string $emojis,
-        array $opt = []
-    ): bool {
-        $response = $this->endpoint(__FUNCTION__, array_merge([
-            'user_id' => $user_id,
-            'name' => $name,
-            'title' => $title,
-            'emojis' => $emojis,
-        ], $opt));
-
-        /** @var bool $object */
-        $object = property_exists($response->result, 'scalar') ? $response->result->scalar : $response->result;
-
-        return $object;
+    public function createNewStickerSet(int $user_id, string $name, string $title, string $emojis, array $opt = [], array $clientOpt = []): bool
+    {
+        $required = compact('user_id', 'name', 'title', 'emojis');
+        return $this->requestMultipart(__FUNCTION__, array_merge($required, $opt), clientOpt: $clientOpt);
     }
 
     /**
@@ -129,21 +91,13 @@ trait Stickers
      * @param string $name Sticker set name
      * @param string $emojis One or more emoji corresponding to the sticker
      * @param array $opt Optional parameters
+     * @param array $clientOpt Client parameters
      * @return bool
-     * @throws TelegramException
      */
-    public function addStickerToSet(int $user_id, string $name, string $emojis, array $opt = []): bool
+    public function addStickerToSet(int $user_id, string $name, string $emojis, array $opt = [], array $clientOpt = []): bool
     {
-        $response = $this->endpoint(__FUNCTION__, array_merge([
-            'user_id' => $user_id,
-            'name' => $name,
-            'emojis' => $emojis,
-        ], $opt));
-
-        /** @var bool $object */
-        $object = property_exists($response->result, 'scalar') ? $response->result->scalar : $response->result;
-
-        return $object;
+        $required = compact('user_id', 'name', 'emojis');
+        return $this->requestMultipart(__FUNCTION__, array_merge($required, $opt), clientOpt: $clientOpt);
     }
 
     /**
@@ -152,19 +106,11 @@ trait Stickers
      * @param string $sticker File identifier of the sticker
      * @param int $position New sticker position in the set, zero-based
      * @return bool
-     * @throws TelegramException
      */
     public function setStickerPositionInSet(string $sticker, int $position): bool
     {
-        $response = $this->endpoint(__FUNCTION__, [
-            'sticker' => $sticker,
-            'position' => $position,
-        ]);
-
-        /** @var bool $object */
-        $object = property_exists($response->result, 'scalar') ? $response->result->scalar : $response->result;
-
-        return $object;
+        $required = compact('sticker', 'position');
+        return $this->requestJson(__FUNCTION__, $required);
     }
 
     /**
@@ -172,18 +118,11 @@ trait Stickers
      * @see https://core.telegram.org/bots/api#deletestickerfromset
      * @param string $sticker File identifier of the sticker
      * @return bool
-     * @throws TelegramException
      */
     public function deleteStickerFromSet(string $sticker): bool
     {
-        $response = $this->endpoint(__FUNCTION__, [
-            'sticker' => $sticker,
-        ]);
-
-        /** @var bool $object */
-        $object = property_exists($response->result, 'scalar') ? $response->result->scalar : $response->result;
-
-        return $object;
+        $required = compact('sticker');
+        return $this->requestJson(__FUNCTION__, $required);
     }
 
     /**
@@ -194,19 +133,12 @@ trait Stickers
      * @param string $name Sticker set name
      * @param int $user_id User identifier of the sticker set owner
      * @param array $opt Optional parameters
+     * @param array $clientOpt Client parameters
      * @return bool
-     * @throws TelegramException
      */
-    public function setStickerSetThumb(string $name, int $user_id, array $opt = []): bool
+    public function setStickerSetThumb(string $name, int $user_id, array $opt = [], array $clientOpt = []): bool
     {
-        $response = $this->endpoint(__FUNCTION__, array_merge([
-            'name' => $name,
-            'user_id' => $user_id,
-        ], $opt));
-
-        /** @var bool $object */
-        $object = property_exists($response->result, 'scalar') ? $response->result->scalar : $response->result;
-
-        return $object;
+        $required = compact('name', 'user_id');
+        return $this->requestMultipart(__FUNCTION__, array_merge($required, $opt), clientOpt: $clientOpt);
     }
 }

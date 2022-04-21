@@ -2,10 +2,7 @@
 
 namespace TelegramBot\Endpoints;
 
-use JsonException;
-use JsonMapper_Exception;
 use TelegramBot\TelegramBot;
-use TelegramBot\TelegramException;
 use TelegramBot\Types\BotCommand;
 use TelegramBot\Types\Chat;
 use TelegramBot\Types\ChatAdministratorRights;
@@ -13,6 +10,7 @@ use TelegramBot\Types\ChatInviteLink;
 use TelegramBot\Types\ChatMember;
 use TelegramBot\Types\ChatPermissions;
 use TelegramBot\Types\File;
+use TelegramBot\Types\InputMedia;
 use TelegramBot\Types\MenuButton;
 use TelegramBot\Types\Message;
 use TelegramBot\Types\MessageId;
@@ -30,16 +28,10 @@ trait AvailableMethods
      * Returns basic information about the bot in form of a {@see https://core.telegram.org/bots/api#user User} object.
      * @see https://core.telegram.org/bots/api#getme
      * @return User
-     * @throws TelegramException
-     * @throws JsonMapper_Exception
      */
     public function getMe(): User
     {
-        $data = $this->endpoint(__FUNCTION__, isPost: false);
-        $object = $this->mapper->map($data->result, new User());
-
-        /** @var User $object */
-        return $object;
+        return $this->requestJson(__FUNCTION__, mapTo: User::class);
     }
 
     /**
@@ -51,16 +43,10 @@ trait AvailableMethods
      * Returns True on success. Requires no parameters.
      * @see https://core.telegram.org/bots/api#logout
      * @return bool
-     * @throws TelegramException
      */
     public function logOut(): bool
     {
-        $response = $this->endpoint(__FUNCTION__);
-
-        /** @var bool $object */
-        $object = property_exists($response->result, 'scalar') ? $response->result->scalar : $response->result;
-
-        return $object;
+        return $this->requestJson(__FUNCTION__);
     }
 
     /**
@@ -71,39 +57,24 @@ trait AvailableMethods
      * Returns True on success. Requires no parameters.
      * @see https://core.telegram.org/bots/api#close
      * @return bool
-     * @throws TelegramException
      */
     public function close(): bool
     {
-        $response = $this->endpoint(__FUNCTION__);
-
-        /** @var bool $object */
-        $object = property_exists($response->result, 'scalar') ? $response->result->scalar : $response->result;
-
-        return $object;
+        return $this->requestJson(__FUNCTION__);
     }
 
     /**
      * Use this method to send text messages. On success, the sent Message is returned.
-     * If splitLongMessage property is true, Messages[] is returned.
      * @see https://core.telegram.org/bots/api#sendmessage
      * @param int|string $chat_id Unique identifier for the target chat or username of the target channel (in the format &#64;channelusername)
      * @param string $text Text of the message to be sent, 1-4096 characters after entities parsing
      * @param array $opt Optional parameters
      * @return Message
-     * @throws JsonMapper_Exception
-     * @throws TelegramException
      */
     public function sendMessage(int|string $chat_id, string $text, array $opt = []): Message
     {
-        $params = array_merge(['chat_id' => $chat_id, 'text' => $text], $opt);
-
-        $data = $this->endpoint(__FUNCTION__, $params);
-
-        /** @var Message $object */
-        $object = $this->mapper->map($data->result, new Message());
-
-        return $object;
+        $required = compact('chat_id', 'text');
+        return $this->requestJson(__FUNCTION__, array_merge($required, $opt), Message::class);
     }
 
     /**
@@ -115,25 +86,11 @@ trait AvailableMethods
      * @param int $message_id Message identifier in the chat specified in from_chat_id
      * @param array $opt Optional parameters
      * @return Message
-     * @throws JsonMapper_Exception
-     * @throws TelegramException
      */
-    public function forwardMessage(
-        int|string $chat_id,
-        int|string $from_chat_id,
-        int $message_id,
-        array $opt = [],
-    ): Message {
-        $response = $this->endpoint(__FUNCTION__, array_merge([
-            'chat_id' => $chat_id,
-            'from_chat_id' => $from_chat_id,
-            'message_id' => $message_id,
-        ], $opt));
-
-        /** @var Message $object */
-        $object = $this->mapper->map($response->result, new Message());
-
-        return $object;
+    public function forwardMessage(int|string $chat_id, int|string $from_chat_id, int $message_id, array $opt = []): Message
+    {
+        $required = compact('chat_id', 'from_chat_id', 'message_id');
+        return $this->requestJson(__FUNCTION__, array_merge($required, $opt), Message::class);
     }
 
     /**
@@ -147,25 +104,11 @@ trait AvailableMethods
      * @param int $message_id Message identifier in the chat specified in from_chat_id
      * @param array $opt Optional parameters
      * @return MessageId
-     * @throws JsonMapper_Exception
-     * @throws TelegramException
      */
-    public function copyMessage(
-        int|string $chat_id,
-        int|string $from_chat_id,
-        int $message_id,
-        array $opt = [],
-    ): MessageId {
-        $response = $this->endpoint(__FUNCTION__, array_merge([
-            'chat_id' => $chat_id,
-            'from_chat_id' => $from_chat_id,
-            'message_id' => $message_id,
-        ], $opt));
-
-        /** @var MessageId $object */
-        $object = $this->mapper->map($response->result, new MessageId());
-
-        return $object;
+    public function copyMessage(int|string $chat_id, int|string $from_chat_id, int $message_id, array $opt = []): MessageId
+    {
+        $required = compact('chat_id', 'from_chat_id', 'message_id');
+        return $this->requestJson(__FUNCTION__, array_merge($required, $opt), MessageId::class);
     }
 
     /**
@@ -180,21 +123,12 @@ trait AvailableMethods
      * The photo's width and height must not exceed 10000 in total. Width and height ratio must be at most 20.
      * {@see https://core.telegram.org/bots/api#sending-files More info on Sending Files »}
      * @param array $opt Optional parameters
+     * @param array $clientOpt Client parameters
      * @return Message
-     * @throws JsonMapper_Exception
-     * @throws TelegramException
      */
-    public function sendPhoto(int|string $chat_id, mixed $photo, array $opt = []): Message
+    public function sendPhoto(int|string $chat_id, mixed $photo, array $opt = [], array $clientOpt = []): Message
     {
-        $response = $this->endpoint(__FUNCTION__, array_merge([
-            'chat_id' => $chat_id,
-            'photo' => $photo,
-        ], $opt));
-
-        /** @var Message $object */
-        $object = $this->mapper->map($response->result, new Message());
-
-        return $object;
+        return $this->sendAttachment($chat_id, __FUNCTION__, 'photo', $photo, $opt, $clientOpt);
     }
 
     /**
@@ -211,21 +145,12 @@ trait AvailableMethods
      * or upload a new one using multipart/form-data.
      * {@see https://core.telegram.org/bots/api#sending-files More info on Sending Files »}
      * @param array $opt Optional parameters
+     * @param array $clientOpt Client parameters
      * @return Message
-     * @throws JsonMapper_Exception
-     * @throws TelegramException
      */
-    public function sendAudio(int|string $chat_id, mixed $audio, array $opt = []): Message
+    public function sendAudio(int|string $chat_id, mixed $audio, array $opt = [], array $clientOpt = []): Message
     {
-        $response = $this->endpoint(__FUNCTION__, array_merge([
-            'chat_id' => $chat_id,
-            'audio' => $audio,
-        ], $opt));
-
-        /** @var Message $object */
-        $object = $this->mapper->map($response->result, new Message());
-
-        return $object;
+        return $this->sendAttachment($chat_id, __FUNCTION__, 'audio', $audio, $opt, $clientOpt);
     }
 
     /**
@@ -240,21 +165,12 @@ trait AvailableMethods
      * or upload a new one using multipart/form-data.
      * {@see https://core.telegram.org/bots/api#sending-files More info on Sending Files »}
      * @param array $opt Optional parameters
+     * @param array $clientOpt Client parameters
      * @return Message
-     * @throws JsonMapper_Exception
-     * @throws TelegramException
      */
-    public function sendDocument(int|string $chat_id, mixed $document, array $opt = []): Message
+    public function sendDocument(int|string $chat_id, mixed $document, array $opt = [], array $clientOpt = []): Message
     {
-        $response = $this->endpoint(__FUNCTION__, array_merge([
-            'chat_id' => $chat_id,
-            'document' => $document,
-        ], $opt));
-
-        /** @var Message $object */
-        $object = $this->mapper->map($response->result, new Message());
-
-        return $object;
+        return $this->sendAttachment($chat_id, __FUNCTION__, 'document', $document, $opt, $clientOpt);
     }
 
     /**
@@ -270,21 +186,12 @@ trait AvailableMethods
      * or upload a new video using multipart/form-data.
      * {@see https://core.telegram.org/bots/api#sending-files More info on Sending Files »}
      * @param array $opt Optional parameters
+     * @param array $clientOpt Client parameters
      * @return Message
-     * @throws JsonMapper_Exception
-     * @throws TelegramException
      */
-    public function sendVideo(int|string $chat_id, mixed $video, array $opt = []): Message
+    public function sendVideo(int|string $chat_id, mixed $video, array $opt = [], array $clientOpt = []): Message
     {
-        $response = $this->endpoint(__FUNCTION__, array_merge([
-            'chat_id' => $chat_id,
-            'video' => $video,
-        ], $opt));
-
-        /** @var Message $object */
-        $object = $this->mapper->map($response->result, new Message());
-
-        return $object;
+        return $this->sendAttachment($chat_id, __FUNCTION__, 'video', $video, $opt, $clientOpt);
     }
 
     /**
@@ -299,21 +206,12 @@ trait AvailableMethods
      * or upload a new animation using multipart/form-data.
      * {@see https://core.telegram.org/bots/api#sending-files More info on Sending Files »}
      * @param array $opt Optional parameters
+     * @param array $clientOpt Client parameters
      * @return Message
-     * @throws JsonMapper_Exception
-     * @throws TelegramException
      */
-    public function sendAnimation(int|string $chat_id, mixed $animation, array $opt = []): Message
+    public function sendAnimation(int|string $chat_id, mixed $animation, array $opt = [], array $clientOpt = []): Message
     {
-        $response = $this->endpoint(__FUNCTION__, array_merge([
-            'chat_id' => $chat_id,
-            'animation' => $animation,
-        ], $opt));
-
-        /** @var Message $object */
-        $object = $this->mapper->map($response->result, new Message());
-
-        return $object;
+        return $this->sendAttachment($chat_id, __FUNCTION__, 'animation', $animation, $opt, $clientOpt);
     }
 
     /**
@@ -331,21 +229,12 @@ trait AvailableMethods
      * or upload a new one using multipart/form-data.
      * {@see https://core.telegram.org/bots/api#sending-files More info on Sending Files »}
      * @param array $opt Optional parameters
+     * @param array $clientOpt Client parameters
      * @return Message
-     * @throws JsonMapper_Exception
-     * @throws TelegramException
      */
-    public function sendVoice(int|string $chat_id, mixed $voice, array $opt = []): Message
+    public function sendVoice(int|string $chat_id, mixed $voice, array $opt = [], array $clientOpt = []): Message
     {
-        $response = $this->endpoint(__FUNCTION__, array_merge([
-            'chat_id' => $chat_id,
-            'voice' => $voice,
-        ], $opt));
-
-        /** @var Message $object */
-        $object = $this->mapper->map($response->result, new Message());
-
-        return $object;
+        return $this->sendAttachment($chat_id, __FUNCTION__, 'voice', $voice, $opt, $clientOpt);
     }
 
     /**
@@ -361,21 +250,12 @@ trait AvailableMethods
      * {@see https://core.telegram.org/bots/api#sending-files More info on Sending Files »}.
      * Sending video notes by a URL is currently unsupported
      * @param array $opt Optional parameters
+     * @param array $clientOpt Client parameters
      * @return Message
-     * @throws JsonMapper_Exception
-     * @throws TelegramException
      */
-    public function sendVideoNote(int|string $chat_id, mixed $video_note, array $opt = []): Message
+    public function sendVideoNote(int|string $chat_id, mixed $video_note, array $opt = [], array $clientOpt = []): Message
     {
-        $response = $this->endpoint(__FUNCTION__, array_merge([
-            'chat_id' => $chat_id,
-            'video_note' => $video_note,
-        ], $opt));
-
-        /** @var Message $object */
-        $object = $this->mapper->map($response->result, new Message());
-
-        return $object;
+        return $this->sendAttachment($chat_id, __FUNCTION__, 'video_note', $video_note, $opt, $clientOpt);
     }
 
     /**
@@ -386,22 +266,30 @@ trait AvailableMethods
      * @param int|string $chat_id Unique identifier for the target chat or username of the target channel (in the format &#64;channelusername)
      * @param array $media An array describing messages to be sent, must include 2-10 items
      * @param array $opt Optional parameters
-     * @return Message
-     * @throws JsonException
-     * @throws JsonMapper_Exception
-     * @throws TelegramException
+     * @param array $clientOpt Client parameters
+     * @return Message[]
      */
-    public function sendMediaGroup(int|string $chat_id, array $media, array $opt = []): Message
+    public function sendMediaGroup(int|string $chat_id, array $media, array $opt = [], array $clientOpt = []): array
     {
-        $response = $this->endpoint(__FUNCTION__, array_merge([
+        $inputMedia = [];
+        $files = [];
+        foreach ($media as $m) {
+            if ($m instanceof InputMedia && is_resource($m->media)) {
+                $id = uniqid(more_entropy: true);
+                $files[$id] = $m->media;
+                $m->media = "attach://$id";
+            } elseif (is_array($m) && is_resource($m['media'])) {
+                $id = uniqid(more_entropy: true);
+                $files[$id] = $m['media'];
+                $m['media'] = "attach://$id";
+            }
+            $inputMedia[] = $m;
+        }
+        $required = [
             'chat_id' => $chat_id,
-            'media' => json_encode($media, JSON_THROW_ON_ERROR),
-        ], $opt));
-
-        /** @var Message $object */
-        $object = $this->mapper->map($response->result, new Message());
-
-        return $object;
+            'media' => json_encode($inputMedia, JSON_THROW_ON_ERROR),
+        ];
+        return $this->requestMultipart(__FUNCTION__, array_merge($required, $files, $opt), Message::class, $clientOpt);
     }
 
     /**
@@ -413,21 +301,11 @@ trait AvailableMethods
      * @param float $longitude Longitude of the location
      * @param array $opt Optional parameters
      * @return Message
-     * @throws JsonMapper_Exception
-     * @throws TelegramException
      */
     public function sendLocation(int|string $chat_id, float $latitude, float $longitude, array $opt = []): Message
     {
-        $response = $this->endpoint(__FUNCTION__, array_merge([
-            'chat_id' => $chat_id,
-            'latitude' => $latitude,
-            'longitude' => $longitude,
-        ], $opt));
-
-        /** @var Message $object */
-        $object = $this->mapper->map($response->result, new Message());
-
-        return $object;
+        $required = compact('chat_id', 'latitude', 'longitude');
+        return $this->requestJson(__FUNCTION__, array_merge($required, $opt), Message::class);
     }
 
     /**
@@ -442,24 +320,11 @@ trait AvailableMethods
      * @param float $longitude Longitude of new location
      * @param array $opt Optional parameters
      * @return Message|bool
-     * @throws JsonMapper_Exception
-     * @throws TelegramException
      */
     public function editMessageLiveLocation(float $latitude, float $longitude, array $opt = []): Message|bool
     {
-        $response = $this->endpoint(__FUNCTION__, array_merge([
-            'latitude' => $latitude,
-            'longitude' => $longitude,
-        ], $opt));
-
-        if (is_bool($response->result)) {
-            $object = $response->result;
-        } else {
-            $object = $this->mapper->map($response->result, new Message());
-        }
-
-        /** @var Message|bool $object */
-        return $object;
+        $required = compact('latitude', 'longitude');
+        return $this->requestJson(__FUNCTION__, array_merge($required, $opt), Message::class);
     }
 
     /**
@@ -469,21 +334,10 @@ trait AvailableMethods
      * @see https://core.telegram.org/bots/api#stopmessagelivelocation
      * @param array $opt Optional parameters
      * @return Message|bool
-     * @throws JsonMapper_Exception
-     * @throws TelegramException
      */
     public function stopMessageLiveLocation(array $opt = []): Message|bool
     {
-        $response = $this->endpoint(__FUNCTION__, $opt);
-
-        if (is_bool($response->result)) {
-            $object = $response->result;
-        } else {
-            $object = $this->mapper->map($response->result, new Message());
-        }
-
-        /** @var Message|bool $object */
-        return $object;
+        return $this->requestJson(__FUNCTION__, $opt, Message::class);
     }
 
     /**
@@ -497,29 +351,11 @@ trait AvailableMethods
      * @param string $address Address of the venue
      * @param array $opt Optional parameters
      * @return Message
-     * @throws JsonMapper_Exception
-     * @throws TelegramException
      */
-    public function sendVenue(
-        int|string $chat_id,
-        float $latitude,
-        float $longitude,
-        string $title,
-        string $address,
-        array $opt = [],
-    ): Message {
-        $response = $this->endpoint(__FUNCTION__, array_merge([
-            'chat_id' => $chat_id,
-            'latitude' => $latitude,
-            'longitude' => $longitude,
-            'title' => $title,
-            'address' => $address,
-        ], $opt));
-
-        /** @var Message $object */
-        $object = $this->mapper->map($response->result, new Message());
-
-        return $object;
+    public function sendVenue(int|string $chat_id, float $latitude, float $longitude, string $title, string $address, array $opt = []): Message
+    {
+        $required = compact('chat_id', 'latitude', 'longitude', 'title', 'address');
+        return $this->requestJson(__FUNCTION__, array_merge($required, $opt), Message::class);
     }
 
     /**
@@ -531,21 +367,11 @@ trait AvailableMethods
      * @param string $first_name Contact's first name
      * @param array $opt Optional parameters
      * @return Message
-     * @throws JsonMapper_Exception
-     * @throws TelegramException
      */
     public function sendContact(int|string $chat_id, string $phone_number, string $first_name, array $opt = []): Message
     {
-        $response = $this->endpoint(__FUNCTION__, array_merge([
-            'chat_id' => $chat_id,
-            'phone_number' => $phone_number,
-            'first_name' => $first_name,
-        ], $opt));
-
-        /** @var Message $object */
-        $object = $this->mapper->map($response->result, new Message());
-
-        return $object;
+        $required = compact('chat_id', 'phone_number', 'first_name');
+        return $this->requestJson(__FUNCTION__, array_merge($required, $opt), Message::class);
     }
 
     /**
@@ -558,22 +384,12 @@ trait AvailableMethods
      * @param array $options A list of answer options, 2-10 strings 1-100 characters each
      * @param array $opt Optional parameters
      * @return Message
-     * @throws JsonMapper_Exception
-     * @throws TelegramException
-     * @throws JsonException
      */
     public function sendPoll(int|string $chat_id, string $question, array $options, array $opt = []): Message
     {
-        $response = $this->endpoint(__FUNCTION__, array_merge([
-            'chat_id' => $chat_id,
-            'question' => $question,
-            'options' => json_encode($options, JSON_THROW_ON_ERROR),
-        ], $opt));
-
-        /** @var Message $object */
-        $object = $this->mapper->map($response->result, new Message());
-
-        return $object;
+        $required = compact('chat_id', 'question');
+        $required['options'] = json_encode($options, JSON_THROW_ON_ERROR);
+        return $this->requestJson(__FUNCTION__, array_merge($required, $opt), Message::class);
     }
 
     /**
@@ -583,19 +399,11 @@ trait AvailableMethods
      * @param int|string $chat_id Unique identifier for the target chat or username of the target channel (in the format &#64;channelusername)
      * @param array $opt Optional parameters
      * @return Message
-     * @throws JsonMapper_Exception
-     * @throws TelegramException
      */
     public function sendDice(int|string $chat_id, array $opt = []): Message
     {
-        $response = $this->endpoint(__FUNCTION__, array_merge([
-            'chat_id' => $chat_id,
-        ], $opt));
-
-        /** @var Message $object */
-        $object = $this->mapper->map($response->result, new Message());
-
-        return $object;
+        $required = compact('chat_id');
+        return $this->requestJson(__FUNCTION__, array_merge($required, $opt), Message::class);
     }
 
     /**
@@ -622,19 +430,11 @@ trait AvailableMethods
      * find_location for {@see https://core.telegram.org/bots/api#sendlocation location data},
      * record_video_note or upload_video_note for {@see https://core.telegram.org/bots/api#sendvideonote video notes}.
      * @return bool
-     * @throws TelegramException
      */
     public function sendChatAction(int|string $chat_id, string $action): bool
     {
-        $response = $this->endpoint(__FUNCTION__, [
-            'chat_id' => $chat_id,
-            'action' => $action,
-        ]);
-
-        /** @var bool $object */
-        $object = property_exists($response->result, 'scalar') ? $response->result->scalar : $response->result;
-
-        return $object;
+        $required = compact('chat_id', 'action');
+        return $this->requestJson(__FUNCTION__, $required);
     }
 
     /**
@@ -644,19 +444,11 @@ trait AvailableMethods
      * @param int $user_id Unique identifier of the target user
      * @param array $opt Optional parameters
      * @return UserProfilePhotos
-     * @throws JsonMapper_Exception
-     * @throws TelegramException
      */
     public function getUserProfilePhotos(int $user_id, array $opt = []): UserProfilePhotos
     {
-        $response = $this->endpoint(__FUNCTION__, array_merge([
-            'user_id' => $user_id,
-        ], $opt));
-
-        /** @var UserProfilePhotos $object */
-        $object = $this->mapper->map($response->result, new UserProfilePhotos());
-
-        return $object;
+        $required = compact('user_id');
+        return $this->requestJson(__FUNCTION__, array_merge($required, $opt), UserProfilePhotos::class);
     }
 
     /**
@@ -674,19 +466,11 @@ trait AvailableMethods
      * @see https://core.telegram.org/bots/api#getfile
      * @param string $file_id File identifier to get info about
      * @return File
-     * @throws TelegramException
-     * @throws JsonMapper_Exception
      */
     public function getFile(string $file_id): File
     {
-        $response = $this->endpoint(__FUNCTION__, [
-            'file_id' => $file_id,
-        ]);
-
-        /** @var File $object */
-        $object = $this->mapper->map($response->result, new File());
-
-        return $object;
+        $required = compact('file_id');
+        return $this->requestJson(__FUNCTION__, $required, File::class);
     }
 
     /**
@@ -702,19 +486,11 @@ trait AvailableMethods
      * @param int $user_id Unique identifier of the target user
      * @param array $opt Optional parameters
      * @return bool
-     * @throws TelegramException
      */
     public function banChatMember(int|string $chat_id, int $user_id, array $opt = []): bool
     {
-        $response = $this->endpoint(__FUNCTION__, array_merge([
-            'chat_id' => $chat_id,
-            'user_id' => $user_id,
-        ], $opt));
-
-        /** @var bool $object */
-        $object = property_exists($response->result, 'scalar') ? $response->result->scalar : $response->result;
-
-        return $object;
+        $required = compact('chat_id', 'user_id');
+        return $this->requestJson(__FUNCTION__, array_merge($required, $opt));
     }
 
     /**
@@ -727,19 +503,11 @@ trait AvailableMethods
      * @param int $user_id Unique identifier of the target user
      * @param array $opt Optional parameters
      * @return bool
-     * @throws TelegramException
      */
     public function unbanChatMember(int|string $chat_id, int $user_id, array $opt = []): bool
     {
-        $response = $this->endpoint(__FUNCTION__, array_merge([
-            'chat_id' => $chat_id,
-            'user_id' => $user_id,
-        ], $opt));
-
-        /** @var bool $object */
-        $object = property_exists($response->result, 'scalar') ? $response->result->scalar : $response->result;
-
-        return $object;
+        $required = compact('chat_id', 'user_id');
+        return $this->requestJson(__FUNCTION__, array_merge($required, $opt));
     }
 
     /**
@@ -752,25 +520,12 @@ trait AvailableMethods
      * @param ChatPermissions $permissions A ChatPermissions object for new user permissions
      * @param array $opt Optional parameters
      * @return bool
-     * @throws TelegramException
-     * @throws JsonException
      */
-    public function restrictChatMember(
-        int|string $chat_id,
-        int $user_id,
-        ChatPermissions $permissions,
-        array $opt = [],
-    ): bool {
-        $response = $this->endpoint(__FUNCTION__, array_merge([
-            'chat_id' => $chat_id,
-            'user_id' => $user_id,
-            'permissions' => json_encode($permissions, JSON_THROW_ON_ERROR),
-        ], $opt));
-
-        /** @var bool $object */
-        $object = property_exists($response->result, 'scalar') ? $response->result->scalar : $response->result;
-
-        return $object;
+    public function restrictChatMember(int|string $chat_id, int $user_id, ChatPermissions $permissions, array $opt = []): bool
+    {
+        $required = compact('chat_id', 'user_id');
+        $required['permissions'] = json_encode($permissions, JSON_THROW_ON_ERROR);
+        return $this->requestJson(__FUNCTION__, array_merge($required, $opt));
     }
 
     /**
@@ -783,19 +538,11 @@ trait AvailableMethods
      * @param int $user_id Unique identifier of the target user
      * @param array $opt Optional parameters
      * @return bool
-     * @throws TelegramException
      */
     public function promoteChatMember(int|string $chat_id, int $user_id, array $opt = []): bool
     {
-        $response = $this->endpoint(__FUNCTION__, array_merge([
-            'chat_id' => $chat_id,
-            'user_id' => $user_id,
-        ], $opt));
-
-        /** @var bool $object */
-        $object = property_exists($response->result, 'scalar') ? $response->result->scalar : $response->result;
-
-        return $object;
+        $required = compact('chat_id', 'user_id');
+        return $this->requestJson(__FUNCTION__, array_merge($required, $opt));
     }
 
     /**
@@ -806,20 +553,11 @@ trait AvailableMethods
      * @param int $user_id Unique identifier of the target user
      * @param string $custom_title New custom title for the administrator; 0-16 characters, emoji are not allowed
      * @return bool
-     * @throws TelegramException
      */
     public function setChatAdministratorCustomTitle(int|string $chat_id, int $user_id, string $custom_title): bool
     {
-        $response = $this->endpoint(__FUNCTION__, [
-            'chat_id' => $chat_id,
-            'user_id' => $user_id,
-            'custom_title' => $custom_title,
-        ]);
-
-        /** @var bool $object */
-        $object = property_exists($response->result, 'scalar') ? $response->result->scalar : $response->result;
-
-        return $object;
+        $required = compact('chat_id', 'user_id', 'custom_title');
+        return $this->requestJson(__FUNCTION__, $required);
     }
 
     /**
@@ -833,20 +571,11 @@ trait AvailableMethods
      * @param int|string $chat_id Unique identifier for the target chat or username of the target channel (in the format &#64;channelusername)
      * @param int $sender_chat_id Unique identifier of the target sender chat
      * @return bool
-     * @throws TelegramException
-     * @see https://core.telegram.org/bots/api#banchatsenderchat
      */
     public function banChatSenderChat(int|string $chat_id, int $sender_chat_id): bool
     {
-        $response = $this->endpoint(__FUNCTION__, [
-            'chat_id' => $chat_id,
-            'sender_chat_id' => $sender_chat_id,
-        ]);
-
-        /** @var bool $object */
-        $object = property_exists($response->result, 'scalar') ? $response->result->scalar : $response->result;
-
-        return $object;
+        $required = compact('chat_id', 'sender_chat_id');
+        return $this->requestJson(__FUNCTION__, $required);
     }
 
     /**
@@ -857,20 +586,11 @@ trait AvailableMethods
      * @param int|string $chat_id Unique identifier for the target chat or username of the target channel (in the format &#64;channelusername)
      * @param int $sender_chat_id Unique identifier of the target sender chat
      * @return bool
-     * @throws TelegramException
-     * @see https://core.telegram.org/bots/api#unbanchatsenderchat
      */
     public function unbanChatSenderChat(int|string $chat_id, int $sender_chat_id): bool
     {
-        $response = $this->endpoint(__FUNCTION__, [
-            'chat_id' => $chat_id,
-            'sender_chat_id' => $sender_chat_id,
-        ]);
-
-        /** @var bool $object */
-        $object = property_exists($response->result, 'scalar') ? $response->result->scalar : $response->result;
-
-        return $object;
+        $required = compact('chat_id', 'sender_chat_id');
+        return $this->requestJson(__FUNCTION__, $required);
     }
 
     /**
@@ -881,21 +601,12 @@ trait AvailableMethods
      * @param int|string $chat_id Unique identifier for the target chat or username of the target supergroup (in the format &#64;supergroupusername)
      * @param ChatPermissions $permissions A ChatPermissions object for new default chat permissions
      * @return bool
-     * @throws TelegramException
-     * @throws JsonException
      */
     public function setChatPermissions(int|string $chat_id, ChatPermissions $permissions): bool
     {
-        $response = $this->endpoint(__FUNCTION__, [
-                'chat_id' => $chat_id,
-                'permissions' => json_encode($permissions, JSON_THROW_ON_ERROR),
-            ]
-        );
-
-        /** @var bool $object */
-        $object = property_exists($response->result, 'scalar') ? $response->result->scalar : $response->result;
-
-        return $object;
+        $required = compact('chat_id');
+        $required['permissions'] = json_encode($permissions, JSON_THROW_ON_ERROR);
+        return $this->requestJson(__FUNCTION__, $required);
     }
 
     /**
@@ -913,18 +624,11 @@ trait AvailableMethods
      * @see https://core.telegram.org/bots/api#exportchatinvitelink
      * @param int|string $chat_id Unique identifier for the target chat or username of the target channel (in the format &#64;channelusername)
      * @return string
-     * @throws TelegramException
      */
     public function exportChatInviteLink(int|string $chat_id): string
     {
-        $response = $this->endpoint(__FUNCTION__, [
-            'chat_id' => $chat_id,
-        ]);
-
-        /** @var string $object */
-        $object = $response->result;
-
-        return $object;
+        $required = compact('chat_id');
+        return $this->requestJson(__FUNCTION__, $required);
     }
 
     /**
@@ -937,19 +641,11 @@ trait AvailableMethods
      * @param int|string $chat_id Unique identifier for the target chat or username of the target channel (in the format &#64;channelusername)
      * @param array $opt Optional parameters
      * @return ChatInviteLink
-     * @throws JsonMapper_Exception
-     * @throws TelegramException
      */
     public function createChatInviteLink(int|string $chat_id, array $opt = []): ChatInviteLink
     {
-        $response = $this->endpoint(__FUNCTION__, array_merge([
-            'chat_id' => $chat_id,
-        ], $opt));
-
-        /** @var ChatInviteLink $object */
-        $object = $this->mapper->map($response->result, new ChatInviteLink());
-
-        return $object;
+        $required = compact('chat_id');
+        return $this->requestJson(__FUNCTION__, array_merge($required, $opt), ChatInviteLink::class);
     }
 
     /**
@@ -962,20 +658,11 @@ trait AvailableMethods
      * @param string $invite_link The invite link to edit
      * @param array $opt Optional parameters
      * @return ChatInviteLink
-     * @throws JsonMapper_Exception
-     * @throws TelegramException
      */
     public function editChatInviteLink(int|string $chat_id, string $invite_link, array $opt = []): ChatInviteLink
     {
-        $response = $this->endpoint(__FUNCTION__, array_merge([
-            'chat_id' => $chat_id,
-            'invite_link' => $invite_link,
-        ], $opt));
-
-        /** @var ChatInviteLink $object */
-        $object = $this->mapper->map($response->result, new ChatInviteLink());
-
-        return $object;
+        $required = compact('chat_id', 'invite_link');
+        return $this->requestJson(__FUNCTION__, array_merge($required, $opt), ChatInviteLink::class);
     }
 
     /**
@@ -988,20 +675,11 @@ trait AvailableMethods
      * @param int|string $chat_id Unique identifier for the target chat or username of the target channel (in the format &#64;channelusername)
      * @param string $invite_link The invite link to edit
      * @return ChatInviteLink
-     * @throws JsonMapper_Exception
-     * @throws TelegramException
      */
     public function revokeChatInviteLink(int|string $chat_id, string $invite_link): ChatInviteLink
     {
-        $response = $this->endpoint(__FUNCTION__, [
-            'chat_id' => $chat_id,
-            'invite_link' => $invite_link,
-        ]);
-
-        /** @var ChatInviteLink $object */
-        $object = $this->mapper->map($response->result, new ChatInviteLink());
-
-        return $object;
+        $required = compact('chat_id', 'invite_link');
+        return $this->requestJson(__FUNCTION__, $required, ChatInviteLink::class);
     }
 
     /**
@@ -1013,19 +691,11 @@ trait AvailableMethods
      * @param int|string $chat_id Unique identifier for the target chat or username of the target supergroup (in the format &#64;channelusername)
      * @param int $user_id Unique identifier of the target user
      * @return bool
-     * @throws TelegramException
      */
     public function approveChatJoinRequest(int|string $chat_id, int $user_id): bool
     {
-        $response = $this->endpoint(__FUNCTION__, [
-            'chat_id' => $chat_id,
-            'user_id' => $user_id,
-        ]);
-
-        /** @var bool $object */
-        $object = property_exists($response->result, 'scalar') ? $response->result->scalar : $response->result;
-
-        return $object;
+        $required = compact('chat_id', 'user_id');
+        return $this->requestJson(__FUNCTION__, $required);
     }
 
     /**
@@ -1036,19 +706,11 @@ trait AvailableMethods
      * @param int|string $chat_id Unique identifier for the target chat or username of the target supergroup (in the format &#64;channelusername)
      * @param int $user_id Unique identifier of the target user
      * @return bool
-     * @throws TelegramException
      */
     public function declineChatJoinRequest(int|string $chat_id, int $user_id): bool
     {
-        $response = $this->endpoint(__FUNCTION__, [
-            'chat_id' => $chat_id,
-            'user_id' => $user_id,
-        ]);
-
-        /** @var bool $object */
-        $object = property_exists($response->result, 'scalar') ? $response->result->scalar : $response->result;
-
-        return $object;
+        $required = compact('chat_id', 'user_id');
+        return $this->requestJson(__FUNCTION__, $required);
     }
 
     /**
@@ -1058,20 +720,13 @@ trait AvailableMethods
      * @see https://core.telegram.org/bots/api#setchatphoto
      * @param int|string $chat_id Unique identifier for the target chat or username of the target channel (in the format &#64;channelusername)
      * @param mixed $photo New chat photo, uploaded using multipart/form-data
+     * @param array $clientOpt Client parameters
      * @return bool
-     * @throws TelegramException
      */
-    public function setChatPhoto(int|string $chat_id, mixed $photo): bool
+    public function setChatPhoto(int|string $chat_id, mixed $photo, array $clientOpt = []): bool
     {
-        $response = $this->endpoint(__FUNCTION__, [
-            'chat_id' => $chat_id,
-            'photo' => $photo,
-        ]);
-
-        /** @var bool $object */
-        $object = property_exists($response->result, 'scalar') ? $response->result->scalar : $response->result;
-
-        return $object;
+        $required = compact('chat_id', 'photo');
+        return $this->requestMultipart(__FUNCTION__, $required, clientOpt: $clientOpt);
     }
 
     /**
@@ -1081,18 +736,11 @@ trait AvailableMethods
      * @see https://core.telegram.org/bots/api#deletechatphoto
      * @param int|string $chat_id Unique identifier for the target chat or username of the target channel (in the format &#64;channelusername)
      * @return bool
-     * @throws TelegramException
      */
     public function deleteChatPhoto(int|string $chat_id): bool
     {
-        $response = $this->endpoint(__FUNCTION__, [
-            'chat_id' => $chat_id,
-        ]);
-
-        /** @var bool $object */
-        $object = property_exists($response->result, 'scalar') ? $response->result->scalar : $response->result;
-
-        return $object;
+        $required = compact('chat_id');
+        return $this->requestJson(__FUNCTION__, $required);
     }
 
     /**
@@ -1104,19 +752,11 @@ trait AvailableMethods
      * @param int|string $chat_id Unique identifier for the target chat or username of the target channel (in the format &#64;channelusername)
      * @param string $title New chat title, 1-255 characters
      * @return bool
-     * @throws TelegramException
      */
     public function setChatTitle(int|string $chat_id, string $title): bool
     {
-        $response = $this->endpoint(__FUNCTION__, [
-            'chat_id' => $chat_id,
-            'title' => $title,
-        ]);
-
-        /** @var bool $object */
-        $object = property_exists($response->result, 'scalar') ? $response->result->scalar : $response->result;
-
-        return $object;
+        $required = compact('chat_id', 'title');
+        return $this->requestJson(__FUNCTION__, $required);
     }
 
     /**
@@ -1128,18 +768,11 @@ trait AvailableMethods
      * @param int|string $chat_id Unique identifier for the target chat or username of the target channel (in the format &#64;channelusername)
      * @param array $opt Optional parameters
      * @return bool
-     * @throws TelegramException
      */
     public function setChatDescription(int|string $chat_id, array $opt = []): bool
     {
-        $response = $this->endpoint(__FUNCTION__, array_merge([
-            'chat_id' => $chat_id,
-        ], $opt));
-
-        /** @var bool $object */
-        $object = property_exists($response->result, 'scalar') ? $response->result->scalar : $response->result;
-
-        return $object;
+        $required = compact('chat_id');
+        return $this->requestJson(__FUNCTION__, array_merge($required, $opt));
     }
 
     /**
@@ -1152,19 +785,11 @@ trait AvailableMethods
      * @param int $message_id Identifier of a message to pin
      * @param array $opt Optional parameters
      * @return bool
-     * @throws TelegramException
      */
     public function pinChatMessage(int|string $chat_id, int $message_id, array $opt = []): bool
     {
-        $response = $this->endpoint(__FUNCTION__, array_merge([
-            'chat_id' => $chat_id,
-            'message_id' => $message_id,
-        ], $opt));
-
-        /** @var bool $object */
-        $object = property_exists($response->result, 'scalar') ? $response->result->scalar : $response->result;
-
-        return $object;
+        $required = compact('chat_id', 'message_id');
+        return $this->requestJson(__FUNCTION__, array_merge($required, $opt));
     }
 
     /**
@@ -1176,18 +801,11 @@ trait AvailableMethods
      * @param int|string $chat_id Unique identifier for the target chat or username of the target channel (in the format &#64;channelusername)
      * @param array $opt Optional parameters
      * @return bool
-     * @throws TelegramException
      */
     public function unpinChatMessage(int|string $chat_id, array $opt = []): bool
     {
-        $response = $this->endpoint(__FUNCTION__, array_merge([
-            'chat_id' => $chat_id,
-        ], $opt));
-
-        /** @var bool $object */
-        $object = property_exists($response->result, 'scalar') ? $response->result->scalar : $response->result;
-
-        return $object;
+        $required = compact('chat_id');
+        return $this->requestJson(__FUNCTION__, array_merge($required, $opt));
     }
 
     /**
@@ -1198,18 +816,11 @@ trait AvailableMethods
      * @see https://core.telegram.org/bots/api#unpinallchatmessages
      * @param int|string $chat_id Unique identifier for the target chat or username of the target channel (in the format &#64;channelusername)
      * @return bool
-     * @throws TelegramException
      */
     public function unpinAllChatMessages(int|string $chat_id): bool
     {
-        $response = $this->endpoint(__FUNCTION__, [
-            'chat_id' => $chat_id,
-        ]);
-
-        /** @var bool $object */
-        $object = property_exists($response->result, 'scalar') ? $response->result->scalar : $response->result;
-
-        return $object;
+        $required = compact('chat_id');
+        return $this->requestJson(__FUNCTION__, $required);
     }
 
     /**
@@ -1218,18 +829,11 @@ trait AvailableMethods
      * @see https://core.telegram.org/bots/api#leavechat
      * @param int|string $chat_id Unique identifier for the target chat or username of the target supergroup or channel (in the format &#64;channelusername)
      * @return bool
-     * @throws TelegramException
      */
     public function leaveChat(int|string $chat_id): bool
     {
-        $response = $this->endpoint(__FUNCTION__, [
-            'chat_id' => $chat_id,
-        ]);
-
-        /** @var bool $object */
-        $object = property_exists($response->result, 'scalar') ? $response->result->scalar : $response->result;
-
-        return $object;
+        $required = compact('chat_id');
+        return $this->requestJson(__FUNCTION__, $required);
     }
 
     /**
@@ -1239,19 +843,11 @@ trait AvailableMethods
      * @see https://core.telegram.org/bots/api#getchat
      * @param int|string $chat_id Unique identifier for the target chat or username of the target supergroup or channel (in the format &#64;channelusername)
      * @return Chat
-     * @throws TelegramException
-     * @throws JsonMapper_Exception
      */
     public function getChat(int|string $chat_id): Chat
     {
-        $response = $this->endpoint(__FUNCTION__, [
-            'chat_id' => $chat_id,
-        ], false);
-
-        /** @var Chat $object */
-        $object = $this->mapper->map($response->result, new Chat());
-
-        return $object;
+        $required = compact('chat_id');
+        return $this->requestJson(__FUNCTION__, $required, Chat::class);
     }
 
     /**
@@ -1262,22 +858,11 @@ trait AvailableMethods
      * @see https://core.telegram.org/bots/api#getchatadministrators
      * @param int|string $chat_id Unique identifier for the target chat or username of the target supergroup or channel (in the format &#64;channelusername)
      * @return ChatMember[]
-     * @throws TelegramException
-     * @throws JsonMapper_Exception
      */
     public function getChatAdministrators(int|string $chat_id): array
     {
-        $response = $this->endpoint(__FUNCTION__, [
-            'chat_id' => $chat_id,
-        ], false);
-
-        /** @var array $resultArray */
-        $resultArray = $response->result;
-
-        /** @var ChatMember[] $object */
-        $object = $this->mapper->mapArray($resultArray, [], ChatMember::class);
-
-        return $object;
+        $required = compact('chat_id');
+        return $this->requestJson(__FUNCTION__, $required, ChatMember::class);
     }
 
     /**
@@ -1286,18 +871,11 @@ trait AvailableMethods
      * @see https://core.telegram.org/bots/api#getchatmembercount
      * @param int|string $chat_id Unique identifier for the target chat or username of the target supergroup or channel (in the format &#64;channelusername)
      * @return int
-     * @throws TelegramException
      */
     public function getChatMemberCount(int|string $chat_id): int
     {
-        $response = $this->endpoint(__FUNCTION__, [
-            'chat_id' => $chat_id,
-        ], false);
-
-        /** @var int $object */
-        $object = $response->result;
-
-        return $object;
+        $required = compact('chat_id');
+        return $this->requestJson(__FUNCTION__, $required);
     }
 
     /**
@@ -1307,20 +885,11 @@ trait AvailableMethods
      * @param int|string $chat_id Unique identifier for the target chat or username of the target supergroup or channel (in the format &#64;channelusername)
      * @param int $user_id Unique identifier of the target user
      * @return ChatMember
-     * @throws TelegramException
-     * @throws JsonMapper_Exception
      */
     public function getChatMember(int|string $chat_id, int $user_id): ChatMember
     {
-        $response = $this->endpoint(__FUNCTION__, [
-            'chat_id' => $chat_id,
-            'user_id' => $user_id,
-        ], false);
-
-        /** @var ChatMember $object */
-        $object = $this->mapper->map($response->result, new ChatMember());
-
-        return $object;
+        $required = compact('chat_id', 'user_id');
+        return $this->requestJson(__FUNCTION__, $required, ChatMember::class);
     }
 
     /**
@@ -1333,19 +902,11 @@ trait AvailableMethods
      * @param int|string $chat_id Unique identifier for the target chat or username of the target supergroup (in the format &#64;supergroupusername)
      * @param string $sticker_set_name Name of the sticker set to be set as the group sticker set
      * @return bool
-     * @throws TelegramException
      */
     public function setChatStickerSet(int|string $chat_id, string $sticker_set_name): bool
     {
-        $response = $this->endpoint(__FUNCTION__, [
-            'chat_id' => $chat_id,
-            'sticker_set_name' => $sticker_set_name,
-        ]);
-
-        /** @var bool $object */
-        $object = property_exists($response->result, 'scalar') ? $response->result->scalar : $response->result;
-
-        return $object;
+        $required = compact('chat_id', 'sticker_set_name');
+        return $this->requestJson(__FUNCTION__, $required);
     }
 
     /**
@@ -1357,18 +918,11 @@ trait AvailableMethods
      * @see https://core.telegram.org/bots/api#deletechatstickerset
      * @param int|string $chat_id Unique identifier for the target chat or username of the target supergroup (in the format &#64;supergroupusername)
      * @return bool
-     * @throws TelegramException
      */
     public function deleteChatStickerSet(int|string $chat_id): bool
     {
-        $response = $this->endpoint(__FUNCTION__, [
-            'chat_id' => $chat_id,
-        ]);
-
-        /** @var bool $object */
-        $object = property_exists($response->result, 'scalar') ? $response->result->scalar : $response->result;
-
-        return $object;
+        $required = compact('chat_id');
+        return $this->requestJson(__FUNCTION__, $required);
     }
 
     /**
@@ -1384,18 +938,11 @@ trait AvailableMethods
      * @param string $callback_query_id Unique identifier for the query to be answered
      * @param array $opt Optional parameters
      * @return bool
-     * @throws TelegramException
      */
     public function answerCallbackQuery(string $callback_query_id, array $opt = []): bool
     {
-        $response = $this->endpoint(__FUNCTION__, array_merge([
-            'callback_query_id' => $callback_query_id,
-        ], $opt));
-
-        /** @var bool $object */
-        $object = property_exists($response->result, 'scalar') ? $response->result->scalar : $response->result;
-
-        return $object;
+        $required = compact('callback_query_id');
+        return $this->requestJson(__FUNCTION__, array_merge($required, $opt));
     }
 
     /**
@@ -1407,19 +954,11 @@ trait AvailableMethods
      * @param BotCommand[] $commands A list of bot commands to be set as the list of the bot's commands. At most 100 commands can be specified.
      * @param array $opt Optional parameters
      * @return bool
-     * @throws TelegramException
-     * @throws JsonException
      */
     public function setMyCommands(array $commands, array $opt = []): bool
     {
-        $response = $this->endpoint(__FUNCTION__, array_merge([
-            'commands' => json_encode($commands, JSON_THROW_ON_ERROR),
-        ], $opt));
-
-        /** @var bool $object */
-        $object = property_exists($response->result, 'scalar') ? $response->result->scalar : $response->result;
-
-        return $object;
+        $required = ['commands' => json_encode($commands, JSON_THROW_ON_ERROR)];
+        return $this->requestJson(__FUNCTION__, array_merge($required, $opt));
     }
 
     /**
@@ -1429,16 +968,10 @@ trait AvailableMethods
      * @see https://core.telegram.org/bots/api#deletemycommands
      * @param array $opt Optional parameters
      * @return bool
-     * @throws TelegramException
      */
     public function deleteMyCommands(array $opt = []): bool
     {
-        $response = $this->endpoint(__FUNCTION__, $opt);
-
-        /** @var bool $object */
-        $object = property_exists($response->result, 'scalar') ? $response->result->scalar : $response->result;
-
-        return $object;
+        return $this->requestJson(__FUNCTION__, $opt);
     }
 
     /**
@@ -1447,20 +980,10 @@ trait AvailableMethods
      * @see https://core.telegram.org/bots/api#getmycommands
      * @param array $opt Optional parameters
      * @return BotCommand[]
-     * @throws JsonMapper_Exception
-     * @throws TelegramException
      */
     public function getMyCommands(array $opt = []): array
     {
-        $response = $this->endpoint(__FUNCTION__, $opt);
-
-        /** @var array $resultArray */
-        $resultArray = $response->result;
-
-        /** @var BotCommand[] $object */
-        $object = $this->mapper->mapArray($resultArray, [], BotCommand::class);
-
-        return $object;
+        return $this->requestJson(__FUNCTION__, $opt, BotCommand::class);
     }
 
     /**
@@ -1469,16 +992,10 @@ trait AvailableMethods
      * @see https://core.telegram.org/bots/api#setchatmenubutton
      * @param array $opt Optional parameters
      * @return bool
-     * @throws TelegramException
      */
     public function setChatMenuButton(array $opt = []): bool
     {
-        $response = $this->endpoint(__FUNCTION__, $opt);
-
-        /** @var bool $object */
-        $object = property_exists($response->result, 'scalar') ? $response->result->scalar : $response->result;
-
-        return $object;
+        return $this->requestJson(__FUNCTION__, $opt);
     }
 
     /**
@@ -1487,17 +1004,10 @@ trait AvailableMethods
      * @see https://core.telegram.org/bots/api#getchatmenubutton
      * @param array $opt Optional parameters
      * @return MenuButton
-     * @throws JsonMapper_Exception
-     * @throws TelegramException
      */
     public function getChatMenuButton(array $opt = []): MenuButton
     {
-        $response = $this->endpoint(__FUNCTION__, $opt);
-
-        /** @var MenuButton $object */
-        $object = $this->mapper->map($response->result, new MenuButton());
-
-        return $object;
+        return $this->requestJson(__FUNCTION__, $opt, MenuButton::class);
     }
 
     /**
@@ -1508,16 +1018,10 @@ trait AvailableMethods
      * @see https://core.telegram.org/bots/api#setmydefaultadministratorrights
      * @param array $opt Optional parameters
      * @return bool
-     * @throws TelegramException
      */
     public function setMyDefaultAdministratorRights(array $opt = []): bool
     {
-        $response = $this->endpoint(__FUNCTION__, $opt);
-
-        /** @var bool $object */
-        $object = property_exists($response->result, 'scalar') ? $response->result->scalar : $response->result;
-
-        return $object;
+        return $this->requestJson(__FUNCTION__, $opt);
     }
 
     /**
@@ -1526,16 +1030,9 @@ trait AvailableMethods
      * @see https://core.telegram.org/bots/api#getmydefaultadministratorrights
      * @param array $opt Optional parameters
      * @return ChatAdministratorRights
-     * @throws TelegramException
-     * @throws JsonMapper_Exception
      */
     public function getMyDefaultAdministratorRights(array $opt = []): ChatAdministratorRights
     {
-        $response = $this->endpoint(__FUNCTION__, $opt);
-
-        /** @var ChatAdministratorRights $object */
-        $object = $this->mapper->map($response->result, new ChatAdministratorRights());
-
-        return $object;
+        return $this->requestJson(__FUNCTION__, $opt, ChatAdministratorRights::class);
     }
 }

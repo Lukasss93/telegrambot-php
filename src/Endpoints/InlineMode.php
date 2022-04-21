@@ -2,10 +2,7 @@
 
 namespace TelegramBot\Endpoints;
 
-use JsonException;
-use JsonMapper_Exception;
 use TelegramBot\TelegramBot;
-use TelegramBot\TelegramException;
 use TelegramBot\Types\InlineQueryResult;
 use TelegramBot\Types\SentWebAppMessage;
 
@@ -22,20 +19,12 @@ trait InlineMode
      * @param array $results An array of results for the inline query
      * @param array $opt Optional parameters
      * @return bool
-     * @throws TelegramException
-     * @throws JsonException
      */
     public function answerInlineQuery(string $inline_query_id, array $results, array $opt = []): bool
     {
-        $response = $this->endpoint(__FUNCTION__, array_merge([
-            'inline_query_id' => $inline_query_id,
-            'results' => json_encode($results, JSON_THROW_ON_ERROR),
-        ], $opt));
-
-        /** @var bool $object */
-        $object = property_exists($response->result, 'scalar') ? $response->result->scalar : $response->result;
-
-        return $object;
+        $required = compact('inline_query_id');
+        $required['results'] = json_encode($results, JSON_THROW_ON_ERROR);
+        return $this->requestJson(__FUNCTION__, array_merge($required, $opt));
     }
 
     /**
@@ -46,20 +35,11 @@ trait InlineMode
      * @param string $web_app_query_id Unique identifier for the query to be answered
      * @param InlineQueryResult $result An InlineQueryResult object describing the message to be sent
      * @return SentWebAppMessage
-     * @throws TelegramException
-     * @throws JsonMapper_Exception
-     * @throws JsonException
      */
     public function answerWebAppQuery(string $web_app_query_id, InlineQueryResult $result): SentWebAppMessage
     {
-        $data = $this->endpoint(__FUNCTION__, [
-            'web_app_query_id' => $web_app_query_id,
-            'result' => json_encode($result, JSON_THROW_ON_ERROR),
-        ]);
-
-        /** @var SentWebAppMessage $object */
-        $object = $this->mapper->map($data->result, new SentWebAppMessage());
-
-        return $object;
+        $required = compact('web_app_query_id');
+        $required['result'] = json_encode($result, JSON_THROW_ON_ERROR);
+        return $this->requestJson(__FUNCTION__, $required, SentWebAppMessage::class);
     }
 }
