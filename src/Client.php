@@ -19,6 +19,7 @@ use TelegramBot\Endpoints\Passport;
 use TelegramBot\Endpoints\Payments;
 use TelegramBot\Endpoints\Stickers;
 use TelegramBot\Endpoints\UpdatesMessages;
+use TelegramBot\Exceptions\TelegramException;
 use TelegramBot\Types\File;
 use TelegramBot\Types\InputFile;
 use TelegramBot\Types\Message;
