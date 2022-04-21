@@ -9,6 +9,7 @@ use Illuminate\Support\Traits\Macroable;
 use JsonException;
 use JsonSerializable;
 use Psr\Http\Message\ResponseInterface;
+use RuntimeException;
 use stdClass;
 use TelegramBot\Endpoints\AvailableMethods;
 use TelegramBot\Endpoints\Games;
@@ -18,6 +19,7 @@ use TelegramBot\Endpoints\Passport;
 use TelegramBot\Endpoints\Payments;
 use TelegramBot\Endpoints\Stickers;
 use TelegramBot\Endpoints\UpdatesMessages;
+use TelegramBot\Types\File;
 use TelegramBot\Types\InputFile;
 use TelegramBot\Types\Message;
 
@@ -161,5 +163,36 @@ trait Client
         );
     }
 
-    //TODO: download file but complete telegrambot todo
+    /**
+     * Get the download url for a File object.
+     * @param File $file
+     * @return string|null
+     */
+    public function downloadUrl(File $file): string|null
+    {
+        if ($this->config['is_local']) {
+            return $file->file_path;
+        }
+
+        return $this->getFileUrl($file->file_path);
+    }
+
+    /**
+     * Save file to disk.
+     * @param File $file
+     * @param string $path
+     * @param array $clientOpt
+     * @return bool
+     * @throws GuzzleException
+     */
+    public function downloadFile(File $file, string $path, array $clientOpt = []): bool
+    {
+        if (!is_dir(dirname($path)) && !mkdir($concurrentDirectory = dirname($path), true,
+                true) && !is_dir($concurrentDirectory)) {
+            throw new RuntimeException(sprintf('Error creating directory "%s"', $concurrentDirectory));
+        }
+
+        $response = $this->http->get($this->downloadUrl($file), array_merge(['sink' => $path], $clientOpt));
+        return $response->getStatusCode() === 200;
+    }
 }

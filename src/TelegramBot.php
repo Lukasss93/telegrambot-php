@@ -40,6 +40,7 @@ class TelegramBot
         $this->config = array_merge([
             'api_url' => self::DEFAULT_API_URL,
             'timeout' => 5,
+            'is_local' => false,
         ], $config);
 
         //set json mapper
@@ -75,24 +76,6 @@ class TelegramBot
     }
 
     //region KEYBOARDS
-
-    /**
-     * Download a file from Telegram Server
-     * @param string $telegram_file_path
-     * @param string $local_file_path
-     */
-    public function downloadFile(string $telegram_file_path, string $local_file_path): void
-    {
-        $telegramBotUrl = empty($this->botServerUrl) ? 'https://api.telegram.org' : $this->botServerUrl;
-        $file_url = "$telegramBotUrl/file/bot".$this->token.'/'.$telegram_file_path;
-        $in = fopen($file_url, 'rb');
-        $out = fopen($local_file_path, 'wb');
-        while ($chunk = fread($in, 8192)) {
-            fwrite($out, $chunk, 8192);
-        }
-        fclose($in);
-        fclose($out);
-    }
 
     /**
      * Set a custom keyboard
