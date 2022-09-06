@@ -7,30 +7,26 @@ namespace TelegramBot\Types;
  * side of the document changes.
  * @see https://core.telegram.org/bots/api#passportelementerrorfrontside
  */
-class PassportElementErrorFrontSide
+trait PassportElementErrorFrontSide
 {
     /**
      * Error source, must be front_side
-     * @var string $source
      */
-    public $source;
-    
+    public string $source;
+
     /**
      * The section of the user's Telegram Passport which has the error, one of “personal_details”,
      * “passport”, “driver_license”, “identity_card”, “internal_passport”
-     * @var string $type
      */
-    public $type;
-    
+    public string $type;
+
     /**
      * Base64-encoded hash of the file with the front side of the document
-     * @var string $file_hash
      */
-    public $file_hash;
-    
+    public ?string $file_hash = null;
+
     /**
      * Error message
-     * @var string $message
      */
-    public $message;
+    public string $message;
 }

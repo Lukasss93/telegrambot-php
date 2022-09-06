@@ -10,32 +10,32 @@ namespace TelegramBot\Types;
  * Note: This will only work in Telegram versions released after 9 April, 2016. Older clients will ignore them.
  * @see https://core.telegram.org/bots/api#inlinequeryresultcachedaudio
  */
-class InlineQueryResultCachedAudio
+class InlineQueryResultCachedAudio extends InlineQueryResult
 {
     /**
      * Type of the result, must be audio
      * @var string $type
      */
     public $type;
-    
+
     /**
      * Unique identifier for this result, 1-64 bytes
      * @var string $id
      */
     public $id;
-    
+
     /**
      * A valid file identifier for the audio file
      * @var string $audio_file_id
      */
     public $audio_file_id;
-    
+
     /**
      * Optional. Caption, 0-1024 characters
      * @var string $caption
      */
     public $caption;
-    
+
     /**
      * Optional. Send {@see https://core.telegram.org/bots/api#markdown-style Markdown} or
      * {@see https://core.telegram.org/bots/api#html-style HTML},
@@ -51,7 +51,7 @@ class InlineQueryResultCachedAudio
      * @var MessageEntity[] $caption_entities
      */
     public $caption_entities;
-    
+
     /**
      * Optional.
      * {@see https://core.telegram.org/bots#inline-keyboards-and-on-the-fly-updating Inline keyboard}
@@ -59,7 +59,7 @@ class InlineQueryResultCachedAudio
      * @var InlineKeyboardMarkup $reply_markup
      */
     public $reply_markup;
-    
+
     /**
      * Optional. Content of the message to be sent instead of the audio
      * @var InputTextMessageContent|InputLocationMessageContent|InputVenueMessageContent|InputContactMessageContent $input_message_content

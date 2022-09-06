@@ -9,7 +9,7 @@ namespace TelegramBot\Types;
 class ChatInviteLink
 {
     /**
-     * The invite link. If the link was created by another chat administrator, 
+     * The invite link. If the link was created by another chat administrator,
      * then the second part of the link will be replaced with “…”.
      * @var string $invite_link
      */
@@ -20,6 +20,12 @@ class ChatInviteLink
      * @var User $creator
      */
     public $creator;
+
+    /**
+     * True, if users joining the chat via the link need to be approved by chat administrators
+     * @var bool $creates_join_request
+     */
+    public $creates_join_request;
 
     /**
      * True, if the link is primary
@@ -34,15 +40,27 @@ class ChatInviteLink
     public $is_revoked;
 
     /**
+     * Optional. Invite link name
+     * @var string $name
+     */
+    public $name;
+
+    /**
      * Optional. Point in time (Unix timestamp) when the link will expire or has been expired
      * @var int $expire_date
      */
     public $expire_date;
 
     /**
-     * Optional. Maximum number of users that can be members of the chat simultaneously 
+     * Optional. Maximum number of users that can be members of the chat simultaneously
      * after joining the chat via this invite link; 1-99999
      * @var int $member_limit
      */
     public $member_limit;
+
+    /**
+     * Optional. Number of pending join requests created using this link
+     * @var int $pending_join_request_count
+     */
+    public $pending_join_request_count;
 }

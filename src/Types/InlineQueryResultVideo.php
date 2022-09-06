@@ -12,7 +12,7 @@ namespace TelegramBot\Types;
  * you must replace its content using input_message_content.
  * @see https://core.telegram.org/bots/api#inlinequeryresultvideo
  */
-class InlineQueryResultVideo
+class InlineQueryResultVideo extends InlineQueryResult
 {
     /**
      * Type of the result, must be video

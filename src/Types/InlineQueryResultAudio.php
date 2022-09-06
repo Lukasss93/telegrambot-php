@@ -9,7 +9,7 @@ namespace TelegramBot\Types;
  * Note: This will only work in Telegram versions released after 9 April, 2016. Older clients will ignore them.
  * @see https://core.telegram.org/bots/api#inlinequeryresultaudio
  */
-class InlineQueryResultAudio
+class InlineQueryResultAudio extends InlineQueryResult
 {
     /**
      * Type of the result, must be audio

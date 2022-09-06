@@ -1,8 +1,8 @@
 <?php
 
-namespace TelegramBot\Constants;
+namespace TelegramBot\Enums;
 
-class Emojis
+class Emojis extends Enum
 {
     public const DICE = '🎲';
     public const DART = '🎯';

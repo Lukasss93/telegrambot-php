@@ -1,8 +1,8 @@
 <?php
 
-namespace TelegramBot\Constants;
+namespace TelegramBot\Enums;
 
-class PassportSources
+class PassportSources extends Enum
 {
     public const DATA = 'data';
     public const FRONT_SIDE = 'front_side';

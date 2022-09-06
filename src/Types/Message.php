@@ -2,7 +2,7 @@
 
 namespace TelegramBot\Types;
 
-use TelegramBot\Constants\MessageTypes;
+use TelegramBot\Enums\MessageTypes;
 
 /**
  * This object represents a message.
@@ -81,6 +81,13 @@ class Message
     public $forward_date;
 
     /**
+     * Optional. True, if the message is a channel post that was automatically forwarded
+     * to the connected discussion group
+     * @var bool $is_automatic_forward
+     */
+    public $is_automatic_forward;
+
+    /**
      * Optional. For replies, the original message.
      * Note that the Message object in this field will not contain further
      * reply_to_message fields even if it itself is a reply.
@@ -99,6 +106,13 @@ class Message
      * @var int $edit_date
      */
     public $edit_date;
+
+    /**
+     * Optional. True, if messages from the chat can't be forwarded to other chats.
+     * Returned only in {@see https://core.telegram.org/bots/api#getchat getChat}.
+     * @var bool $has_protected_content
+     */
+    public $has_protected_content;
 
     /**
      * Optional. The unique identifier of a media message group this message belongs to
@@ -145,13 +159,6 @@ class Message
     public $document;
 
     /**
-     * Optional. Message is a game, information about the game.
-     * @see https://core.telegram.org/bots/api#games More about games »
-     * @var Game $game
-     */
-    public $game;
-
-    /**
      * Optional. Message is a photo, available sizes of the photo
      * @var PhotoSize[] $photo
      */
@@ -170,17 +177,17 @@ class Message
     public $video;
 
     /**
-     * Optional. Message is a voice message, information about the file
-     * @var Voice $voice
-     */
-    public $voice;
-
-    /**
      * Optional. Message is a video note, information about the video message
      * @see https://telegram.org/blog/video-messages-and-telescope video note
      * @var VideoNote $video_note
      */
     public $video_note;
+
+    /**
+     * Optional. Message is a voice message, information about the file
+     * @var Voice $voice
+     */
+    public $voice;
 
     /**
      * Optional. Caption for the document, photo or video, 0-1024 characters
@@ -201,16 +208,17 @@ class Message
     public $contact;
 
     /**
-     * Optional. Message is a shared location, information about the location
-     * @var Location $location
+     * Optional. Message is a dice with random value from 1 to 6
+     * @var Dice $dice
      */
-    public $location;
+    public $dice;
 
     /**
-     * Optional. Message is a venue, information about the venue
-     * @var Venue $venue
+     * Optional. Message is a game, information about the game.
+     * @see https://core.telegram.org/bots/api#games More about games »
+     * @var Game $game
      */
-    public $venue;
+    public $game;
 
     /**
      * Optional. Message is a native poll, information about the poll
@@ -219,10 +227,16 @@ class Message
     public $poll;
 
     /**
-     * Optional. Message is a dice with random value from 1 to 6
-     * @var Dice $dice
+     * Optional. Message is a venue, information about the venue
+     * @var Venue $venue
      */
-    public $dice;
+    public $venue;
+
+    /**
+     * Optional. Message is a shared location, information about the location
+     * @var Location $location
+     */
+    public $location;
 
     /**
      * Optional. New members that were added to the group or supergroup
@@ -279,12 +293,12 @@ class Message
      * @var bool $channel_chat_created
      */
     public $channel_chat_created;
-    
+
     /**
      * Optional. Service message: auto-delete timer settings changed in the chat
      * @var MessageAutoDeleteTimerChanged $message_auto_delete_timer_changed
      */
-    public $message_auto_delete_timer_changed; 
+    public $message_auto_delete_timer_changed;
 
     /**
      * Optional. The group has been migrated to a supergroup with the specified identifier.
@@ -348,31 +362,36 @@ class Message
      * @var ProximityAlertTriggered $proximity_alert_triggered
      */
     public $proximity_alert_triggered;
-    
+
     /**
      * Optional. Service message: voice chat scheduled
-     * @var VoiceChatScheduled $voice_chat_scheduled
+     * @var VideoChatScheduled $video_chat_scheduled
      */
-    public $voice_chat_scheduled;
-    
+    public $video_chat_scheduled;
+
     /**
      * Optional. Service message: voice chat started
-     * @var VoiceChatStarted $voice_chat_started
+     * @var VideoChatStarted $video_chat_started
      */
-    public $voice_chat_started;
-    
-    /** 
+    public $video_chat_started;
+
+    /**
      * Optional. Service message: voice chat ended
-     * @var VoiceChatEnded $voice_chat_ended 
+     * @var VideoChatEnded $video_chat_ended
      */
-    public $voice_chat_ended;
-    
+    public $video_chat_ended;
+
     /**
      * Optional. Service message: new participants invited to a voice chat
-     * @var VoiceChatParticipantsInvited $voice_chat_participants_invited
+     * @var VideoChatParticipantsInvited $video_chat_participants_invited
      */
-    public $voice_chat_participants_invited;
-    
+    public $video_chat_participants_invited;
+
+    /**
+     * Optional. Service message: data sent by a Web App
+     */
+    public ?WebAppData $web_app_data = null;
+
     /**
      * Optional. Optional. Inline keyboard attached to the message.
      * "login_url" buttons are represented as ordinary "url" buttons.

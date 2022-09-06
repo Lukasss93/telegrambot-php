@@ -7,26 +7,26 @@ namespace TelegramBot\Types;
  * The error is considered resolved when the file with the selfie changes.
  * @see https://core.telegram.org/bots/api#passportelementerrorreverseside
  */
-class PassportElementErrorSelfie
+trait PassportElementErrorSelfie
 {
     /**
-     * @var string $source Error source, must be selfie
+     * Error source, must be selfie
      */
-    public $source;
-    
+    public string $source;
+
     /**
-     * @var string $type The section of the user's Telegram Passport which has the issue, one of “passport”,
-     *     “driver_license”, “identity_card”, “internal_passport”
+     * The section of the user's Telegram Passport which has the issue, one of “passport”,
+     * “driver_license”, “identity_card”, “internal_passport”
      */
-    public $type;
-    
+    public string $type;
+
     /**
-     * @var string $file_hash Base64-encoded hash of the file with the selfie
+     * Base64-encoded hash of the file with the selfie
      */
-    public $file_hash;
-    
+    public ?string $file_hash = null;
+
     /**
      * @var string $message Error message
      */
-    public $message;
+    public string $message;
 }

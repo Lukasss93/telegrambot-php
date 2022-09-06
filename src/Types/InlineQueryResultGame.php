@@ -9,26 +9,26 @@ namespace TelegramBot\Types;
  * Older clients will not display any inline results if a game result is among them.
  * @see https://core.telegram.org/bots/api#inlinequeryresultgame
  */
-class InlineQueryResultGame
+class InlineQueryResultGame extends InlineQueryResult
 {
     /**
      * Type of the result, must be game
      * @var string $type
      */
     public $type;
-    
+
     /**
      * Unique identifier for this result, 1-64 bytes
      * @var string $id
      */
     public $id;
-    
+
     /**
      * Short name of the game
      * @var string $game_short_name
      */
     public $game_short_name;
-    
+
     /**
      * Optional.
      * {@see https://core.telegram.org/bots#inline-keyboards-and-on-the-fly-updating Inline keyboard}

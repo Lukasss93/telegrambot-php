@@ -11,21 +11,19 @@
         }
     ],
     "require": {
-        "php": "^7.2|^8.0",
+        "php": "^8.0",
         "ext-mbstring": "*",
         "ext-curl": "*",
         "ext-fileinfo": "*",
         "ext-json": "*",
-        "netresearch/jsonmapper": "^v4.0"
+        "netresearch/jsonmapper": "^v4.0",
+        "illuminate/macroable": "^v9.0",
+        "guzzlehttp/guzzle": "^7.4",
+        "illuminate/support": "^v9.0"
     },
     "autoload": {
         "psr-4": {
-            "TelegramBot\\": "src/",
-            "TelegramBot\\Types\\": "src/Types/",
-            "TelegramBot\\Constants\\": "src/Constants/"
-        },
-        "files": [
-            "src/TelegramHelper.php"
-        ]
+            "TelegramBot\\": "src/"
+        }
     }
 }
