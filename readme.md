@@ -1,4 +1,10 @@
-# TelegramBot-PHP
+## ⚠️ This package is abandoned and no longer maintained.<br>Please use the [nutgram/nutgram](https://github.com/nutgram/nutgram) package instead.
+<br>
+
+---
+
+
+# TelegramBot-PHP 
 
 [![API](https://img.shields.io/badge/Telegram%20Bot%20API-5.3%09--%20June%2025%2C%202021-blue.svg)](https://core.telegram.org/bots/api)
 ![PHP](https://img.shields.io/badge/php-≥%207.2-8892bf.svg)
